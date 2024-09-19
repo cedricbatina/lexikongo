@@ -1,10 +1,6 @@
 <template>
   <form @submit.prevent="submitSearch">
     <div class="input-group">
-      <!-- Icône de loupe à gauche -->
-      <span class="input-group-text m-2">
-        <i class="fas fa-search"></i>
-      </span>
       <input
         type="text"
         v-model="searchQuery"
@@ -19,7 +15,7 @@
       >
         <option value="kikongo">Kikongo</option>
         <option value="fr">Français</option>
-        <option value="en">English</option>
+        <option value="en">Anglais</option>
       </select>
       <button
         type="button"
@@ -55,16 +51,6 @@ const clearForm = () => {
 </script>
 
 <style scoped>
-.input-group-text {
-  background-color: #fff;
-  border: none;
-  padding-right: 0;
-}
-
-.input-group-text .fas.fa-search {
-  color: #ff8a1d;
-}
-
 .btn-effacer {
   background-color: #ff8a1d;
   color: white;
@@ -76,10 +62,6 @@ const clearForm = () => {
   background-color: #e57a1a;
   transform: scale(1.05);
   cursor: pointer;
-}
-
-.btn-effacer:focus {
-  outline: none;
 }
 
 option {

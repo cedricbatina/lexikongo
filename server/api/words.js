@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
     return [];
   }
 
-  // Définir la requête SQL et les paramètres
   let sqlQuery = "";
   let params = [];
 
@@ -57,6 +56,7 @@ export default defineEventHandler(async (event) => {
                FROM word_meanings wm 
                WHERE wm.word_id = w.word_id AND wm.language_code = 'en') AS translation_en
       FROM words w
+      JOIN word_meanings wm ON wm.word_id = w.word_id
       WHERE wm.language_code = ? AND wm.meaning COLLATE utf8mb4_unicode_ci LIKE ?
       GROUP BY w.word_id, w.singular, w.plural, w.phonetic)
     UNION
@@ -68,6 +68,7 @@ export default defineEventHandler(async (event) => {
                FROM verb_meanings vm 
                WHERE vm.verb_id = v.verb_id AND vm.language_code = 'en') AS translation_en
       FROM verbs v
+      JOIN verb_meanings vm ON vm.verb_id = v.verb_id
       WHERE vm.language_code = ? AND vm.meaning COLLATE utf8mb4_unicode_ci LIKE ?
       GROUP BY v.verb_id, v.name, v.phonetic)
     ORDER BY singular LIMIT 30;`;

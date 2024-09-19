@@ -41,10 +41,11 @@
 
       <!-- Deuxième colonne pour afficher les mots et verbes -->
       <div class="col-md-6">
-        <h3>Mots et Verbes</h3>
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Type</th>
+              <!-- Colonne Type ajoutée -->
               <th>Singulier</th>
               <th>Pluriel</th>
               <th>Phonétique</th>
@@ -54,18 +55,20 @@
           </thead>
           <tbody>
             <tr v-for="item in paginatedAllWordsVerbs" :key="item.id">
+              <td>{{ item.type === "word" ? "Mot" : "Verbe" }}</td>
+              <!-- Affichage du type -->
               <td>{{ item.singular }}</td>
-              <td>{{ item.plural }}</td>
+              <td>{{ item.plural || "-" }}</td>
               <td>{{ item.phonetic }}</td>
-              <td>{{ item.translation_fr || "N/A" }}</td>
-              <td>{{ item.translation_en || "N/A" }}</td>
+              <td>{{ item.translation_fr || "-" }}</td>
+              <td>{{ item.translation_en || "-" }}</td>
             </tr>
           </tbody>
         </table>
         <Pagination
-          :currentPage="currentPageAllWordsVerbs"
-          :totalPages="totalPagesAllWordsVerbs"
-          @pageChange="changePageAllWordsVerbs"
+          :currentPage="currentPageWordsVerbs"
+          :totalPages="totalPagesWordsVerbs"
+          @pageChange="changePageWordsVerbs"
         />
       </div>
     </div>
@@ -100,7 +103,7 @@ const fetchWords = async () => {
 
   try {
     const response = await fetch(
-      `/api/words?query=${query.value}&language=${language.value}`
+      "/api/words?query=${query.value}&language=${language.value}"
     );
     const result = await response.json();
     items.value = result; // Charger à la fois les mots et les verbes
@@ -134,7 +137,7 @@ const pageSizeAllWordsVerbs = 15;
 
 const fetchAllWordsVerbs = async () => {
   try {
-    const response = await fetch(`/api/all-words-verbs`);
+    const response = await fetch("/api/all-words-verbs");
     const result = await response.json();
     allWordsVerbs.value = result;
   } catch (error) {
@@ -168,4 +171,4 @@ onMounted(async () => {
 .notice {
   font-size: xx-small;
 }
-</style>
+</style>  

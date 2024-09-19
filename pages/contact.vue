@@ -1,26 +1,29 @@
 <template>
   <div class="container">
     <div class="row">
-      <!-- Formulaire de recherche et ses résultats dans la première colonne -->
+      <!-- Première colonne avec le formulaire de recherche -->
       <div class="col-md-6">
         <SearchForm @search="handleSearch" />
-
-        <!-- Affichage des résultats paginés -->
+        <!-- Affichage des résultats de recherche -->
         <div v-if="paginatedWords.length">
-          <ul class="list-group">
+          <ul class="list-group mt-4">
             <li
               v-for="item in paginatedWords"
               :key="item.id"
               class="list-group-item"
             >
-              <span v-if="item.type === 'word'">
+              <span v-if="item.type === 'word'" class="searched-word">
                 Mot: {{ item.singular || item.plural }}
               </span>
-              <span v-else-if="item.type === 'verb'">
+              <span v-else-if="item.type === 'verb'" class="searched-word">
                 Verbe: {{ item.singular }}
               </span>
               <br />
-              <strong>Traduction:</strong> {{ item.translation }}
+              <small class="fw-bold notice">FR :</small>
+              <span v-if="item.translation_fr">{{ item.translation_fr }}</span>
+              <br />
+              <small class="fw-bold notice">EN :</small>
+              <span v-if="item.translation_en">{{ item.translation_en }}</span>
             </li>
           </ul>
           <Pagination
@@ -30,19 +33,18 @@
           />
         </div>
 
-        <div v-else>
-          <div class="alert alert-info" role="alert">
-            Aucune expression trouvée.
-          </div>
+        <!-- Message si aucun mot n'est trouvé -->
+        <div v-else class="mt-4">
+          <div class="alert alert-info">Aucune expression trouvée.</div>
         </div>
       </div>
 
-      <!-- Deuxième colonne pour afficher les mots et verbes avec pagination -->
+      <!-- Deuxième colonne pour afficher les mots et verbes -->
       <div class="col-md-6">
-        <h3>Mots et Verbes (limite 30)</h3>
-        <table class="table table-hover">
+        <table class="table table-striped">
           <thead>
             <tr>
+              <th>Type</th>
               <th>Singulier</th>
               <th>Pluriel</th>
               <th>Phonétique</th>
@@ -51,38 +53,37 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in paginatedWordsVerbs" :key="item.id">
+            <tr v-for="item in paginatedAllWordsVerbs" :key="item.id">
+              <td>{{ item.type === "word" ? "Mot" : "Verbe" }}</td>
               <td>{{ item.singular }}</td>
               <td>{{ item.plural || "-" }}</td>
-              <td>{{ item.phonetic || "-" }}</td>
+              <td>{{ item.phonetic }}</td>
               <td>{{ item.translation_fr || "-" }}</td>
               <td>{{ item.translation_en || "-" }}</td>
             </tr>
           </tbody>
         </table>
         <Pagination
-          :currentPage="currentAllPage"
-          :totalPages="totalAllPages"
-          @pageChange="changeAllPage"
+          :currentPage="currentPageWordsVerbs"
+          :totalPages="totalPagesWordsVerbs"
+          @pageChange="changePageWordsVerbs"
         />
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import Pagination from "@/components/Pagination.vue";
+import SearchForm from "@/components/SearchForm.vue";
 
+// Recherche par formulaire
 const query = ref("");
 const language = ref("kikongo"); // Langue par défaut
-const items = ref([]); // Fusion des mots et des verbes dans un tableau unique
+const items = ref([]);
 const currentPage = ref(1);
-const pageSize = ref(15); // Nombre d'éléments par page
-const allWordsVerbs = ref([]); // Données de la deuxième section
-const currentAllPage = ref(1);
-const allPageSize = ref(30);
+const pageSize = 15; // Nombre d'éléments par page
 
-// Fonction pour récupérer les résultats de la recherche
 const handleSearch = async ({
   query: searchQuery,
   language: selectedLanguage,
@@ -92,7 +93,6 @@ const handleSearch = async ({
   await fetchWords(); // Lancer la recherche avec la nouvelle requête
 };
 
-// Fonction pour récupérer les mots et verbes selon la recherche
 const fetchWords = async () => {
   if (!query.value) {
     items.value = [];
@@ -111,12 +111,25 @@ const fetchWords = async () => {
   }
 };
 
-// Fonction pour récupérer tous les mots et verbes avec pagination
+// Pagination des résultats de recherche
+const paginatedWords = computed(() => {
+  const start = (currentPage.value - 1) * pageSize;
+  return items.value.slice(start, start + pageSize);
+});
+
+const totalPages = computed(() => Math.ceil(items.value.length / pageSize));
+const changePage = (page) => {
+  currentPage.value = page;
+};
+
+// Partie pour la 2e colonne (mots et verbes de la DB)
+const allWordsVerbs = ref([]);
+const currentPageWordsVerbs = ref(1);
+const pageSizeWordsVerbs = 15;
+
 const fetchAllWordsVerbs = async () => {
   try {
-    const response = await fetch(
-      `/api/all-words-verbs?page=${currentAllPage.value}&pageSize=${allPageSize.value}`
-    );
+    const response = await fetch(`/api/all-words-verbs`);
     const result = await response.json();
     allWordsVerbs.value = result;
   } catch (error) {
@@ -125,40 +138,22 @@ const fetchAllWordsVerbs = async () => {
   }
 };
 
-// Pagination pour les résultats de la recherche
-const paginatedWords = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  return items.value.slice(start, start + pageSize.value);
+// Pagination pour la colonne des mots et verbes de la DB
+const paginatedAllWordsVerbs = computed(() => {
+  const start = (currentPageWordsVerbs.value - 1) * pageSizeWordsVerbs;
+  return allWordsVerbs.value.slice(start, start + pageSizeWordsVerbs);
 });
 
-const totalPages = computed(() =>
-  Math.ceil(items.value.length / pageSize.value)
+const totalPagesWordsVerbs = computed(() =>
+  Math.ceil(allWordsVerbs.value.length / pageSizeWordsVerbs)
 );
-
-// Pagination pour tous les mots et verbes
-const paginatedWordsVerbs = computed(() => {
-  return allWordsVerbs.value;
-});
-
-const totalAllPages = computed(() =>
-  Math.ceil(allWordsVerbs.value.length / allPageSize.value)
-);
-
-// Fonction pour changer de page pour la recherche
-const changePage = (page) => {
-  currentPage.value = page;
-  fetchWords(); // Recharger les résultats de recherche pour la nouvelle page
+const changePageWordsVerbs = (page) => {
+  currentPageWordsVerbs.value = page;
 };
 
-// Fonction pour changer de page pour tous les mots et verbes
-const changeAllPage = (page) => {
-  currentAllPage.value = page;
-  fetchAllWordsVerbs(); // Recharger les mots et verbes pour la nouvelle page
-};
-
-// Récupérer les données au montage du composant
+// Chargement initial des mots et verbes
 onMounted(async () => {
-  await fetchWords(); // Récupérer les résultats initiaux de la recherche
-  await fetchAllWordsVerbs(); // Récupérer les mots et verbes initiaux
+  await fetchAllWordsVerbs();
+  await fetchWords(); // Charger initialement les mots
 });
 </script>
