@@ -1,0 +1,231 @@
+/* slider section */
+.slider_section {
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: bottom;
+  padding: 1em 0; /* 4 ems au lieu de 60px */
+  margin-bottom: 0; /* Supprime la marge en dessous de la section */
+}
+
+.slider_section .row {
+  align-items: center;
+}
+
+.slider_section .detail-box {
+  padding-bottom: 0.25em; /* Réduit le padding en bas */
+}
+
+.slider_section .detail-box h1 {
+  font-weight: bold;
+  margin-bottom: 0.75em; /* 1.25 ems au lieu de 25px */
+  color: #0355cc;
+}
+
+.slider_section .detail-box p {
+  color: #444;
+  font-size: 1em; /* 1 em au lieu de 15px */
+}
+
+.slider_section .detail-box a {
+  display: inline-block;
+  text-transform: uppercase;
+  padding: 0.625em 2.8125em; /* 10px 45px -> 0.625em 2.8125em */
+  background-color: #ff8a1d;
+  border: 1px solid #ff8a1d;
+  border-radius: 0.3125em; /* 5px -> 0.3125em */
+  color: #ffffff;
+  margin-top: 2em;
+}
+
+.slider_section .detail-box a:hover {
+  background-color: transparent;
+  color: #ff8a1d;
+}
+
+.slider_section .img-box img {
+  width: 100%;
+}
+
+.feature_section {
+  padding: 0.5em 0; /* 4 ems au lieu de 60px */
+  margin-bottom: 0;
+}
+
+.feature_section .feature_container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Pour éviter le chevauchement si les éléments deviennent trop larges */
+}
+
+.feature_section .feature_container .box {
+  padding: 2em 0.9375em; /* Si besoin, réduis le padding pour mieux contenir l'image */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 0.625em;
+  background-color: #ffffff;
+  color: #555089;
+  transition: all 0.3s;
+  box-shadow: 0 0 0.9375em 0 rgba(0, 0, 0, 0.2);
+  position: relative; /* Pour contrôler les débordements */
+}
+
+.feature_section .feature_container .box .img-box {
+  width: 5em; /* Ajuste la taille pour ne pas qu'il déborde */
+  height: 5em; /* Assure une proportion cohérente */
+  max-width: 100%; /* S'assure que l'image ne dépasse pas les limites de son conteneur */
+  max-height: 100%; /* Même chose pour la hauteur */
+  overflow: hidden; /* Cache tout ce qui dépasse */
+}
+
+.feature_section .feature_container .box .name {
+  margin-top: 1em; /* 1 em au lieu de 20px */
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.feature_section .feature_container .box:hover,
+.feature_section .feature_container .box.active {
+  background-color: #ff8a1d;
+  color: #ffffff;
+}
+
+.about_section {
+  padding: 2em 0;
+  margin-top: 1em; /* Espace supplémentaire pour éviter le chevauchement */
+  position: relative; /* Position relative pour éviter les chevauchements */
+}
+
+.about_section .detail-box h2 {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.about_section .row {
+  align-items: center;
+}
+
+.about_section .detail-box p {
+  margin-top: 0px;
+}
+
+.about_section .detail-box a {
+  display: inline-block;
+  font-family: "Merriweather Sans", sans-serif;
+  text-transform: uppercase;
+  padding: 10px 45px;
+  background-color: #ff8a12;
+  border: 1px solid #ff8a12;
+  border-radius: 3px;
+  color: #ffffff;
+}
+
+.about_section .detail-box a:hover {
+  background-color: transparent;
+  color: #ff8a12;
+}
+.img-box img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Centrer l'image */
+}
+.about_section .img-box img {
+  width: 100%;
+}
+
+
+.service_section {
+  position: relative;
+}
+
+.service_section .box {
+  margin-top: 30px;
+  text-align: center;
+  -webkit-box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.15);
+  padding: 25px 15px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.service_section .box .img-box {
+  width: 65px;
+  height: 65px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.service_section .box .img-box img {
+  max-height: 100%;
+  max-width: 100%;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.service_section .box .detail-box {
+  margin-top: 15px;
+}
+
+.service_section .box .detail-box h5 {
+  font-weight: bold;
+}
+
+.service_section .box .detail-box p {
+  margin: 0;
+}
+
+.service_section .box:hover {
+  background-color: #ff8a1d;
+  color: #ffffff;
+}
+
+.service_section .box:hover .img-box img {
+  -webkit-filter: brightness(0) invert(1);
+          filter: brightness(0) invert(1);
+}
+
+.service_section .btn-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 45px;
+}
+
+.service_section .btn-box a {
+  display: inline-block;
+  font-family: 'Merriweather Sans', sans-serif;
+  text-transform: uppercase;
+  padding: 10px 45px;
+  background-color: #ff8a1d;
+  border: 1px solid #ff8a12;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.service_section .btn-box a:hover {
+  background-color: transparent;
+  color: #ff8a12;
+}
