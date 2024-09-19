@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <!-- Première colonne avec le formulaire de recherche -->
-      <div class="col-md-6">
+      <div class="col-md-4 col-sm-12 mt-4">
         <SearchForm @search="handleSearch" />
         <!-- Affichage des résultats de recherche -->
         <div v-if="paginatedWords.length">
@@ -12,18 +12,21 @@
               :key="item.id"
               class="list-group-item"
             >
-              <span v-if="item.type === 'word'" class="searched-word"
-                >Mot: {{ item.singular
-                }}{{ item.plural ? " / " + item.plural : "" }}</span
+              <span v-if="item.type === 'word'"
+                ><small class="notice fw-bold">Subst. : </small>
+                <span class="searched-word fw-bold">{{
+                  item.singular + " - " + item.plural
+                }}</span></span
               >
-              <span v-else-if="item.type === 'verb'" class="searched-word"
-                >Verbe: {{ item.singular }}</span
+              <span v-else-if="item.type === 'verb'"
+                ><small class="notice fw-bold">Verb : </small>
+                <span class="searched-word">{{ item.singular }}</span></span
               >
               <br />
-              <small class="fw-bold notice">FR : </small>
+              <small class="notice text-primary">FR : </small>
               <span v-if="item.translation_fr">{{ item.translation_fr }}</span>
               <br />
-              <small class="fw-bold notice">EN : </small>
+              <small class="notice text-primary">EN : </small>
               <span v-if="item.translation_en">{{ item.translation_en }}</span>
             </li>
           </ul>
@@ -36,28 +39,36 @@
 
         <!-- Message si aucun mot n'est trouvé -->
         <div v-else class="mt-4">
-          <div class="alert alert-info">Aucune expression trouvée.</div>
+          <div class="alert alert-info">Aucun mot trouvé.</div>
         </div>
+      </div>
+      <div class="col-md-2">
+        <nuxt-link to="/words">Voir les Mots</nuxt-link>
+        <nuxt-link to="/verbs">Voir les Verbes</nuxt-link>
       </div>
 
       <!-- Deuxième colonne pour afficher les mots et verbes -->
-      <div class="col-md-6">
+      <div class="col-md-6 col-sm-12">
         <!-- Tableau pour afficher les mots et verbes -->
         <table class="table">
           <thead>
             <tr>
               <th>Type</th>
-              <th>Singulier</th>
-              <th>Pluriel</th>
-              <th>Phonétique</th>
-              <th>Traduction FR</th>
-              <th>Traduction EN</th>
-              <th>Actions</th>
+              <th>Sing.</th>
+              <th>Plur.</th>
+              <th>Phon.</th>
+              <th>Fr.</th>
+              <th>En.</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in paginatedAllWordsVerbs" :key="item.id">
-              <td>{{ item.type === "word" ? "Mot" : "Verbe" }}</td>
+              <td>
+                <span class="searched-word notice">{{
+                  item.type === "word" ? "Subst." : "Verb"
+                }}</span>
+              </td>
               <td>{{ item.singular }}</td>
               <td>{{ item.plural || "-" }}</td>
               <td>{{ item.phonetic }}</td>
@@ -65,7 +76,7 @@
               <td>{{ item.translation_en || "-" }}</td>
               <td>
                 <router-link :to="`/details/${item.type}/${item.id}`">
-                  <button class="btn btn-primary">Détails</button>
+                  <button class="btn btn-primary fw-bold details">+</button>
                 </router-link>
               </td>
             </tr>
@@ -87,14 +98,12 @@
 import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/Pagination.vue";
 import SearchForm from "@/components/SearchForm.vue";
-import { useRouter } from "vue-router";
 
 const query = ref("");
 const language = ref("kikongo"); // Langue par défaut
 const items = ref([]); // Fusion des mots et des verbes dans un tableau unique
 const currentPage = ref(1);
 const pageSize = 15; // Nombre d'éléments par page
-const router = useRouter(); // Utilisation du routeur pour rediriger vers la page de détails
 
 const handleSearch = async ({
   query: searchQuery,
@@ -143,7 +152,7 @@ onMounted(async () => {
 // Partie pour la 2e colonne (mots et verbes de la DB)
 const allWordsVerbs = ref([]);
 const currentPageAllWordsVerbs = ref(1);
-const pageSizeAllWordsVerbs = 15;
+const pageSizeAllWordsVerbs = 60;
 
 const fetchAllWordsVerbs = async () => {
   try {
@@ -169,17 +178,11 @@ const changePageAllWordsVerbs = (page) => {
   currentPageAllWordsVerbs.value = page;
 };
 
-// Fonction pour voir les détails
-const viewDetails = (id, type) => {
-  router.push({ path: `/details/${type}/${id}` });
-};
-
 // Chargement initial des mots et verbes
 onMounted(async () => {
   await fetchAllWordsVerbs();
 });
 </script>
-
 <style scoped>
 .searched-word {
   color: #ff8a1d;
@@ -187,19 +190,24 @@ onMounted(async () => {
 .notice {
   font-size: xx-small;
 }
-.btn-info {
-  background-color: #17a2b8;
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease;
+.input-group {
+  display: flex;
+  align-items: stretch; /* Assure que l'input et le select sont de même hauteur */
 }
 
-.btn-info:hover {
-  background-color: #138496;
-  cursor: pointer;
+.input-group .form-control {
+  flex: 3; /* Input occupe 3 parts */
 }
 
-.btn-info:focus {
-  outline: none;
+.input-group .form-select {
+  flex: 1; /* Select occupe 1 part */
+}
+
+.input-group .btn-clear {
+  flex: 1; /* Le bouton occupe 1 part */
+}
+th {
+  color: #ff8a1d;
+  font-weight: 400;
 }
 </style>

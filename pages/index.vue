@@ -42,10 +42,13 @@
           <div class="alert alert-info">Aucun mot trouvé.</div>
         </div>
       </div>
-      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <nuxt-link to="/words">Voir les Mots</nuxt-link>
+        <nuxt-link to="/verbs">Voir les Verbes</nuxt-link>
+      </div>
 
       <!-- Deuxième colonne pour afficher les mots et verbes -->
-      <div class="col-md-7 col-sm-12">
+      <div class="col-md-6 col-sm-12">
         <!-- Tableau pour afficher les mots et verbes -->
         <table class="table">
           <thead>
