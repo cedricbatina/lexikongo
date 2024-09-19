@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <!-- Première colonne avec le formulaire de recherche -->
-      <div class="col-md-5 mt-4">
+      <div class="col-md-4 col-sm-12 mt-4">
         <SearchForm @search="handleSearch" />
         <!-- Affichage des résultats de recherche -->
         <div v-if="paginatedWords.length">
@@ -13,20 +13,20 @@
               class="list-group-item"
             >
               <span v-if="item.type === 'word'"
-                ><small class="notice fw-bold">Mot : </small>
-                <span class="searched-word">{{
-                  item.singular || item.plural
+                ><small class="notice fw-bold">Subst. : </small>
+                <span class="searched-word fw-bold">{{
+                  item.singular + " - " + item.plural
                 }}</span></span
               >
-              <span v-else-if="item.type === 'verb'" class="searched-word"
-                ><small class="notice fw-bold">Verbe : </small>
-                {{ item.singular }}</span
+              <span v-else-if="item.type === 'verb'"
+                ><small class="notice fw-bold">Verb : </small>
+                <span class="searched-word">{{ item.singular }}</span></span
               >
               <br />
-              <small class="fw-bold notice">FR : </small>
+              <small class="notice text-primary">FR : </small>
               <span v-if="item.translation_fr">{{ item.translation_fr }}</span>
               <br />
-              <small class="fw-bold notice">EN : </small>
+              <small class="notice text-primary">EN : </small>
               <span v-if="item.translation_en">{{ item.translation_en }}</span>
             </li>
           </ul>
@@ -45,7 +45,7 @@
       <div class="col-md-1"></div>
 
       <!-- Deuxième colonne pour afficher les mots et verbes -->
-      <div class="col-md-6">
+      <div class="col-md-7 col-sm-12">
         <!-- Tableau pour afficher les mots et verbes -->
         <table class="table">
           <thead>
@@ -62,7 +62,9 @@
           <tbody>
             <tr v-for="item in paginatedAllWordsVerbs" :key="item.id">
               <td>
-                {{ item.type === "word" ? "Mot" : "Verbe" }}
+                <span class="searched-word notice">{{
+                  item.type === "word" ? "Subst." : "Verb"
+                }}</span>
               </td>
               <td>{{ item.singular }}</td>
               <td>{{ item.plural || "-" }}</td>
@@ -147,7 +149,7 @@ onMounted(async () => {
 // Partie pour la 2e colonne (mots et verbes de la DB)
 const allWordsVerbs = ref([]);
 const currentPageAllWordsVerbs = ref(1);
-const pageSizeAllWordsVerbs = 15;
+const pageSizeAllWordsVerbs = 60;
 
 const fetchAllWordsVerbs = async () => {
   try {
@@ -200,5 +202,9 @@ onMounted(async () => {
 
 .input-group .btn-clear {
   flex: 1; /* Le bouton occupe 1 part */
+}
+th {
+  color: #ff8a1d;
+  font-weight: 400;
 }
 </style>
