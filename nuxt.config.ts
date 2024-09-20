@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify from 'vite-plugin-vuetify';
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
@@ -7,10 +7,10 @@ export default defineNuxtConfig({
     head: {
       title: 'Lexikongo',
       meta: [
-        { name: 'description', content: 'Plateforme de partage de connaissances en ligne' },
+        { name: 'description', content: 'Lexique Kikongo en ligne' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'keywords', content: 'plomberie, réparations, installations, Cyrille Plomberie' },
-        { name: 'author', content: 'Cyrille Plomberie' }
+        { name: '', content: 'Cyrille Plomberie' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify']
   },
-  modules: ['vue3-carousel-nuxt', '@nuxtjs/sitemap'],
+  modules: ['vue3-carousel-nuxt', '@nuxtjs/sitemap', '@pinia/nuxt'],
  site: {
     url: 'https://www.lexikongo.fr', // Remplacez par l'URL de votre site
     name: 'Lexikongo'  // Optionnel, nom du site

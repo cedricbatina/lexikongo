@@ -16,14 +16,17 @@
   </div>
 </template>
 
+// login.vue
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "~/stores/authStore";
 
 const email = ref("");
 const password = ref("");
 const error = ref("");
 const router = useRouter();
+const authStore = useAuthStore();
 
 const login = async () => {
   const response = await fetch("/api/login", {
@@ -35,11 +38,10 @@ const login = async () => {
   const result = await response.json();
 
   if (result.token) {
-    localStorage.setItem("token", result.token);
-    const userRole = JSON.parse(atob(result.token.split(".")[1])).role;
-    if (userRole === "admin") {
+    authStore.login(result.token); // Utilise le store Pinia pour gérer le login
+    if (authStore.userRole === "admin") {
       router.push("/admin");
-    } else if (userRole === "contributor") {
+    } else if (authStore.userRole === "contributor") {
       router.push("/contributor");
     } else {
       router.push("/user");

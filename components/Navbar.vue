@@ -16,6 +16,22 @@
       </button>
       <div class="collapse navbar-collapse" :class="{ show: isMenuOpen }">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 col-5">
+          <!-- Afficher Déconnexion si l'utilisateur est connecté -->
+          <li v-if="authStore.isLoggedIn" class="nav-item">
+            <button class="btn btn-danger" @click="logout">Déconnexion</button>
+          </li>
+          <!-- Afficher le lien Profil seulement si l'utilisateur est connecté -->
+          <li v-if="authStore.isLoggedIn" class="nav-item">
+            <nuxt-link class="nav-link" to="/user/profil">Profil</nuxt-link>
+          </li>
+
+          <!-- Afficher Connexion si l'utilisateur n'est pas connecté -->
+          <li v-else class="nav-item">
+            <nuxt-link class="nav-link" to="/login"
+              ><button class="btn btn-primary">Connexion</button></nuxt-link
+            >
+          </li>
+
           <li class="nav-item">
             <nuxt-link class="nav-link" to="/">Accueil</nuxt-link>
           </li>
@@ -35,15 +51,28 @@
   </nav>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isMenuOpen: false,
-    };
-  },
+<script setup>
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "vue-router";
+
+const authStore = useAuthStore();
+const isMenuOpen = ref(false);
+const router = useRouter();
+
+// Vérifier l'état de connexion lors du montage du composant
+onMounted(() => {
+  authStore.checkAuth(); // Vérifier l'état de connexion dans le store
+});
+
+// Fonction de déconnexion
+const logout = () => {
+  authStore.logout();
+  router.push("/login");
 };
 </script>
+
+
 
 <style scoped>
 .navbar-toggler {

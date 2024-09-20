@@ -14,20 +14,26 @@
             >
               <span v-if="item.type === 'word'"
                 ><small class="notice fw-bold">Subst. : </small>
-                <span class="searched-word fw-bold">{{
+                <span class="searchedExpression">{{
                   item.singular + " - " + item.plural
                 }}</span></span
               >
               <span v-else-if="item.type === 'verb'"
                 ><small class="notice fw-bold">Verb : </small>
-                <span class="searched-word">{{ item.singular }}</span></span
+                <span class="searchedExpression">{{
+                  item.singular
+                }}</span></span
               >
               <br />
               <small class="notice text-primary">FR : </small>
-              <span v-if="item.translation_fr">{{ item.translation_fr }}</span>
+              <span v-if="item.translation_fr" class="translation_fr">{{
+                item.translation_fr
+              }}</span>
               <br />
               <small class="notice text-primary">EN : </small>
-              <span v-if="item.translation_en">{{ item.translation_en }}</span>
+              <span v-if="item.translation_en" class="translation_en">{{
+                item.translation_en
+              }}</span>
             </li>
           </ul>
           <Pagination
@@ -69,11 +75,25 @@
                   item.type === "word" ? "Subst." : "Verb"
                 }}</span>
               </td>
-              <td>{{ item.singular }}</td>
-              <td>{{ item.plural || "-" }}</td>
-              <td>{{ item.phonetic }}</td>
-              <td>{{ item.translation_fr || "-" }}</td>
-              <td>{{ item.translation_en || "-" }}</td>
+              <td>
+                <span class="searchedExpression">{{ item.singular }}</span>
+              </td>
+              <td>
+                <span class="searchedExpression">{{ item.plural || " " }}</span>
+              </td>
+              <td>
+                <span class="phonetic">{{ item.phonetic }}</span>
+              </td>
+              <td>
+                <span class="translation_fr">{{
+                  item.translation_fr || " "
+                }}</span>
+              </td>
+              <td>
+                <span class="translation_en">{{
+                  item.translation_en || " "
+                }}</span>
+              </td>
               <td>
                 <router-link :to="`/details/${item.type}/${item.id}`">
                   <button class="btn btn-primary fw-bold details">+</button>
@@ -152,7 +172,7 @@ onMounted(async () => {
 // Partie pour la 2e colonne (mots et verbes de la DB)
 const allWordsVerbs = ref([]);
 const currentPageAllWordsVerbs = ref(1);
-const pageSizeAllWordsVerbs = 60;
+const pageSizeAllWordsVerbs = 30;
 
 const fetchAllWordsVerbs = async () => {
   try {
@@ -205,6 +225,26 @@ onMounted(async () => {
 
 .input-group .btn-clear {
   flex: 1; /* Le bouton occupe 1 part */
+}
+
+.phonetic {
+  font-style: oblique;
+  font-weight: 400;
+  color: rgb(37, 37, 37);
+}
+.translation_fr {
+  font-weight: 300;
+  font-size: small;
+  color: rgb(23, 11, 41);
+}
+.translation_en {
+  font-weight: 300;
+  font-size: small;
+  color: #2a0600;
+}
+.searchedExpression {
+  color: brown;
+  font-weight: 500;
 }
 th {
   color: #ff8a1d;

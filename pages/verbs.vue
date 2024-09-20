@@ -1,8 +1,26 @@
 <template>
   <div class="container mt-4">
     <div class="row">
-      <div class="col-md-12">
-        <h2 class="text-center mb-4">Liste des Verbes</h2>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="fw-bold col-6">
+            <h2 class="mb-4">Liste des Verbes</h2>
+            <div class="row mt-2">
+              <div class="col-md-12 d-flex">
+                <!-- Bouton retour à l'accueil -->
+                <nuxt-link to="/">
+                  <button class="btn btn-secondary m-1">
+                    Retour à l'accueil
+                  </button>
+                </nuxt-link>
+                <!-- Bouton pour afficher les mots -->
+                <nuxt-link to="/words">
+                  <button class="btn btn-primary m-1">Voir les Mots</button>
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+        </div>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -36,19 +54,18 @@
           :totalPages="totalPages"
           @pageChange="changePage"
         />
-      </div>
-    </div>
-
-    <div class="row mt-4">
-      <div class="col-md-12 d-flex justify-content-between">
-        <!-- Bouton retour à l'accueil -->
-        <nuxt-link to="/">
-          <button class="btn btn-secondary">Retour à l'accueil</button>
-        </nuxt-link>
-        <!-- Bouton pour afficher les mots -->
-        <nuxt-link to="/words">
-          <button class="btn btn-primary">Voir les Mots</button>
-        </nuxt-link>
+        <div class="row mt-4">
+          <div class="col-md-12 d-flex justify-content-between">
+            <!-- Bouton retour à l'accueil -->
+            <nuxt-link to="/">
+              <button class="btn btn-secondary">Retour à l'accueil</button>
+            </nuxt-link>
+            <!-- Bouton pour afficher les verbes -->
+            <nuxt-link to="/verbs">
+              <button class="btn btn-primary">Voir les Verbes</button>
+            </nuxt-link>
+          </div>
+        </div>
       </div>
     </div>
   </div>
