@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@unhead/vue": "^1.11.7",
+    "bootstrap": "^5.3.3",
+    "mysql2": "^3.11.3",
+    "sitemap": "^8.0.0",
+    "slugify": "^1.6.6",
+    "vite-plugin-vuetify": "^2.0.4",
+    "vue3-carousel-nuxt": "^1.1.3"
+  }
+}
