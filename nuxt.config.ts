@@ -26,9 +26,10 @@ export default defineNuxtConfig({
 
 
 
-  plugins: [{
-    src: '~/plugins/vue-carousel-client.js', mode: 'client'
-  }],
+  plugins: [
+    { src: '~/plugins/vue-carousel-client.js', mode: 'client' },
+    { src: '~/plugins/bootstrap.js', mode: 'client' }
+  ],
   css: [
     '~/assets/css/data-style.css',
     '~/assets/css/button-styles.css',
@@ -37,7 +38,7 @@ export default defineNuxtConfig({
     '@fortawesome/fontawesome-free/css/all.css'
   ],
   build: {
-    transpile: ['vuetify']
+    transpile: ['vuetify'],
   },
   modules: ['vue3-carousel-nuxt', '@nuxtjs/sitemap', '@pinia/nuxt'],
   site: {
