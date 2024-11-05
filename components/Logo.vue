@@ -1,7 +1,3 @@
 <template>
-  <img
-    src="/images/longoka_logo_transparent.png"
-    alt="logo du site"
-    style="width: 30%"
-  />
+  <img src="/images/main_logo.webp" alt="logo du site" style="width: 75%" />
 </template>

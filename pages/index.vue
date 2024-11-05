@@ -2,7 +2,8 @@
   <div class="container mt-5">
     <!-- Titre principal -->
     <div class="text-center mb-4">
-      <h2 class="display-4 text-primary">Lexique Kikongo</h2>
+      <!-- <h2 class="display-4 text-primary">Lexique Kikongo</h2>-->
+      <LogoSlogan />
       <p class="lead">
         Recherchez des mots et verbes en Kikongo et découvrez leurs
         significations.
@@ -14,7 +15,7 @@
       <div class="col-lg-8 col-md-10 col-sm-12">
         <div class="card shadow-sm p-4 mb-4">
           <h4 class="card-title text-left text-primary">Recherche</h4>
-          <SearchForm @search="handleSearch" />
+          <SearchingForm @search="handleSearch" />
         </div>
 
         <!-- Résultats de recherche -->
@@ -23,7 +24,7 @@
           <h4 class="card-title text-center text-primary">
             Résultats de la recherche
           </h4>
-          <SearchResults :paginatedWords="paginatedWords" />
+          <SearchingResults :paginatedWords="paginatedWords" />
           <Pagination
             :currentPage="currentPage"
             :totalPages="totalPages"
