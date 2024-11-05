@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     head: {
       title: 'Lexikongo',
       meta: [
-        { name: 'description', content: 'Lexique Kikongo Français Anglais en ligne' },
+        { name: 'description', content: 'Lexique Kikongo - Français - Anglais en ligne' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'keywords', content: 'plomberie, réparations, installations, Cyrille Plomberie' },
         { name: '', content: 'Lexikongo' }
