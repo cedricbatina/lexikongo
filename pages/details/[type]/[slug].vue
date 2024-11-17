@@ -148,6 +148,24 @@
           </div>
         </div>
       </div>
+      <!-- Boutons vers les pages de recherche -->
+      <div class="text-center mb-5 mt-5">
+        <nuxt-link to="/edit/[type]/${id}" class="btn btn-outline-warning m-2">
+          Modifier
+        </nuxt-link>
+        <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
+          Rechercher des mots
+        </nuxt-link>
+        <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
+          Rechercher des verbes
+        </nuxt-link>
+        <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
+          Liste des verbes
+        </nuxt-link>
+        <nuxt-link to="/expressions" class="btn btn-outline-secondary m-2">
+          Liste de mots & verbes
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>

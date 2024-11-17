@@ -19,7 +19,6 @@
         </div>
 
         <!-- Résultats de recherche -->
-        <!-- Résultats de recherche -->
         <div v-if="paginatedWords.length" class="card shadow-sm p-4 mb-4">
           <h4 class="card-title text-center text-primary">
             Résultats de la recherche
@@ -41,28 +40,41 @@
         </div>
       </div>
     </div>
+
     <AdminButtons />
-    <!-- Section du tableau des expressions -->
-    <div class="row justify-content-center">
-      <div class="col-lg-10 col-md-12 col-sm-12">
-        <div class="card shadow-sm p-4">
-          <h4 class="card-title text-center text-primary">
-            Toutes les expressions
-          </h4>
-          <ExpressionsTable :paginatedAllWordsVerbs="paginatedAllWordsVerbs" />
-          <Pagination
-            :currentPage="currentPageAllWordsVerbs"
-            :totalPages="totalPagesAllWordsVerbs"
-            @pageChange="changePageAllWordsVerbs"
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
+import { useHead } from "#app"; // Importation de useHead pour Nuxt 3
+import LogoSlogan from "@/components/LogoSlogan.vue";
+import SearchingForm from "@/components/SearchingForm.vue";
+import SearchingResults from "@/components/SearchingResults.vue";
+import Pagination from "@/components/Pagination.vue";
+import AdminButtons from "@/components/AdminButtons.vue";
+
+// Configuration des meta tags SEO
+useHead({
+  title: "Lexikongo - Lexique Kikongo en ligne",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Recherchez des mots et verbes en Kikongo et découvrez leurs significations.",
+    },
+    {
+      name: "keywords",
+      content:
+        "Kikongo, dictionnaire, lexique, recherche, mots, verbes, lexikongo, langue, Congo",
+    },
+    {
+      name: "author",
+      content: "Lexikongo",
+    },
+    // Vous pouvez ajouter d'autres meta tags si nécessaire
+  ],
+});
 
 const query = ref("");
 const language = ref("kikongo");
@@ -76,6 +88,7 @@ const handleSearch = async ({
 }) => {
   query.value = searchQuery;
   language.value = selectedLanguage;
+  currentPage.value = 1; // Réinitialiser la page actuelle lors d'une nouvelle recherche
   await fetchWords();
 };
 
@@ -88,7 +101,9 @@ const fetchWords = async () => {
   try {
     // Effectuer une recherche à la fois sur les mots et les verbes
     const response = await fetch(
-      `/api/all-words-verbs?query=${query.value}&language=${language.value}&type=all`
+      `/api/all-words-verbs?query=${encodeURIComponent(query.value)}&language=${
+        language.value
+      }&type=all`
     );
 
     if (!response.ok) {
@@ -118,72 +133,26 @@ const totalPages = computed(() => Math.ceil(items.value.length / pageSize));
 const changePage = (page) => {
   currentPage.value = page;
 };
-
-// Partie pour la 2e colonne (mots et verbes de la DB)
-const allWordsVerbs = ref([]);
-const currentPageAllWordsVerbs = ref(1);
-const pageSizeAllWordsVerbs = 30;
-
-const fetchAllWordsVerbs = async () => {
-  try {
-    // Assure-toi que le paramètre `type` est bien passé
-    const response = await fetch(
-      `/api/all-words-verbs?type=word&query=${query.value}&language=kikongo`
-    );
-
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    console.log("Données reçues côté client :", result);
-
-    if (!Array.isArray(result) || result.length === 0) {
-      allWordsVerbs.value = [];
-      return;
-    }
-
-    allWordsVerbs.value = result;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des mots et verbes :", error);
-    allWordsVerbs.value = [];
-  }
-};
-
-const paginatedAllWordsVerbs = computed(() => {
-  const start = (currentPageAllWordsVerbs.value - 1) * pageSizeAllWordsVerbs;
-  return allWordsVerbs.value.slice(start, start + pageSizeAllWordsVerbs);
-});
-
-const totalPagesAllWordsVerbs = computed(() =>
-  Math.ceil(allWordsVerbs.value.length / pageSizeAllWordsVerbs)
-);
-
-const changePageAllWordsVerbs = (page) => {
-  currentPageAllWordsVerbs.value = page;
-};
-
-onMounted(async () => {
-  await fetchAllWordsVerbs();
-});
 </script>
 
 <style scoped>
+/* Variables CSS pour les couleurs */
+:root {
+  --primary-color: #007bff;
+  --hover-primary: #0056b3;
+  --secondary-color: #a52a2a;
+  --dark-color: #2a0600;
+  --highlight-color: #28a745;
+  --text-default: #03080d;
+  --third-color: #ff4500;
+}
+
 /* Harmonisation des couleurs avec admin/index.vue */
 .card-title {
   font-size: 1.25rem;
-  color: #007bff; /* Couleur bleue similaire à text-primary */
-}
-
-/* Effet d'hover pour les boutons */
-.btn-primary {
-  background-color: #007bff;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
+  color: var(
+    --primary-color
+  ); /* Utilisation de la variable CSS pour la couleur */
 }
 
 /* Alertes et messages */

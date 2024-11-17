@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Lexique Kikongo - Français - Anglais en ligne' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'keywords', content: 'plomberie, réparations, installations, Cyrille Plomberie' },
+        { name: 'keywords', content: 'Vocabulaire, Kikongo, Français, Anglais, Langues, Afrique, Culturelle, Bantou, Congo, Kongo, Dictionnaire' },
         { name: '', content: 'Lexikongo' }
       ],
       link: [
@@ -32,6 +32,7 @@ export default defineNuxtConfig({
   ],
   css: [
     '~/assets/css/data-style.css',
+    '~/assets/css/main.css',
     '~/assets/css/button-styles.css',
     '~/assets/css/footer-style.css',
     'bootstrap/dist/css/bootstrap.css',

@@ -1,0 +1,51 @@
+:root {
+  --primary-color: #007bff;
+  --hover-primary: #0056b3;
+  --secondary-color: #a52a2a;
+  --dark-color: #2a0600;
+  --highlight-color: #28a745;
+  --text-default: #03080d;
+  --third-color: #ff4500;
+}
+
+/* Titres */
+.card-title {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+}
+
+/* Boutons */
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--hover-primary);
+}
+
+/* Effet d'hover pour les liens */
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--hover-primary);
+}
+
+/* Texte pour les traductions */
+.translation_fr,
+.translation_en {
+  color: var(--text-default);
+  margin-left: 5px;
+}
+
+.searched-word {
+  color: var(--primary-color);
+}
+
+.phonetic {
+  font-style: italic;
+  color: var(--highlight-color);
+}

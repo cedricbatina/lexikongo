@@ -5,3 +5,8 @@
     style="width: 20%"
   />
 </template>
+<style scoped>
+img {
+  margin: 3px;
+}
+</style>

@@ -29,8 +29,7 @@ async function generatePendingSubmissionSlug(connection, base) {
 
 export { generatePendingSubmissionSlug };
 */
-// scripts/generate-pending-slugs.js
-import slugify from "slugify";
+// scripts/generate-pending-slugs.jsimport slugify from "slugify";
 
 export async function generatePendingSubmissionSlug(connection, base) {
   let slug = slugify(base, { lower: true, strict: true });
@@ -38,17 +37,27 @@ export async function generatePendingSubmissionSlug(connection, base) {
   let uniqueSlug = slug;
 
   while (true) {
-    const [wordRows] = await connection.execute(
-      `SELECT COUNT(*) AS count FROM pending_words_slugs WHERE slug = ?`,
+    // Vérifier si le slug existe dans plusieurs tables de soumissions en attente
+    const [pendingCoursesRows] = await connection.execute(
+      `SELECT COUNT(*) AS count FROM pending_courses_slugs WHERE slug = ?`,
       [uniqueSlug]
     );
 
-    const [verbRows] = await connection.execute(
-      `SELECT COUNT(*) AS count FROM pending_verbs_slugs WHERE slug = ?`,
+    const [pendingArticlesRows] = await connection.execute(
+      `SELECT COUNT(*) AS count FROM pending_articles_slugs WHERE slug = ?`,
       [uniqueSlug]
     );
 
-    if (wordRows[0].count === 0 && verbRows[0].count === 0) {
+    const [pendingProductsRows] = await connection.execute(
+      `SELECT COUNT(*) AS count FROM pending_products_slugs WHERE slug = ?`,
+      [uniqueSlug]
+    );
+
+    if (
+      pendingCoursesRows[0].count === 0 &&
+      pendingArticlesRows[0].count === 0 &&
+      pendingProductsRows[0].count === 0
+    ) {
       break;
     }
 

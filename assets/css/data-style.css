@@ -1,82 +1,90 @@
+/* Variables CSS pour les couleurs */
+:root {
+  --primary-color: #007bff;
+  --hover-primary: #0056b3;
+  --secondary-color: #a52a2a;
+  --dark-color: #2a0600;
+  --highlight-color: #28a745;
+  --text-default: #03080d;
+  --third-color: #ff4500;
+}
 
+/* Styles pour les éléments spécifiques */
 .phonetic {
   font-style: oblique;
   font-weight: 400;
-  color: rgb(37, 37, 37);
+  color: var(--highlight-color);
 }
-.translation_fr {
-  font-weight: 300;
-  font-size: small;
-  color: rgb(23, 11, 41);
-}
+
+.translation_fr,
 .translation_en {
-  font-weight: 300;
+  font-weight: 400;
   font-size: small;
-  color: #2a0600;
+  color: var(--text-default);
 }
+
 .searchedExpression {
-  color: #a52a2a;
+  color: var(--secondary-color);
   font-weight: 400;
 }
-.list-group-item {
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+
 .notice {
   font-size: xx-small;
 }
-.input-group {
+
+/* Styles pour les groupes d'entrée personnalisés */
+.lexikongo-input-group {
   display: flex;
-  align-items: stretch; /* Assure que l'input et le select sont de même hauteur */
+  align-items: stretch;
 }
 
-.input-group .form-control {
-  flex: 3; /* Input occupe 3 parts */
+.lexikongo-input-group .form-control {
+  flex: 3;
 }
 
-.input-group .form-select {
-  flex: 1; /* Select occupe 1 part */
+.lexikongo-input-group .form-select,
+.lexikongo-input-group .btn-clear {
+  flex: 1;
 }
 
-.input-group .btn-clear {
-  flex: 1; /* Le bouton occupe 1 part */
-}
-
-
-/* Table header style */
-.table th {
+/* Styles pour les tables personnalisées */
+.lexikongo-table th {
   color: #130b04;
   font-weight: 200;
   font-size: small;
 }
 
-
-.list-group-item {
+/* Styles pour les éléments de liste */
+.lexikongo-list-group-item {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.list-group-item:hover {
+.lexikongo-list-group-item:hover {
   background-color: #f0f0f0;
 }
+
 .link-row {
   text-decoration: none;
   color: inherit;
 }
 
-.fas {
-  color: #007bff;
+/* Styles pour les icônes spécifiques */
+.lexikongo-icon {
+  color: var(--primary-color);
 }
 
-
+/* Styles pour la documentation */
 .documentation {
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.documentation h1, .documentation h2, .documentation h3 {
-  color: #007bff;
+.documentation h1,
+.documentation h2,
+.documentation h3 {
+  color: var(--primary-color);
 }
 
 .documentation ul {
@@ -89,7 +97,7 @@
 }
 
 .documentation a {
-  color: #007bff;
+  color: var(--primary-color);
   text-decoration: none;
 }
 

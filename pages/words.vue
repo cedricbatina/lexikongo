@@ -1,147 +1,149 @@
 <template>
   <div class="container mt-5">
-    <div class="row justify-content-center">
-      <!-- Liste des mots -->
-      <div class="col-lg-10 col-md-12 col-sm-12 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h1 class="card-title text-primary mb-4 text-center">
-              <i class="fas fa-list"></i>
-              <!-- Icône de liste -->
-              Liste des Mots
-            </h1>
-            <WordList />
-            <ContributorButtons />
-            <AdminButtons />
-          </div>
-        </div>
-      </div>
+    <!-- Titre principal -->
+    <div class="text-center mb-4">
+      <h1 class="display-4 text-primary">Liste des Mots en Kikongo</h1>
+      <p class="lead">
+        Découvrez la liste complète des mots en Kikongo et leurs significations.
+      </p>
     </div>
+
+    <!-- Boutons vers les pages de recherche -->
+    <div class="text-center mb-5 mt-5">
+      <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
+        Rechercher des mots
+      </nuxt-link>
+      <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
+        Rechercher des verbes
+      </nuxt-link>
+      <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
+        Liste des verbes
+      </nuxt-link>
+      <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
+        Liste de mots & verbes
+      </nuxt-link>
+    </div>
+
+    <!-- Affichage de la liste des mots -->
+    <WordList />
   </div>
 </template>
 
 <script setup>
-import { useHead } from "@vueuse/head";
+import { useHead } from "#app";
+import WordList from "@/components/WordList.vue";
 
-// SEO pour cette page
 useHead({
-  title: "Liste des Mots en Kikongo | Lexique Kikongo",
+  title: "Lexikongo - Liste des Mots en Kikongo",
   meta: [
     {
       name: "description",
       content:
-        "Explorez la liste des mots en Kikongo avec leurs traductions en français et en anglais.",
+        "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
     },
     {
+      name: "keywords",
+      content:
+        "Kikongo, mots, lexique, dictionnaire, langue, Congo, Lexikongo, liste des mots",
+    },
+    {
+      name: "author",
+      content: "Lexikongo",
+    },
+    // Meta tags Open Graph pour les réseaux sociaux
+    {
       property: "og:title",
-      content: "Liste des Mots en Kikongo | Lexique Kikongo",
+      content: "Lexikongo - Liste des Mots en Kikongo",
     },
     {
       property: "og:description",
       content:
-        "Découvrez notre collection de mots en Kikongo avec des traductions précises et des informations phonétiques.",
-    },
-    {
-      property: "og:type",
-      content: "website",
-    },
-    {
-      property: "og:url",
-      content: "https://lexikongo.com/words",
+        "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
     },
     {
       property: "og:image",
-      content: "https://lexikongo.com/images/words.png", // Ajouter une image de prévisualisation
+      content: "/images/lexikongo-cover.jpg", // Remplacez par le chemin réel de votre image
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr/words",
     },
     {
       name: "twitter:card",
       content: "summary_large_image",
-    },
-    {
-      name: "twitter:title",
-      content: "Liste des Mots en Kikongo | Lexique Kikongo",
-    },
-    {
-      name: "twitter:description",
-      content:
-        "Découvrez les mots en Kikongo avec des traductions et des informations phonétiques.",
-    },
-    {
-      name: "twitter:image",
-      content: "https://lexikongo.com/images/words.png", // Image pour Twitter card
     },
   ],
 });
 </script>
 
 <style scoped>
-/* Styles améliorés pour une présentation plus professionnelle */
-.card {
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease-in-out;
-  border: none;
+/* Variables CSS pour les couleurs */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --text-default: #03080d;
 }
 
-.card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+/* Styles pour le titre et le texte principal */
+.display-4 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
 }
 
-.card-title {
-  font-size: 1.75rem;
-  color: #007bff; /* Couleur bleue primaire */
+.lead {
+  font-size: 1.25rem;
+  color: var(--text-default);
 }
 
-.card-body {
-  padding: 2rem;
+/* Styles pour les boutons */
+.btn {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
 }
 
-.container {
-  max-width: 900px; /* Centrage et limitation de la largeur */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
 }
 
-.btn-group .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
 
 .btn-secondary {
-  background-color: #6c757d;
-  border: none;
-  transition: background-color 0.3s ease;
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: #fff;
 }
 
 .btn-secondary:hover {
-  background-color: #5a6268;
+  background-color: #545b62;
+  border-color: #545b62;
 }
 
-.fas {
-  color: #ffffff; /* Couleur blanche pour les icônes des boutons */
-}
-
-/* Styles responsifs pour une meilleure expérience sur mobile */
+/* Responsivité */
 @media (max-width: 768px) {
-  .card-title {
-    font-size: 1.5rem;
+  .display-4 {
+    font-size: 2rem;
   }
-
-  .card-body {
-    padding: 1.5rem;
+  .lead {
+    font-size: 1rem;
   }
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+}
 
-  .btn-group .btn {
-    font-size: 0.875rem; /* Réduction de la taille des boutons sur petits écrans */
+@media (max-width: 576px) {
+  .display-4 {
+    font-size: 1.75rem;
+  }
+  .lead {
+    font-size: 0.875rem;
   }
 }
 </style>

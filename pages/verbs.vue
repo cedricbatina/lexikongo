@@ -1,6 +1,30 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
+      <!-- Titre principal -->
+      <div class="text-center mb-4">
+        <h1 class="display-4 text-primary">Liste des verbes en Kikongo</h1>
+        <p class="lead">
+          Découvrez la liste des verbes en Kikongo, présents dans la base de
+          données, et leurs significations.
+        </p>
+      </div>
+
+      <!-- Boutons vers les pages de recherche -->
+      <div class="text-center mb-5 mt-5">
+        <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
+          Rechercher des mots
+        </nuxt-link>
+        <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
+          Rechercher des verbes
+        </nuxt-link>
+        <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
+          Liste des verbes
+        </nuxt-link>
+        <nuxt-link to="/expressions" class="btn btn-outline-secondary m-2">
+          Liste de mots & verbes
+        </nuxt-link>
+      </div>
       <!-- Liste des verbes -->
       <div class="col-lg-10 col-md-12 col-sm-12 mb-4">
         <div class="card shadow-sm">

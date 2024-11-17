@@ -100,13 +100,13 @@ onMounted(() => {
 <style scoped>
 /* Styles pour la table */
 .table thead th {
-  text-align: center;
+  /*text-align: center;*/
   color: #007bff; /* Couleur bleue pour le texte des en-têtes */
   font-weight: bold;
 }
 
 .table tbody td {
-  text-align: center;
+  /* text-align: center;*/
   vertical-align: middle;
   padding: 12px;
   border-top: 1px solid #dee2e6;
@@ -136,7 +136,8 @@ onMounted(() => {
 
 .translation_fr,
 .translation_en {
-  color: #6c757d; /* Texte gris pour les traductions */
+  font-size: 0.8rem;
+  color: var(--dark-color);
 }
 
 /* Pagination buttons */
