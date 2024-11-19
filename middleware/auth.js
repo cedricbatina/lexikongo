@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   // Vérifier si l'authentification a déjà été vérifiée
   if (!authStore.isLoggedIn) {
     // Si l'utilisateur n'est pas encore authentifié, on vérifie le token
-    authStore.checkAuth();
+    await authStore.checkAuth();
   }
 
   // Si l'utilisateur n'est pas connecté, et que la route requiert une connexion
@@ -15,17 +15,20 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   // Protéger les routes selon le rôle de l'utilisateur
-  const userRole = authStore.userRole;
+  const userRoles = authStore.userRole || []; // Assurez-vous que `userRole` est bien un tableau
 
-  if (to.fullPath.includes("/admin") && userRole !== "admin") {
+  if (to.fullPath.includes("/admin") && !userRoles.includes("admin")) {
     return navigateTo("/login");
   }
 
-  if (to.fullPath.includes("/contributor") && userRole !== "contributor") {
+  if (
+    to.fullPath.includes("/contributor") &&
+    !userRoles.includes("contributor")
+  ) {
     return navigateTo("/login");
   }
 
-  if (to.fullPath.includes("/user") && userRole !== "user") {
+  if (to.fullPath.includes("/user") && !userRoles.includes("user")) {
     return navigateTo("/login");
   }
 });

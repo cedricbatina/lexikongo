@@ -38,10 +38,13 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary">Inscription</button>
+        <button type="submit" class="btn btn-primary" :disabled="isLoading">
+          {{ isLoading ? "Inscription..." : "Inscription" }}
+        </button>
       </div>
 
       <div v-if="error" class="error">{{ error }}</div>
+      <div v-if="success" class="success">{{ success }}</div>
 
       <div class="form-links">
         <nuxt-link to="/login">Déjà un compte ? Connexion</nuxt-link>
@@ -57,28 +60,43 @@ import { useRouter } from "vue-router";
 const username = ref("");
 const email = ref("");
 const password = ref("");
-const showPassword = ref(false); // Pour afficher/cacher le mot de passe
+const showPassword = ref(false);
 const error = ref("");
+const success = ref("");
+const isLoading = ref(false);
 const router = useRouter();
 
 const register = async () => {
-  const response = await fetch("/api/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: username.value,
-      email: email.value,
-      password: password.value,
-    }),
-  });
+  error.value = "";
+  success.value = "";
+  isLoading.value = true;
 
-  const result = await response.json();
+  try {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username.value,
+        email: email.value,
+        password: password.value,
+      }),
+    });
 
-  if (result.message) {
-    error.value = result.message;
-    router.push("/login"); // Redirection vers la page de connexion après inscription réussie
-  } else {
-    error.value = result.error;
+    if (!response.ok) {
+      const result = await response.json(); // Lire le message d'erreur
+      throw new Error(result.statusMessage || `Erreur HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (result.success) {
+      success.value = "Inscription réussie ! Veuillez vérifier votre email.";
+      setTimeout(() => router.push("/login"), 2000);
+    }
+  } catch (err) {
+    console.error("Erreur lors de l'inscription :", err);
+    error.value = err.message || "Une erreur est survenue.";
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -86,6 +104,8 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
 </script>
+
+
 
 <style scoped>
 .register-container {

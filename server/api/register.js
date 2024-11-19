@@ -37,6 +37,7 @@ export default defineEventHandler(async (event) => {
     return { error: "Erreur lors de l'inscription." };
   }
 });*/
+/*
 import { eventHandler, readBody, sendError } from "h3";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
@@ -94,6 +95,80 @@ export default eventHandler(async (event) => {
     };
   } catch (error) {
     console.error("Erreur lors de l'inscription :", error);
+    return sendError(event, {
+      statusCode: 500,
+      statusMessage: "Erreur lors de l'inscription.",
+      message: error.message,
+    });
+  }
+});
+*/
+import { eventHandler, readBody, sendError } from "h3";
+import bcrypt from "bcrypt";
+import { getConnection } from "./db.config";
+import { generateVerificationToken } from "./utils/token.js";
+import { sendEmail } from "./utils/mailer.js";
+
+export default eventHandler(async (event) => {
+  try {
+    const body = await readBody(event);
+    const { username, email, password } = body;
+
+    const connection = await getConnection();
+
+    // Vérifier si l'email ou le username existe déjà
+    const [existingUser] = await connection.execute(
+      `SELECT username, email FROM users WHERE username = ? OR email = ?`,
+      [username, email]
+    );
+    if (existingUser.length > 0) {
+      await connection.end();
+      const duplicateField =
+        existingUser[0].email === email ? "email" : "username";
+      return sendError(event, {
+        statusCode: 400,
+        statusMessage: `Cet ${duplicateField} est déjà utilisé.`,
+      });
+    }
+
+    // Générer un token et hacher le mot de passe
+    const verificationToken = generateVerificationToken();
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // Expire dans 24 heures
+
+    // Insérer l'utilisateur dans la base de données
+    await connection.execute(
+      `INSERT INTO users (username, email, password, verification_token, token_expiry, email_verified) VALUES (?, ?, ?, ?, ?, ?)`,
+      [username, email, hashedPassword, verificationToken, tokenExpiry, 0]
+    );
+    await connection.end();
+
+    // URL de confirmation
+    const confirmationUrl = `${process.env.APP_URL}/verify-email?token=${verificationToken}`;
+
+    // Envoyer l'email de confirmation
+    await sendEmail({
+      to: email,
+      subject: "Confirmez votre inscription",
+      html: `
+        <p>Bonjour ${username},</p>
+        <p>Veuillez confirmer votre inscription en cliquant sur le lien ci-dessous :</p>
+        <a href="${confirmationUrl}" target="_blank">Confirmer mon inscription</a>
+      `,
+    });
+
+    return {
+      success: true,
+      message: "Email de confirmation envoyé avec succès !",
+    };
+  } catch (error) {
+    console.error("Erreur lors de l'inscription :", error);
+    if (!process.env.APP_URL) {
+      throw new Error(
+        "APP_URL n'est pas défini dans les variables d'environnement."
+      );
+    }
+
     return sendError(event, {
       statusCode: 500,
       statusMessage: "Erreur lors de l'inscription.",

@@ -17,7 +17,6 @@ async function hashPasswords() {
     );
   }
 
-  console.log("Les mots de passe ont été mis à jour.");
   await connection.end();
 }
 

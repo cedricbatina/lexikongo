@@ -47,8 +47,6 @@ import { getQuery } from "h3"; // Pour récupérer les paramètres de la requêt
 export default defineEventHandler(async (event) => {
   const { query } = getQuery(event);
 
-  console.log("Received query for verbs:", query);
-
   if (!query || query.trim() === "") {
     return [];
   }
@@ -69,13 +67,9 @@ export default defineEventHandler(async (event) => {
   const searchParam = `%${query}%`;
   const params = [searchParam, searchParam, searchParam, searchParam];
 
-  console.log("SQL Query for verbs:", sqlQuery);
-  console.log("Params for verbs:", params);
-
   try {
     const connection = await getConnection();
     const [results] = await connection.execute(sqlQuery, params);
-    console.log("Results from DB for verbs:", results);
     await connection.end();
     return results;
   } catch (error) {

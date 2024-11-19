@@ -28,7 +28,9 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary">Connexion</button>
+        <button type="submit" class="btn btn-primary" :disabled="isLoading">
+          {{ isLoading ? "Connexion..." : "Connexion" }}
+        </button>
       </div>
 
       <div v-if="error" class="error">{{ error }}</div>
@@ -48,36 +50,53 @@ import { useAuthStore } from "~/stores/authStore";
 
 const email = ref("");
 const password = ref("");
-const showPassword = ref(false); // Pour basculer entre voir/cacher le mot de passe
+const showPassword = ref(false);
+const isLoading = ref(false);
 const error = ref("");
 const router = useRouter();
 const authStore = useAuthStore();
 
 const login = async () => {
+  error.value = ""; // Réinitialiser les erreurs
+  isLoading.value = true;
+
   try {
+    // Effectuer la requête de connexion
     const response = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include", // Important pour transmettre les cookies
       body: JSON.stringify({ email: email.value, password: password.value }),
     });
 
+    // Vérifiez si la réponse est OK
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    // Extraire le résultat JSON
     const result = await response.json();
 
     if (result.token) {
       authStore.login(result.token);
-      if (authStore.userRole === "admin") {
+
+      // Redirection basée sur les rôles
+      if (authStore.userRole.includes("admin")) {
         router.push("/admin");
-      } else if (authStore.userRole === "contributor") {
+      } else if (authStore.userRole.includes("contributor")) {
         router.push("/contributor");
       } else {
         router.push("/user");
       }
     } else {
-      error.value = result.error;
+      error.value = result.error || "Erreur inconnue.";
     }
   } catch (err) {
     console.error("Erreur lors de la tentative de connexion :", err);
-    error.value = "Une erreur est survenue lors de la connexion.";
+    error.value =
+      err.message || "Une erreur est survenue lors de la connexion.";
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -85,6 +104,7 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
 </script>
+
 
 <style scoped>
 .login-container {

@@ -23,6 +23,8 @@
         Liste de mots & verbes
       </nuxt-link>
     </div>
+    <ContributorButtons />
+    <AdminButtons />
 
     <!-- Affichage de la liste des mots -->
     <WordList />

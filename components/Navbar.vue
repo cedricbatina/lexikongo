@@ -1,5 +1,9 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="Barre de navigation principale">
+  <nav
+    class="navbar"
+    role="navigation"
+    aria-label="Barre de navigation principale"
+  >
     <div class="container">
       <!-- Logo aligné à gauche -->
       <div class="navbar-brand">
@@ -48,17 +52,20 @@
           </li>
 
           <!-- Liens conditionnels selon le rôle de l'utilisateur -->
-          <li v-if="isLoggedIn && userRole === 'user'" class="nav-item">
+          <li v-if="authStore.userRole.includes('user')" class="nav-item">
             <nuxt-link class="nav-link" to="/user/profile">
               <i class="fas fa-user-check"></i> Tableau de Bord
             </nuxt-link>
           </li>
-          <li v-if="isLoggedIn && userRole === 'contributor'" class="nav-item">
+          <li
+            v-if="authStore.userRole.includes('contributor')"
+            class="nav-item"
+          >
             <nuxt-link class="nav-link" to="/contributor/dashboard">
               <i class="fas fa-tasks me-1"></i> Espace Contributeur
             </nuxt-link>
           </li>
-          <li v-if="isLoggedIn && userRole === 'admin'" class="nav-item">
+          <li v-if="authStore.userRole.includes('admin')" class="nav-item">
             <nuxt-link class="nav-link" to="/admin">
               <i class="fas fa-tools me-1"></i> Espace Admin
             </nuxt-link>
@@ -94,10 +101,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useAuthStore } from '@/stores/authStore';
-import { useRouter } from 'vue-router';
-import Logo from '@/components/Logo.vue'; // Assurez-vous que le composant Logo est correctement importé
+import { ref, computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "vue-router";
+import Logo from "@/components/Logo.vue"; // Assurez-vous que le composant Logo est correctement importé
 
 const authStore = useAuthStore();
 const isMenuOpen = ref(false);
@@ -106,7 +113,7 @@ const router = useRouter();
 // Définir les variables réactives pour l'état de connexion, le rôle et le nom d'utilisateur
 const isLoggedIn = computed(() => authStore.isLoggedIn);
 const userRole = computed(() => authStore.userRole);
-const username = computed(() => authStore.user?.username || 'Utilisateur');
+const username = computed(() => authStore.user?.username || "Utilisateur");
 
 // Vérifier l'état d'authentification au montage
 onMounted(() => {
@@ -123,7 +130,7 @@ const logout = () => {
   authStore.logout();
 
   // Rediriger vers la page d'accueil après déconnexion
-  router.push('/');
+  router.push("/");
 };
 </script>
 
@@ -177,7 +184,7 @@ const logout = () => {
 
 .navbar-toggler-icon::before,
 .navbar-toggler-icon::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 24px;
   height: 2px;

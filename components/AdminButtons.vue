@@ -1,5 +1,5 @@
 <template>
-  <div v-if="authStore.userRole === 'admin'" class="button-container">
+  <div v-if="authStore.userRole.includes('admin')" class="button-container">
     <!-- Ajouter un verbe -->
     <button @click="addVerb" class="action-btn verb-btn">
       <i class="fas fa-pencil-alt"></i> Ajouter un verbe
