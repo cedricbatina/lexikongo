@@ -149,6 +149,11 @@
         </div>
       </div>
       <!-- Boutons vers les pages de recherche -->
+      <div v-if="authStore.userRole.includes('admin')" class="nav-item">
+        <nuxt-link to="/edit/[type]/${id}" class="btn btn-outline-warning m-2">
+          Modifier
+        </nuxt-link>
+      </div>
       <div class="text-center mb-5 mt-5">
         <nuxt-link to="/edit/[type]/${id}" class="btn btn-outline-warning m-2">
           Modifier
@@ -174,6 +179,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@vueuse/head"; // Pour gérer les balises meta dynamiquement
+// Définir les variables réactives pour l'état de connexion, le rôle et le nom d'utilisateur
 
 const route = useRoute();
 const router = useRouter();
