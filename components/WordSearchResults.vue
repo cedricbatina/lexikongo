@@ -55,7 +55,7 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import WordList from "@/components/WordList.vue";
+
 import Pagination from "@/components/Pagination.vue";
 
 const props = defineProps({

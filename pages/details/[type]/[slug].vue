@@ -6,7 +6,6 @@
           <div class="card-body p-4">
             <h2 class="card-title text-left mb-4 text-primary">
               <i class="fas fa-info-circle me-2"></i>
-
               {{ type === "word" ? "Détails du Mot" : "Détails du Verbe" }}
             </h2>
 
@@ -148,16 +147,20 @@
           </div>
         </div>
       </div>
-      <!-- Boutons vers les pages de recherche -->
-      <div v-if="authStore.userRole.includes('admin')" class="nav-item">
-        <nuxt-link to="/edit/[type]/${id}" class="btn btn-outline-warning m-2">
+      <!-- Bouton Modifier pour les administrateurs uniquement -->
+      <div
+        v-if="authStore.userRole.includes('admin')"
+        class="text-center mb-5 mt-5"
+      >
+        <nuxt-link
+          :to="`/edit/${type}/${route.params.slug}`"
+          class="btn btn-outline-warning m-2"
+        >
           Modifier
         </nuxt-link>
       </div>
+      <!-- Boutons vers les pages de recherche -->
       <div class="text-center mb-5 mt-5">
-        <nuxt-link to="/edit/[type]/${id}" class="btn btn-outline-warning m-2">
-          Modifier
-        </nuxt-link>
         <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
           Rechercher des mots
         </nuxt-link>
@@ -180,12 +183,13 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@vueuse/head"; // Pour gérer les balises meta dynamiquement
 // Définir les variables réactives pour l'état de connexion, le rôle et le nom d'utilisateur
+import { useAuthStore } from "~/stores/authStore"; // Importer le store d'authentification
 
 const route = useRoute();
 const router = useRouter();
 const details = ref({});
 const type = ref(route.params.type);
-
+const authStore = useAuthStore(); // Initialisation du store
 // Fonction pour récupérer les détails avec le slug
 const fetchDetails = async () => {
   try {

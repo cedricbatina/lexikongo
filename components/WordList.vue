@@ -195,10 +195,10 @@ onMounted(() => {
     content: "Phon.";
   }
   .table tbody tr td:nth-child(4)::before {
-    content: "FR";
+    content: "Fr";
   }
   .table tbody tr td:nth-child(5)::before {
-    content: "EN";
+    content: "En";
   }
 }
 </style>

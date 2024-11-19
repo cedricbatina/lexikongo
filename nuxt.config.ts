@@ -32,6 +32,7 @@ export default defineNuxtConfig({
   ],
   css: [
     '~/assets/css/data-style.css',
+    '~/assets/css/global.css',
     '~/assets/css/main.css',
     '~/assets/css/button-styles.css',
     '~/assets/css/footer-style.css',

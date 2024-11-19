@@ -25,7 +25,11 @@ export default defineEventHandler(async (event) => {
            WHERE wm.word_id = w.word_id AND wm.language_code = 'fr') AS translation_fr,
           (SELECT GROUP_CONCAT(wm.meaning SEPARATOR ', ') 
            FROM word_meanings wm 
-           WHERE wm.word_id = w.word_id AND wm.language_code = 'en') AS translation_en
+           WHERE wm.word_id = w.word_id AND wm.language_code = 'en') AS translation_en,
+          (SELECT GROUP_CONCAT(r.role_name SEPARATOR ', ')
+           FROM roles r
+           JOIN user_roles ur ON r.role_id = ur.role_id
+           WHERE ur.user_id = u.user_id) AS roles -- Récupération des rôles de l'auteur
         FROM words w
         JOIN slugs s ON w.word_id = s.word_id -- Jointure avec la table slugs
         LEFT JOIN users u ON w.user_id = u.user_id  
@@ -50,7 +54,11 @@ export default defineEventHandler(async (event) => {
            WHERE vm.verb_id = v.verb_id AND vm.language_code = 'fr') AS translation_fr,
           (SELECT GROUP_CONCAT(vm.meaning SEPARATOR ', ') 
            FROM verb_meanings vm 
-           WHERE vm.verb_id = v.verb_id AND vm.language_code = 'en') AS translation_en
+           WHERE vm.verb_id = v.verb_id AND vm.language_code = 'en') AS translation_en,
+          (SELECT GROUP_CONCAT(r.role_name SEPARATOR ', ')
+           FROM roles r
+           JOIN user_roles ur ON r.role_id = ur.role_id
+           WHERE ur.user_id = u.user_id) AS roles -- Récupération des rôles de l'auteur
         FROM verbs v
         JOIN slugs s ON v.verb_id = s.verb_id -- Jointure avec la table slugs
         LEFT JOIN users u ON v.user_id = u.user_id  

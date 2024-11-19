@@ -1,68 +1,49 @@
 <template>
   <div>
-    <!-- Si des mots sont trouvés -->
+    <!-- Si des mots ou verbes sont trouvés -->
     <div v-if="paginatedWords.length">
-      <ul class="list-group mt-4">
-        <li
-          v-for="item in paginatedWords"
-          :key="item.slug"
-          class="list-group-item"
-        >
-          <button
-            type="button"
-            class="list-group-button"
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="text-primary">Type</th>
+            <th class="text-primary">Singulier</th>
+            <th class="text-primary">Pluriel</th>
+            <th class="text-primary">Phonétique</th>
+            <th class="text-primary">Français</th>
+            <th class="text-primary">Anglais</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in paginatedWords"
+            :key="item.slug"
             @click="goToDetails(item.type, item.slug)"
+            @keydown.enter="goToDetails(item.type, item.slug)"
+            @keydown.space.prevent="goToDetails(item.type, item.slug)"
+            tabindex="0"
+            role="button"
             :aria-label="`Voir les détails de ${itemLabel(item)}`"
+            class="link-row"
           >
-            <div>
-              <span v-if="item.type === 'word'">
-                <small class="notice fw-bold">Sing. - Plur. :</small>
-                <span class="searchedExpression">
-                  {{ item.singular }} - {{ item.plural }}
-                </span>
-              </span>
-
-              <span v-else-if="item.type === 'verb'">
-                <small class="notice fw-bold">Verbe :</small>
-                <span class="searchedExpression">ku {{ item.singular }}</span>
-              </span>
-            </div>
-            <div v-if="item.phonetic">
-              <small class="notice fw-bold">Phon. :</small>
-
-              <span class="phonetic">
-                {{ item.phonetic }}
-              </span>
-            </div>
-            <div class="translations">
-              <div v-if="item.translation_fr">
-                <small class="notice text-primary">FR :</small>
-                <span class="translation_fr">
-                  {{ truncateText(item.translation_fr, 30) }}
-                </span>
-              </div>
-              <div v-if="item.translation_en">
-                <small class="notice text-primary">EN :</small>
-                <span class="translation_en">
-                  {{ truncateText(item.translation_en, 30) }}
-                </span>
-              </div>
-            </div>
-          </button>
-        </li>
-      </ul>
+            <td>{{ item.type === "word" ? "Mot" : "Verbe" }}</td>
+            <td class="searchedExpression">{{ item.singular }}</td>
+            <td class="searchedExpression">{{ item.plural || "-" }}</td>
+            <td class="phonetic">{{ item.phonetic || "-" }}</td>
+            <td class="translation_fr">{{ item.translation_fr || "-" }}</td>
+            <td class="translation_en">{{ item.translation_en || "-" }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Si aucun mot n'est trouvé -->
+    <!-- Si aucun mot ou verbe n'est trouvé -->
     <div v-else class="mt-4">
-      <div class="alert alert-info" role="alert">Aucun mot trouvé.</div>
+      <div class="alert alert-info" role="alert">Aucun résultat trouvé.</div>
     </div>
   </div>
 </template>
 
 <script setup>
-//import { defineProps } from "vue";
-
 const props = defineProps({
   paginatedWords: {
     type: Array,
@@ -78,11 +59,6 @@ const goToDetails = (type, slug) => {
   window.location.href = `/details/${type}/${slug}`;
 };
 
-const truncateText = (text, limit) => {
-  if (!text) return "";
-  return text.length > limit ? text.slice(0, limit) + "..." : text;
-};
-
 // Fonction pour générer un libellé pour l'accessibilité
 const itemLabel = (item) => {
   if (item.type === "word") {
@@ -93,6 +69,9 @@ const itemLabel = (item) => {
   return "";
 };
 </script>
+
+
+
 
 <style scoped>
 /* Variables CSS */
@@ -106,8 +85,7 @@ const itemLabel = (item) => {
   --third-color: #ff4500;
 }
 
-/* Styles généraux */
-.list-group-item {
+/*.list-group-item {
   border: none;
   padding: 0;
   background-color: transparent;
@@ -139,9 +117,9 @@ const itemLabel = (item) => {
   font-size: 0.9rem;
   color: var(--text-default);
 }
-
+*/
 .notice {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   margin-right: 0.25rem;
 }
 
@@ -157,10 +135,6 @@ const itemLabel = (item) => {
 @media (max-width: 576px) {
   .list-group-button {
     padding: 0.75rem;
-  }
-
-  .notice {
-    font-size: 0.8rem;
   }
 
   .translation_fr,
