@@ -107,7 +107,7 @@ import { eventHandler, readBody, sendError } from "h3";
 import bcrypt from "bcrypt";
 import { getConnection } from "./db.config";
 import { generateVerificationToken } from "./utils/token.js";
-import { sendEmail } from "./utils/mailer.js";
+import { sendEmail } from "../utils/token";
 
 export default eventHandler(async (event) => {
   try {
