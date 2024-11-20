@@ -1,22 +1,21 @@
 <template>
   <div v-if="authStore.userRole.includes('admin')" class="button-container">
-    <!-- Ajouter un verbe -->
-    <button @click="addVerb" class="action-btn verb-btn">
-      <i class="fas fa-pencil-alt"></i> Ajouter un verbe
-    </button>
-
     <!-- Ajouter un mot -->
-    <button @click="addWord" class="action-btn word-btn">
-      <i class="fas fa-book"></i> Ajouter un mot
+    <button @click="addWord" class="btn btn-outline-primary action-btn">
+      <i class="fas fa-spell-check me-1"></i> Ajouter un mot
+    </button>
+    <!-- Ajouter un verbe -->
+    <button @click="addVerb" class="btn btn-outline-success action-btn">
+      <i class="fa-solid fa-arrow-down-a-z"></i> Ajouter un verbe
     </button>
 
     <!-- Ajouter un utilisateur -->
-    <button @click="addUser" class="action-btn user-btn">
+    <button @click="addUser" class="btn btn-outline-success action-btn">
       <i class="fas fa-user-plus"></i> Ajouter un utilisateur
     </button>
 
     <!-- Retour à l'accueil -->
-    <button @click="goHome" class="action-btn home-btn">
+    <button @click="goHome" class="btn btn-outline-secondary action-btn">
       <i class="fas fa-home"></i> Retour à l'accueil
     </button>
   </div>
@@ -45,6 +44,7 @@ const goHome = () => {
   router.push("/");
 };
 </script>
+
 
 <style scoped>
 .button-container {

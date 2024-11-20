@@ -1,32 +1,5 @@
 /* Variables CSS pour les couleurs */
-:root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
-  --secondary-color: #a52a2a;
-  --dark-color: #2a0600;
-  --highlight-color: #28a745;
-  --text-default: #03080d;
-  --third-color: #ff4500;
-}
 
-/* Styles pour les éléments spécifiques */
-.phonetic {
-  font-style: oblique;
-  font-weight: 400;
-  color: var(--highlight-color);
-}
-
-.translation_fr,
-.translation_en {
-  font-weight: 400;
-  font-size: small;
-  color: var(--text-default);
-}
-
-.searchedExpression {
-  color: var(--secondary-color);
-  font-weight: 400;
-}
 
 .notice {
   font-size: xx-small;

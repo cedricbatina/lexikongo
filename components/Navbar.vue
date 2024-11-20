@@ -50,6 +50,11 @@
               <i class="fas fa-book"></i> Les Expressions
             </nuxt-link>
           </li>
+          <li class="nav-item">
+            <nuxt-link class="nav-link" to="/contribution">
+              <i class="fas fa-pencil"></i> Contribution
+            </nuxt-link>
+          </li>
 
           <!-- Liens conditionnels selon le rôle de l'utilisateur -->
           <li v-if="authStore.userRole.includes('user')" class="nav-item">

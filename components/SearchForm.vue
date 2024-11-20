@@ -1,20 +1,25 @@
 <template>
-  <form @submit.prevent="submitSearch">
+  <form
+    @submit.prevent="submitSearch"
+    role="search"
+    aria-label="Formulaire de recherche"
+  >
     <div class="input-group">
-      <span class="input-group-text">
+      <span class="input-group-text" aria-hidden="true">
         <i class="fas fa-search"></i>
       </span>
       <input
         type="text"
         v-model="searchQuery"
         class="form-control"
-        placeholder="Rechercher en ..."
+        :placeholder="`Rechercher en ${getLanguageName(selectedLanguage)}`"
+        aria-label="Rechercher un terme"
         @input="submitSearch"
       />
       <select
         v-model="selectedLanguage"
         class="form-select"
-        style="font-weight: 500"
+        aria-label="Sélectionnez une langue"
         @change="submitSearch"
       >
         <option value="kikongo">Kikongo</option>
@@ -23,7 +28,8 @@
       </select>
       <button
         type="button"
-        class="btn btn-secondary btn-effacer"
+        class="btn btn-clear"
+        aria-label="Effacer le formulaire"
         @click="clearForm"
       >
         <i class="fas fa-times"></i>
@@ -40,7 +46,7 @@ const searchQuery = ref("");
 const selectedLanguage = ref("kikongo");
 const emit = defineEmits(["search"]);
 
-// Émettre l'événement dès qu'une lettre est tapée ou que la langue change
+// Soumettre la recherche
 const submitSearch = () => {
   emit("search", {
     query: searchQuery.value,
@@ -48,33 +54,44 @@ const submitSearch = () => {
   });
 };
 
+// Réinitialiser le formulaire
 const clearForm = () => {
   searchQuery.value = "";
   selectedLanguage.value = "kikongo";
   submitSearch();
 };
+
+// Retourner le nom de la langue pour le placeholder
+const getLanguageName = (language) => {
+  switch (language) {
+    case "kikongo":
+      return "Kikongo";
+    case "fr":
+      return "Français";
+    case "en":
+      return "Anglais";
+    default:
+      return "Langue";
+  }
+};
 </script>
 
-
 <style scoped>
-.btn-effacer {
-  background-color: #ff8a1d;
-  color: white;
+/* Bouton Effacer */
+.btn-clear {
+  background-color: var(--third-color);
+  color: #fff;
   border: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn-effacer:hover {
-  background-color: #e57a1a;
+.btn-clear:hover {
+  background-color: #d65a1d;
   transform: scale(1.05);
   cursor: pointer;
 }
 
-.option {
-  font-weight: 500;
-}
-
-/* Styles pour l'icône de loupe */
+/* Icône de loupe */
 .input-group-text {
   background-color: #fff;
   border-right: 0;
@@ -84,14 +101,14 @@ const clearForm = () => {
   border-left: 0;
 }
 
-/* Styles responsifs */
+/* Responsive design */
 @media (max-width: 768px) {
   .input-group {
     flex-direction: column;
   }
   .input-group .form-control,
   .input-group .form-select,
-  .input-group .btn-effacer {
+  .input-group .btn-clear {
     width: 100%;
     margin-bottom: 10px;
   }

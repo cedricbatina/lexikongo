@@ -1,16 +1,20 @@
 <template>
   <div>
     <!-- Si des mots ou verbes sont trouvés -->
-    <div v-if="paginatedWords.length">
-      <table class="table table-hover">
+    <div v-if="paginatedWords.length" class="table-responsive">
+      <table
+        class="table table-hover"
+        role="table"
+        aria-label="Résultats de recherche"
+      >
         <thead>
           <tr>
-            <th class="text-primary">Type</th>
-            <th class="text-primary">Singulier</th>
-            <th class="text-primary">Pluriel</th>
-            <th class="text-primary">Phonétique</th>
-            <th class="text-primary">Français</th>
-            <th class="text-primary">Anglais</th>
+            <th>Type</th>
+            <th>Sing.</th>
+            <th>Plur.</th>
+            <th>Phon.</th>
+            <th>Fr.</th>
+            <th>En.</th>
           </tr>
         </thead>
         <tbody>
@@ -25,20 +29,40 @@
             :aria-label="`Voir les détails de ${itemLabel(item)}`"
             class="link-row"
           >
-            <td>{{ item.type === "word" ? "Mot" : "Verbe" }}</td>
-            <td class="searchedExpression">{{ item.singular }}</td>
-            <td class="searchedExpression">{{ item.plural || "-" }}</td>
-            <td class="phonetic">{{ item.phonetic || "-" }}</td>
-            <td class="translation_fr">{{ item.translation_fr || "-" }}</td>
-            <td class="translation_en">{{ item.translation_en || "-" }}</td>
+            <td>
+              <span class="searched-text">{{
+                item.type === "word" ? "Mot" : "Verbe"
+              }}</span>
+            </td>
+            <td>
+              <span class="searchedExpression">{{ item.singular }}</span>
+            </td>
+            <td>
+              <span class="searchedExpression">{{ item.plural || "-" }}</span>
+            </td>
+            <td>
+              <span class="phonetic-text">{{ item.phonetic || "-" }}</span>
+            </td>
+            <td>
+              <span class="translation-text">{{
+                item.translation_fr || "-"
+              }}</span>
+            </td>
+            <td>
+              <span class="translation-text">{{
+                item.translation_en || "-"
+              }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Si aucun mot ou verbe n'est trouvé -->
-    <div v-else class="mt-4">
-      <div class="alert alert-info" role="alert">Aucun résultat trouvé.</div>
+    <div v-else class="mt-4 text-center">
+      <div class="alert alert-info" role="alert">
+        Aucun résultat trouvé. Essayez une autre recherche.
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +75,7 @@ const props = defineProps({
   },
 });
 
+// Fonction pour rediriger vers les détails
 const goToDetails = (type, slug) => {
   if (!slug) {
     console.error("Slug est indéfini pour cet élément:", type);
@@ -70,76 +95,8 @@ const itemLabel = (item) => {
 };
 </script>
 
-
-
-
 <style scoped>
-/* Variables CSS */
-:root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
-  --secondary-color: #a52a2a;
-  --dark-color: #2a0600;
-  --highlight-color: #28a745;
-  --text-default: #03080d;
-  --third-color: #ff4500;
-}
+/* Aucun style redondant ici, tout repose sur le `global.css` */
 
-/*.list-group-item {
-  border: none;
-  padding: 0;
-  background-color: transparent;
-}
-
-.list-group-button {
-  width: 100%;
-  text-align: left;
-  border: 1px solid #e0e0e0;
-  padding: 1rem;
-  background-color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block;
-}
-
-.list-group-button:hover {
-  background-color: #f9f9f9;
-}
-
-.searchedExpression {
-  color: var(--secondary-color);
-  font-weight: 500;
-}
-
-.translation_fr,
-.translation_en {
-  font-weight: 400;
-  font-size: 0.9rem;
-  color: var(--text-default);
-}
-*/
-.notice {
-  font-size: 0.75rem;
-  margin-right: 0.25rem;
-}
-
-.translations {
-  margin-top: 0.5rem;
-}
-
-.alert {
-  font-size: 1rem;
-}
-
-/* Responsivité */
-@media (max-width: 576px) {
-  .list-group-button {
-    padding: 0.75rem;
-  }
-
-  .translation_fr,
-  .translation_en {
-    font-size: 0.85rem;
-  }
-}
+/* Nous laissons les styles globaux gérer les couleurs, polices, et responsivité */
 </style>

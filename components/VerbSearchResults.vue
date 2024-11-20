@@ -1,16 +1,18 @@
-<!-- /components/VerbSearchResults.vue -->
-
 <template>
   <div>
     <!-- Affichage des résultats paginés -->
-    <div v-if="paginatedVerbs.length">
-      <table class="table table-hover">
+    <div v-if="paginatedVerbs.length" class="table-responsive">
+      <table
+        class="table table-hover"
+        role="table"
+        aria-label="Résultats de recherche pour les verbes"
+      >
         <thead>
           <tr>
-            <th class="text-primary">Singulier</th>
-            <th class="text-primary">Phonétique</th>
-            <th class="text-primary">Français</th>
-            <th class="text-primary">Anglais</th>
+            <th>Sing.</th>
+            <th>Phon.</th>
+            <th>Fr.</th>
+            <th>En.</th>
           </tr>
         </thead>
         <tbody>
@@ -22,13 +24,25 @@
             @keydown.space.prevent="goToDetails(verb.slug)"
             tabindex="0"
             role="button"
-            :aria-label="`Voir les détails de ${verb.singular}`"
+            :aria-label="`Voir les détails du verbe ${verb.singular}`"
             class="link-row"
           >
-            <td>{{ verb.singular }}</td>
-            <td>{{ verb.phonetic || "-" }}</td>
-            <td>{{ verb.translation_fr || "-" }}</td>
-            <td>{{ verb.translation_en || "-" }}</td>
+            <td>
+              <span class="searchedExpression">{{ verb.singular }}</span>
+            </td>
+            <td>
+              <span class="phonetic-text">{{ verb.phonetic || " " }}</span>
+            </td>
+            <td>
+              <span class="translation-text">{{
+                verb.translation_fr || " "
+              }}</span>
+            </td>
+            <td>
+              <span class="translation-text">{{
+                verb.translation_en || " "
+              }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -42,7 +56,7 @@
     </div>
 
     <!-- Message si aucun résultat trouvé -->
-    <div v-else-if="searchPerformed" class="mt-4">
+    <div v-else-if="searchPerformed" class="mt-4 text-center">
       <div class="alert alert-info" role="alert">Aucun verbe trouvé.</div>
     </div>
 
@@ -65,7 +79,7 @@ const props = defineProps({
   },
 });
 
-const words = ref([]);
+const verbs = ref([]);
 const searchPerformed = ref(false);
 const error = ref(null);
 
@@ -74,21 +88,17 @@ const pageSize = 15;
 
 const router = useRouter();
 
-// Fonction pour troncature du texte (si nécessaire)
-const truncateText = (text, limit) => {
-  if (!text) return "-";
-  return text.length > limit ? text.slice(0, limit) + "..." : text;
-};
-
 // Fonction pour naviguer vers les détails d'un verbe
 const goToDetails = (slug) => {
-  console.log("Navigating to verb details:", `/details/verb/${slug}`);
+  if (!slug) {
+    console.error("Slug est indéfini pour cet élément");
+    return;
+  }
   router.push(`/details/verb/${slug}`);
 };
 
 // Fonction pour changer de page
 const changePage = (page) => {
-  console.log(`Changement de page vers: ${page}`);
   if (page > 0 && page <= totalPages.value) {
     currentPage.value = page;
   }
@@ -97,50 +107,34 @@ const changePage = (page) => {
 // Calcul des verbes paginés
 const paginatedVerbs = computed(() => {
   const start = (currentPage.value - 1) * pageSize;
-  const end = start + pageSize;
-  console.log(
-    `Page ${currentPage.value}:`,
-    props.searchQuery,
-    words.value.slice(start, end)
-  );
-  return words.value.slice(start, end);
+  return verbs.value.slice(start, start + pageSize);
 });
 
 // Calcul du nombre total de pages
-const totalPages = computed(() => Math.ceil(words.value.length / pageSize));
+const totalPages = computed(() => Math.ceil(verbs.value.length / pageSize));
 
-// Fonction pour fetch les verbes depuis l'API
+// Fonction pour récupérer les verbes depuis l'API
 const fetchVerbs = async () => {
-  console.log("fetchVerbs appelé avec la query:", props.searchQuery);
-  if (!props.searchQuery || props.searchQuery.trim() === "") {
-    words.value = [];
+  if (!props.searchQuery.trim()) {
+    verbs.value = [];
     searchPerformed.value = false;
     error.value = null;
-    console.log("Recherche vide, réinitialisation des verbes.");
     return;
   }
 
   try {
-    console.log(`Appel à l'API avec la query: ${props.searchQuery}`);
     const response = await fetch(
       `/api/search-verbs?query=${encodeURIComponent(props.searchQuery)}`
     );
-
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
 
     const result = await response.json();
-    console.log("Données reçues de l'API pour verbes :", result);
-
-    words.value = result; // Assignation directe sans filtrage
+    verbs.value = result;
     searchPerformed.value = true;
     error.value = null;
-    console.log("Verbes assignés:", words.value);
-    currentPage.value = 1; // Réinitialiser la pagination à la première page
+    currentPage.value = 1; // Réinitialiser à la première page
   } catch (err) {
-    console.error("Erreur lors de la récupération des verbes :", err);
-    words.value = [];
+    verbs.value = [];
     searchPerformed.value = true;
     error.value = "Erreur lors de la récupération des verbes.";
   }
@@ -156,81 +150,7 @@ watch(
 );
 </script>
 
-
-
 <style scoped>
-/* Variables CSS */
-:root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
-  --secondary-color: #a52a2a;
-  --dark-color: #2a0600;
-  --highlight-color: #28a745;
-  --text-default: #03080d;
-  --third-color: #ff4500;
-}
-
-/* Styles généraux */
-.list-group-item {
-  border: none;
-  padding: 0;
-  background-color: transparent;
-}
-
-.list-group-button {
-  width: 100%;
-  text-align: left;
-  border: 1px solid #e0e0e0;
-  padding: 1rem;
-  background-color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block;
-}
-
-.list-group-button:hover {
-  background-color: #f9f9f9;
-}
-
-.searchedExpression {
-  color: var(--secondary-color);
-  font-weight: 500;
-}
-
-.translation_fr,
-.translation_en {
-  font-weight: 400;
-  font-size: 0.9rem;
-  color: var(--text-default);
-}
-
-.notice {
-  font-size: 0.85rem;
-  margin-right: 0.25rem;
-}
-
-.translations {
-  margin-top: 0.5rem;
-}
-
-.alert {
-  font-size: 1rem;
-}
-
-/* Responsivité */
-@media (max-width: 576px) {
-  .list-group-button {
-    padding: 0.75rem;
-  }
-
-  .notice {
-    font-size: 0.8rem;
-  }
-
-  .translation_fr,
-  .translation_en {
-    font-size: 1rem;
-    color: var(--dark-color);
-  }
-}
+/* Aucun style redondant ici */
+/* Tout repose sur les classes et variables globales de `global.css` */
 </style>

@@ -1,237 +1,149 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-lg-6 col-md-8">
+      <div class="col-lg-8 col-md-10">
         <div class="card shadow-sm border-0">
           <div class="card-body p-4">
-            <h2 class="card-title text-left mb-4 text-primary">
+            <h2 class="card-title text-primary mb-4">
               <i class="fas fa-info-circle me-2"></i>
               {{ type === "word" ? "Détails du Mot" : "Détails du Verbe" }}
             </h2>
 
             <ul class="list-group list-group-flush">
-              <!-- Affichage pour les mots -->
+              <!-- Affichage des détails spécifiques pour les mots -->
               <template v-if="type === 'word'">
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fas fa-font me-3"></i> Singulier :
-                  {{ details.id }} -
+                <li class="list-group-item">
+                  <i class="fas fa-font me-3"></i>
+                  <strong>Singulier :</strong>
                   <span class="searchedExpression">{{ details.singular }}</span>
                 </li>
-
-                <li
-                  v-if="details.plural"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-spell-check me-3"></i> Pluriel :
+                <li v-if="details.plural" class="list-group-item">
+                  <i class="fas fa-spell-check me-3"></i>
+                  <strong>Pluriel :</strong>
                   <span class="searchedExpression">{{ details.plural }}</span>
                 </li>
-
-                <li
-                  v-if="details.root"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-tree me-3"></i> Racine :
-                  <span class="fw-bold">{{ details.root }}</span>
-                </li>
-
-                <li
-                  v-if="details.derived_from_word"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-arrow-right me-3 text-primary"></i> Dérivé du
-                  mot :
-                  <span class="fw-bold">{{ details.derived_from_word }}</span>
-                </li>
-
-                <li
-                  v-if="details.derived_from_verb"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-arrow-right me-3 text-primary"></i> Dérivé du
-                  verbe :
-                  <span class="fw-bold">{{ details.derived_from_verb }}</span>
-                </li>
-
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fas fa-layer-group me-3"></i> Classe nominale :
+                <li v-if="details.nominal_class" class="list-group-item">
+                  <i class="fas fa-layer-group me-3"></i>
+                  <strong>Classe nominale :</strong>
                   <span class="text-primary">{{ details.nominal_class }}</span>
                 </li>
-
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fas fa-exchange-alt me-3"></i> Variabilité :
-                  {{ details.number_variability || "Inconnue" }}
-                </li>
               </template>
 
-              <!-- Affichage pour les verbes -->
+              <!-- Affichage des détails spécifiques pour les verbes -->
               <template v-if="type === 'verb'">
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fas fa-font me-3"></i> Nom du Verbe :
+                <li class="list-group-item">
+                  <i class="fas fa-font me-3"></i>
+                  <strong>Nom :</strong>
                   <span class="searchedExpression">{{ details.name }}</span>
                 </li>
-
-                <li
-                  v-if="details.root"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-tree me-3"></i> Racine :
-                  <span class="fw-bold">{{ details.root }}</span>
+                <li v-if="details.root" class="list-group-item">
+                  <i class="fas fa-tree me-3"></i>
+                  <strong>Racine :</strong>
+                  <span>{{ details.root }}</span>
                 </li>
-
-                <li
-                  v-if="details.suffix"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-file-alt me-3"></i> Suffixe :
+                <li v-if="details.suffix" class="list-group-item">
+                  <i class="fas fa-file-alt me-3"></i>
+                  <strong>Suffixe :</strong>
                   <span>{{ details.suffix }}</span>
-                </li>
-
-                <li
-                  v-if="details.derived_verb"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-arrow-right me-3 text-primary"></i> Verbe
-                  dérivé : Oui
-                </li>
-
-                <li
-                  v-if="details.derived_from"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-arrow-right me-3 text-primary"></i> Dérivé du
-                  verbe :
-                  {{ details.derived_from }}
-                </li>
-
-                <li
-                  v-if="details.derived_verb_type_id"
-                  class="list-group-item d-flex align-items-center"
-                >
-                  <i class="fas fa-tags me-3"></i> Type de Verbe Dérivé :
-                  {{ details.derived_verb_type_id }}
                 </li>
               </template>
 
-              <!-- Champs communs aux mots et aux verbes -->
-              <li class="list-group-item d-flex align-items-center">
-                <i class="fas fa-volume-up me-3"></i> Phonétique :
-                <span class="phonetic">{{ details.phonetic }}</span>
+              <!-- Champs communs -->
+              <li class="list-group-item">
+                <i class="fas fa-volume-up me-3"></i>
+                <strong>Phonétique :</strong>
+                <span class="phonetic">{{ details.phonetic || "N/A" }}</span>
               </li>
-
-              <li class="list-group-item d-flex align-items-center">
-                <i class="fas fa-language me-3"></i> Traduction FR :
-                <span class="translation_fr fw-bold">{{
-                  details.translation_fr
+              <li class="list-group-item">
+                <i class="fas fa-language me-3"></i>
+                <strong>Traduction FR :</strong>
+                <span class="translation_fr">{{
+                  details.translation_fr || "N/A"
                 }}</span>
               </li>
-
-              <li class="list-group-item d-flex align-items-center">
-                <i class="fas fa-language me-3"></i> Traduction EN :
-                <span class="translation_en fw-bold">{{
-                  details.translation_en
+              <li class="list-group-item">
+                <i class="fas fa-language me-3"></i>
+                <strong>Traduction EN :</strong>
+                <span class="translation_en">{{
+                  details.translation_en || "N/A"
                 }}</span>
               </li>
-
-              <li class="list-group-item d-flex align-items-center">
-                <i class="fas fa-user me-3"></i> Auteur :
+              <li class="list-group-item">
+                <i class="fas fa-user me-3"></i>
+                <strong>Auteur :</strong>
                 {{ details.author || "Inconnu" }}
               </li>
-
-              <li class="list-group-item d-flex align-items-center">
-                <i class="fas fa-calendar-alt me-3"></i> Date de création :
-                <span class="text-sm">{{
-                  formatDate(details.created_at)
-                }}</span>
+              <li class="list-group-item">
+                <i class="fas fa-calendar-alt me-3"></i>
+                <strong>Date de création :</strong>
+                <span>{{ formatDate(details.created_at) }}</span>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <!-- Bouton Modifier pour les administrateurs uniquement -->
-      <div
-        v-if="authStore.userRole.includes('admin')"
-        class="text-center mb-5 mt-5"
-      >
-        <nuxt-link
-          :to="`/edit/${type}/${route.params.slug}`"
-          class="btn btn-outline-warning m-2"
-        >
-          Modifier
-        </nuxt-link>
-      </div>
-      <!-- Boutons vers les pages de recherche -->
-      <div class="text-center mb-5 mt-5">
-        <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
-          Rechercher des mots
-        </nuxt-link>
-        <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
-          Rechercher des verbes
-        </nuxt-link>
-        <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
-          Liste des verbes
-        </nuxt-link>
-        <nuxt-link to="/expressions" class="btn btn-outline-secondary m-2">
-          Liste de mots & verbes
-        </nuxt-link>
-      </div>
+    </div>
+
+    <!-- Boutons vers les pages de recherche -->
+    <div class="text-center mt-4">
+      <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
+        Rechercher des mots
+      </nuxt-link>
+      <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
+        Rechercher des verbes
+      </nuxt-link>
+      <nuxt-link to="/expressions" class="btn btn-outline-secondary m-2">
+        Liste de mots & verbes
+      </nuxt-link>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useHead } from "@vueuse/head"; // Pour gérer les balises meta dynamiquement
-// Définir les variables réactives pour l'état de connexion, le rôle et le nom d'utilisateur
-import { useAuthStore } from "~/stores/authStore"; // Importer le store d'authentification
+import { useRoute } from "vue-router";
+import { useHead } from "@vueuse/head";
 
 const route = useRoute();
-const router = useRouter();
+const type = route.params.type;
 const details = ref({});
-const type = ref(route.params.type);
-const authStore = useAuthStore(); // Initialisation du store
-// Fonction pour récupérer les détails avec le slug
+
+// Fonction pour récupérer les détails
 const fetchDetails = async () => {
   try {
-    const response = await fetch(
-      `/api/details/${route.params.type}/${route.params.slug}`
-    );
+    const response = await fetch(`/api/details/${type}/${route.params.slug}`);
     const result = await response.json();
     details.value = result;
 
-    // SEO et meta tags dynamiques
+    // Mise à jour du SEO dynamique
     useHead({
       title: `Détails de ${
-        type.value === "word" ? details.value.singular : details.value.name
-      } - Lexique Kikongo`,
+        type === "word" ? result.singular : result.name
+      } - Lexikongo`,
       meta: [
         {
           name: "description",
           content:
-            type.value === "word"
-              ? `Découvrez les détails du mot ${details.value.singular} et ses traductions en Kikongo.`
-              : `Découvrez les détails du verbe ${details.value.name} et ses traductions en Kikongo.`,
+            type === "word"
+              ? `Découvrez les détails du mot ${result.singular} avec ses traductions.`
+              : `Découvrez les détails du verbe ${result.name} avec ses traductions.`,
         },
         {
           property: "og:title",
           content: `Détails de ${
-            type.value === "word" ? details.value.singular : details.value.name
+            type === "word" ? result.singular : result.name
           }`,
         },
         {
           property: "og:description",
           content:
-            type.value === "word"
-              ? `Détails du mot ${details.value.singular}, pluriel ${details.value.plural}, phonétique et traductions.`
-              : `Détails du verbe ${details.value.name}, racine ${details.value.root}, phonétique et traductions.`,
+            type === "word"
+              ? `Mot : ${result.singular}. Pluriel : ${result.plural || "N/A"}.`
+              : `Verbe : ${result.name}. Racine : ${result.root || "N/A"}.`,
         },
         {
-          property: "og:type",
-          content: "article",
-        },
-        {
-          name: "twitter:card",
-          content: "summary_large_image",
+          property: "og:image",
+          content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
         },
       ],
       script: [
@@ -239,21 +151,18 @@ const fetchDetails = async () => {
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": type.value === "word" ? "DefinedTerm" : "Verb",
-            name:
-              type.value === "word"
-                ? details.value.singular
-                : details.value.name,
+            "@type": type === "word" ? "DefinedTerm" : "Verb",
+            name: type === "word" ? result.singular : result.name,
             description:
-              type.value === "word"
-                ? `Mot en Kikongo : ${details.value.singular}. Pluriel : ${details.value.plural}. Phonétique : ${details.value.phonetic}.`
-                : `Verbe en Kikongo : ${details.value.name}. Racine : ${details.value.root}. Phonétique : ${details.value.phonetic}.`,
+              type === "word"
+                ? `Mot en Kikongo : ${result.singular}.`
+                : `Verbe en Kikongo : ${result.name}.`,
             inLanguage: "kg",
             author: {
               "@type": "Person",
-              name: details.value.author || "Inconnu",
+              name: result.author || "Inconnu",
             },
-            dateCreated: details.value.created_at,
+            dateCreated: result.created_at,
           }),
         },
       ],
@@ -263,7 +172,7 @@ const fetchDetails = async () => {
   }
 };
 
-// Fonction pour formater la date en français
+// Fonction pour formater les dates
 const formatDate = (dateString) => {
   if (!dateString) return "Inconnue";
   const date = new Date(dateString);
@@ -274,54 +183,31 @@ const formatDate = (dateString) => {
   });
 };
 
-onMounted(async () => {
-  await fetchDetails();
-});
+onMounted(fetchDetails);
 </script>
 
 <style scoped>
-.fas {
-  color: #007bff;
-}
 .card {
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow-default);
 }
 
 .card-title {
-  font-size: 28px;
-  color: #007bff;
+  font-size: var(--font-lg);
 }
 
 .list-group-item {
   border: none;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-}
-
-.list-group-item i {
-  margin-right: 10px;
-  font-size: 20px;
-}
-
-.phonetic {
-  color: #28a745;
-  font-style: italic;
-}
-
-.translation_fr,
-.translation_en {
-  color: #6c757d;
+  font-size: var(--font-md);
 }
 
 @media (max-width: 576px) {
   .card-title {
-    font-size: 18px;
+    font-size: var(--font-md);
   }
 
   .list-group-item {
-    font-size: 12px;
+    font-size: var(--font-sm);
   }
 }
 </style>

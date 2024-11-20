@@ -32,7 +32,7 @@
 
       <button
         type="button"
-        class="btn btn-outline btn-effacer"
+        class="btn btn-clear"
         @click="clearForm"
         aria-label="Effacer la recherche"
       >

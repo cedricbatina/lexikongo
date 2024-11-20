@@ -1,13 +1,13 @@
 <template>
   <div class="container mt-4">
-    <table class="table table-hover">
+    <table class="table table-hover" role="table" aria-label="Liste des mots">
       <thead>
         <tr>
-          <th class="text-primary">Singulier</th>
-          <th class="text-primary">Pluriel</th>
-          <th class="text-primary">Phonétique</th>
-          <th class="text-primary">Français</th>
-          <th class="text-primary">Anglais</th>
+          <th scope="col" class="text-primary">Singulier</th>
+          <th scope="col" class="text-primary">Pluriel</th>
+          <th scope="col" class="text-primary">Phonétique</th>
+          <th scope="col" class="text-primary">Français</th>
+          <th scope="col" class="text-primary">Anglais</th>
         </tr>
       </thead>
       <tbody>
@@ -16,18 +16,26 @@
           :key="item.slug"
           @click="goToDetails(item.slug)"
           class="link-row"
+          role="button"
+          :aria-label="`Détails pour ${item.singular}`"
         >
           <td>
             <span class="searchedExpression">{{ item.singular }}</span>
           </td>
-          <td>
-            <span class="searchedExpression">{{ item.plural || "-" }}</span>
+          <td v-if="item.plural">
+            <span class="searchedExpression">{{ item.plural }}</span>
+          </td>
+          <td v-else>
+            <span class="text-muted">-</span>
+          </td>
+          <td v-if="item.phonetic">
+            <span class="phonetic">{{ item.phonetic }}</span>
+          </td>
+          <td v-else>
+            <span class="text-muted">-</span>
           </td>
           <td>
-            <span class="phonetic">{{ item.phonetic || "-" }}</span>
-          </td>
-          <td>
-            <span class="translation_fr">{{
+            <span class="translation_en">{{
               truncateText(item.translation_fr, 30) || "-"
             }}</span>
           </td>
@@ -98,107 +106,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Styles pour la table */
-.table thead th {
-  /*text-align: center;*/
-  color: #007bff; /* Couleur bleue pour le texte des en-têtes */
-  font-weight: bold;
-}
-
-.table tbody td {
-  /* text-align: center;*/
-  vertical-align: middle;
-  padding: 12px;
-  border-top: 1px solid #dee2e6;
-}
-
-/* Hover effect on table rows */
-.table tbody tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
-
-/* Make the entire row clickable */
-.link-row {
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Couleurs des textes */
-.text-primary {
-  color: #007bff; /* Couleur bleue primaire */
-}
-
-.phonetic {
-  font-style: italic;
-  color: #28a745; /* Vert pour la phonétique */
-}
-
-.translation_fr,
-.translation_en {
-  font-size: 0.8rem;
-  color: var(--dark-color);
-}
-
-/* Pagination buttons */
-.btn-primary {
-  background-color: #007bff;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .table thead th,
-  .table tbody td {
-    font-size: 0.875rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .table thead {
-    display: none; /* Masquer l'en-tête sur les petits écrans */
-  }
-
-  .table tbody tr {
-    display: block;
-    margin-bottom: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 12px;
-  }
-
-  .table tbody tr td {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.75rem;
-    text-align: left;
-  }
-
-  .table tbody tr td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: #007bff;
-  }
-
-  /* Labels dynamiques pour les petits écrans */
-  .table tbody tr td:nth-child(1)::before {
-    content: "Sing.";
-  }
-  .table tbody tr td:nth-child(2)::before {
-    content: "Plur.";
-  }
-  .table tbody tr td:nth-child(3)::before {
-    content: "Phon.";
-  }
-  .table tbody tr td:nth-child(4)::before {
-    content: "Fr";
-  }
-  .table tbody tr td:nth-child(5)::before {
-    content: "En";
-  }
-}
+/* Responsiveness and table-specific styles are now in global.css */
 </style>

@@ -6,28 +6,17 @@
       <p class="lead">
         Découvrez la liste complète des mots en Kikongo et leurs significations.
       </p>
+      <!-- Boutons vers les pages de recherche -->
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
     </div>
-
-    <!-- Boutons vers les pages de recherche -->
-    <div class="text-center mb-5 mt-5">
-      <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
-        Rechercher des mots
-      </nuxt-link>
-      <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
-        Rechercher des verbes
-      </nuxt-link>
-      <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
-        Liste des verbes
-      </nuxt-link>
-      <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
-        Liste de mots & verbes
-      </nuxt-link>
-    </div>
-    <ContributorButtons />
-    <AdminButtons />
-
+    <h1 class="card-title text-primary mb-4 text-left">
+      <i class="fa-solid fa-arrow-down-a-z"></i> Liste des Verbes
+    </h1>
     <!-- Affichage de la liste des mots -->
     <WordList />
+    <SearchButtons />
   </div>
 </template>
 
@@ -35,8 +24,44 @@
 import { useHead } from "#app";
 import WordList from "@/components/WordList.vue";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Liste des Mots en Kikongo | Lexique Kikongo",
+  description:
+    "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
+  url: "https://www.lexikongo.fr/words",
+  image: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+  inLanguage: "fr",
+  publisher: {
+    "@type": "Organization",
+    name: "Lexikongo",
+    url: "https://www.lexikongo.fr",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.lexikongo.fr/images/logo.webp",
+      width: 200,
+      height: 200,
+    },
+  },
+  about: {
+    "@type": "Thing",
+    name: "Kikongo Language",
+    sameAs: [
+      "https://en.wikipedia.org/wiki/Kikongo",
+      "https://fr.wikipedia.org/wiki/Kikongo",
+    ],
+  },
+};
+
 useHead({
   title: "Lexikongo - Liste des Mots en Kikongo",
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
+    },
+  ],
   meta: [
     {
       name: "description",
@@ -64,19 +89,38 @@ useHead({
     },
     {
       property: "og:image",
-      content: "/images/lexikongo-cover.jpg", // Remplacez par le chemin réel de votre image
+      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
     },
     {
       property: "og:url",
       content: "https://www.lexikongo.fr/words",
     },
     {
+      property: "og:type",
+      content: "website",
+    },
+    // Twitter meta tags
+    {
       name: "twitter:card",
       content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Lexikongo - Liste des Mots en Kikongo",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
     },
   ],
 });
 </script>
+
 
 <style scoped>
 /* Variables CSS pour les couleurs */

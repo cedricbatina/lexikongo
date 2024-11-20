@@ -1,54 +1,69 @@
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <!-- Titre principal -->
-      <div class="text-center mb-4">
-        <h1 class="display-4 text-primary">Liste des verbes en Kikongo</h1>
-        <p class="lead">
-          Découvrez la liste des verbes en Kikongo, présents dans la base de
-          données, et leurs significations.
-        </p>
-      </div>
+  <div class="container mt-4">
+    <!-- Titre principal -->
+    <header class="text-center mb-4">
+      <h1 class="display-4 text-primary">Liste des verbes en Kikongo</h1>
+      <p class="lead">
+        Découvrez la liste des verbes en Kikongo, présents dans la base de
+        données, et leurs significations.
+      </p>
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </header>
 
-      <!-- Boutons vers les pages de recherche -->
-      <div class="text-center mb-5 mt-5">
-        <nuxt-link to="/search-words" class="btn btn-outline-primary m-2">
-          Rechercher des mots
-        </nuxt-link>
-        <nuxt-link to="/search-verbs" class="btn btn-outline-success m-2">
-          Rechercher des verbes
-        </nuxt-link>
-        <nuxt-link to="/verbs" class="btn btn-outline-secondary m-2">
-          Liste des verbes
-        </nuxt-link>
-        <nuxt-link to="/expressions" class="btn btn-outline-secondary m-2">
-          Liste de mots & verbes
-        </nuxt-link>
-      </div>
-      <!-- Liste des verbes -->
-      <div class="col-lg-10 col-md-12 col-sm-12 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h1 class="card-title text-primary mb-4 text-left">
-              <i class="fas fa-list"></i>
-              <!-- Icône de liste -->
-              Liste des Verbes
-            </h1>
-            <VerbList />
-            <NavButtons />
+    <!-- Liste des verbes -->
+    <section>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="card-title text-primary mb-4 text-left">
+            <i class="fa-solid fa-arrow-down-a-z"></i> Liste des Verbes
+          </h1>
+          <VerbList />
+          <div class="mt-4 text-center">
+            <SearchButtons />
             <ContributorButtons />
             <AdminButtons />
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script setup>
 import { useHead } from "@vueuse/head";
 
-// SEO pour cette page
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Liste des Verbes en Kikongo | Lexique Kikongo",
+  description:
+    "Découvrez la liste des verbes en Kikongo avec leurs traductions en français et en anglais.",
+  url: "https://lexikongo.com/verbs",
+  image: "https://lexikongo.com/images/lexikongo_logo@2x.png",
+  inLanguage: "fr",
+  publisher: {
+    "@type": "Organization",
+    name: "Lexikongo",
+    url: "https://lexikongo.com",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://lexikongo.com/images/logo.webp",
+      width: 200,
+      height: 200,
+    },
+  },
+  about: {
+    "@type": "Thing",
+    name: "Kikongo Language Verbs",
+    sameAs: [
+      "https://en.wikipedia.org/wiki/Kikongo",
+      "https://fr.wikipedia.org/wiki/Kikongo",
+    ],
+  },
+};
+
 useHead({
   title: "Liste des Verbes en Kikongo | Lexique Kikongo",
   meta: [
@@ -76,7 +91,7 @@ useHead({
     },
     {
       property: "og:image",
-      content: "https://lexikongo.com/images/verbs.png", // Ajouter une image de prévisualisation
+      content: "https://lexikongo.com/images/lexikongo_logo@2x.png",
     },
     {
       name: "twitter:card",
@@ -93,14 +108,20 @@ useHead({
     },
     {
       name: "twitter:image",
-      content: "https://lexikongo.com/images/verbs.png", // Image pour Twitter card
+      content: "https://lexikongo.com/images/lexikongo_logo@2x.png",
+    },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
     },
   ],
 });
 </script>
 
 <style scoped>
-/* Amélioration du design pour la page des verbes */
+/* Styles principaux */
 .card {
   border-radius: 8px;
   transition: box-shadow 0.3s ease-in-out;
@@ -113,33 +134,36 @@ useHead({
 
 .card-title {
   font-size: 1.75rem;
-  color: #007bff;
+  color: var(--primary-color);
 }
 
 .card-body {
   padding: 2rem;
 }
 
-.container {
-  max-width: 900px;
+.btn {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.fas {
-  color: #ffffff; /* Couleur blanche pour les icônes des boutons */
+.btn:hover {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
 }
 
-/* Responsivité pour une meilleure expérience utilisateur sur mobile */
+/* Responsivité */
 @media (max-width: 768px) {
-  .card-title {
-    font-size: 1.5rem;
-  }
-
   .card-body {
     padding: 1.5rem;
   }
 
-  .btn-group .btn {
-    font-size: 0.875rem;
+  .card-title {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
   }
 }
 </style>
