@@ -1,14 +1,16 @@
 <template>
   <div class="container mt-5">
     <!-- Titre principal -->
-    <div class="text-center mb-4">
-      <!-- <h2 class="display-4 text-primary">Lexique Kikongo</h2>-->
-      <LogoSlogan />
+    <header class="text-center mb-4">
+      <h1 class="display-4 text-primary mb-4 mt-4">
+        Recherche de mots et verbes
+      </h1>
       <p class="lead">
-        Recherchez des mots et verbes en Kikongo et découvrez leurs
-        significations.
+        Recherchez, dans le formulaire ci-dessous, des mots et verbes en Kikongo
+        et découvrez leurs significations.
       </p>
-    </div>
+      <LogoSlogan />
+    </header>
 
     <!-- Section de recherche et résultats -->
     <div class="row justify-content-center mb-4">
@@ -41,6 +43,8 @@
       </div>
     </div>
 
+    <SearchButtons />
+    <ContributorButtons />
     <AdminButtons />
   </div>
 </template>

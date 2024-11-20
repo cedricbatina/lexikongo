@@ -51,8 +51,8 @@
             </nuxt-link>
           </li>
           <li class="nav-item">
-            <nuxt-link class="nav-link" to="/contribution">
-              <i class="fas fa-pencil"></i> Contribution
+            <nuxt-link class="nav-link" to="/documentation/for-contributors">
+              <i class="fas fa-hands-helping me-2"></i> Contribution
             </nuxt-link>
           </li>
 
@@ -141,15 +141,6 @@ const logout = () => {
 
 <style scoped>
 /* Définition des variables CSS */
-:root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
-  --secondary-color: #a52a2a;
-  --dark-color: #2a0600;
-  --highlight-color: #28a745;
-  --text-default: #03080d;
-  --third-color: #ff4500;
-}
 
 /* Styles généraux */
 .navbar {
@@ -241,7 +232,7 @@ const logout = () => {
 }
 
 .nav-link {
-  color: var(--text-default);
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
   display: flex;

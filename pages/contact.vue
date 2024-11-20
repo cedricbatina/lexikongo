@@ -1,146 +1,94 @@
-<!-- pages/contact.vue -->
 <template>
-  <div class="container mt-5">
-    <!-- Premier div avec texte et image -->
-
-    <div
-      class="col-12 d-flex flex-column align-items-center justify-content-center row"
-    >
-      <h3 class="text-primary">
-        Des Solutions sur Mesure pour Votre Maison ou Votre Entreprise –
-        Échangeons dès Maintenant !
-      </h3>
-      <p class="contact-text">
-        Besoin d'un service de qualité pour votre maison ou votre entreprise ?
-        Que vous cherchiez des solutions en plomberie, chauffage,
-        photovoltaïque, ou climatisation, notre équipe est prête à répondre à
-        vos besoins, tant pour des interventions à domicile que pour des projets
-        en entreprise.
+  <div class="contact-page container mt-5">
+    <!-- En-tête principale -->
+    <header class="text-center mb-5">
+      <h1 class="display-4 text-primary">
+        <i class="fas fa-envelope me-2"></i> Contactez-nous
+      </h1>
+      <p class="lead text-default">
+        Vous avez une question, une suggestion ou souhaitez en savoir plus sur
+        Lexikongo ? Notre équipe est à votre écoute. Remplissez le formulaire
+        ci-dessous et nous vous répondrons rapidement.
       </p>
-      <p class="contact-paragraph">
-        Chez Ambès Cyrille Plomberie, nous offrons une expertise complète pour
-        des installations et des maintenances sur mesure. Que vous soyez un
-        particulier cherchant à améliorer le confort de votre maison ou une
-        entreprise nécessitant des solutions énergétiques efficaces et durables,
-        nous avons les compétences et l'expérience pour vous aider.
-        Contactez-nous via le formulaire ci-dessous, et nous nous ferons un
-        plaisir de discuter de votre projet et de vous fournir des services
-        adaptés à vos besoins spécifiques.
+    </header>
+
+    <!-- Section Contact -->
+    <section class="row justify-content-center">
+      <div class="col-12 col-md-6">
+        <h2 class="text-center text-secondary mb-4">
+          <i class="fas fa-pencil-alt me-2"></i> Envoyez-nous un message
+        </h2>
+        <form @submit.prevent="submitForm">
+          <div class="form-group mb-3">
+            <label for="name" class="form-label">Nom :</label>
+            <input
+              type="text"
+              id="name"
+              v-model="form.name"
+              class="form-control"
+              placeholder="Entrez votre nom"
+              required
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="email" class="form-label">Email :</label>
+            <input
+              type="email"
+              id="email"
+              v-model="form.email"
+              class="form-control"
+              placeholder="Entrez votre adresse email"
+              required
+            />
+          </div>
+          <div class="form-group mb-4">
+            <label for="message" class="form-label">Message :</label>
+            <textarea
+              id="message"
+              v-model="form.message"
+              class="form-control"
+              rows="5"
+              placeholder="Tapez votre message ici"
+              required
+            ></textarea>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fas fa-paper-plane me-2"></i> Envoyer
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Section Informations supplémentaires -->
+    <section class="mt-5 text-center">
+      <h2 class="text-secondary mb-3">
+        <i class="fas fa-info-circle me-2"></i> Pourquoi nous contacter ?
+      </h2>
+      <p>
+        Lexikongo est une plateforme collaborative dédiée à la préservation de
+        la langue Kikongo. Que vous soyez un contributeur, un utilisateur ou
+        simplement curieux, vos retours et suggestions sont précieux pour nous
+        aider à améliorer notre mission.
+      </p>
+      <p>
+        Vous pouvez également nous contacter pour toute demande de partenariat,
+        collaboration ou assistance technique.
       </p>
       <img
         src="/images/life-flower.png"
         alt="Fleur de vie Kongo"
-        class="img-fluid mt-3 my-image"
-        style="width: 15%"
+        class="img-fluid mt-3"
+        style="width: 150px"
       />
-    </div>
-
-    <!-- Deuxième div avec le formulaire -->
-    <div class="row mt-5">
-      <div class="col-12 col-md-6 mx-auto">
-        <h3 class="text-center text-primary mb-4">Formulaire de Contact</h3>
-        <form @submit.prevent="submitForm">
-          <div class="form-group">
-            <label for="name">Nom:</label>
-            <input
-              type="text"
-              v-model="form.name"
-              id="name"
-              class="form-control"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input
-              type="email"
-              v-model="form.email"
-              id="email"
-              class="form-control"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="message">Message:</label>
-            <textarea
-              v-model="form.message"
-              id="message"
-              class="form-control"
-              rows="5"
-              required
-            ></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block m-2">
-            Envoyer
-          </button>
-        </form>
-      </div>
-    </div>
-    <div class="container mt-5">
-      <h1 class="text-center mb-4 text-primary">Avant/Après</h1>
-
-      <!-- Card Bootstrap pour contenir les images avant/après -->
-      <div class="card shadow p-4">
-        <div class="card-body d-flex justify-content-center">
-          <ImageBeforeAfter>
-            <!-- Images pour le slot "before-image" -->
-            <template #before-image="{ currentIndex }">
-              <div class="img-container me-3">
-                <!-- Ajout d'un espacement entre les images -->
-                <img
-                  v-if="currentIndex === 0"
-                  class="img-fluid"
-                  src="/images/bata.png"
-                  alt="Avant 1"
-                />
-                <img
-                  v-if="currentIndex === 1"
-                  class="img-fluid"
-                  src="/images/ota.png"
-                  alt="Avant 2"
-                />
-                <img
-                  v-if="currentIndex === 2"
-                  class="img-fluid"
-                  src="/images/sata.png"
-                  alt="Avant 3"
-                />
-              </div>
-            </template>
-
-            <!-- Images pour le slot "after-image" -->
-            <template #after-image="{ currentIndex }">
-              <div class="img-container">
-                <img
-                  v-if="currentIndex === 0"
-                  class="img-fluid"
-                  src="/images/nata.png"
-                  alt="Après 1"
-                />
-                <img
-                  v-if="currentIndex === 1"
-                  class="img-fluid"
-                  src="/images/gata.png"
-                  alt="Après 2"
-                />
-                <img
-                  v-if="currentIndex === 2"
-                  class="img-fluid"
-                  src="/images/ita.png"
-                  alt="Après 3"
-                />
-              </div>
-            </template>
-          </ImageBeforeAfter>
-        </div>
-      </div>
-    </div>
+    </section>
   </div>
 </template>
 
-
 <script setup>
 import { ref } from "vue";
+import { useHead } from "nuxt/app";
 
 const form = ref({
   name: "",
@@ -162,65 +110,121 @@ const submitForm = async () => {
       throw new Error("Erreur lors de l'envoi du message");
     }
 
-    alert("Message envoyé avec succès");
+    alert("Votre message a été envoyé avec succès !");
   } catch (error) {
-    console.error(error);
-    alert("Il y a eu un problème lors de l'envoi du message.");
+    console.error("Erreur :", error);
+    alert("Une erreur est survenue. Veuillez réessayer plus tard.");
   }
 };
-// Importez la fonction nécessaire de Nuxt
-import { useHead } from "#imports";
 
-// Définissez vos balises SEO
 useHead({
-  title:
-    "Contactez Cyrille Plomberie - Services de Plomberie et Chauffage à Votre Écoute",
+  title: "Contactez-nous - Lexikongo",
   meta: [
     {
       name: "description",
       content:
-        "Contactez Ambès Cyrille Plomberie pour des services sur mesure en plomberie, chauffage, climatisation, et installations photovoltaïques. Notre équipe est prête à répondre à tous vos besoins résidentiels et professionnels.",
+        "Contactez Lexikongo pour toute question, suggestion ou partenariat. Remplissez notre formulaire de contact et rejoignez-nous pour préserver la langue Kikongo.",
     },
-    // Open Graph meta tags
+    {
+      name: "keywords",
+      content:
+        "contact, Lexikongo, Kikongo, préservation linguistique, questions, suggestions, partenariat",
+    },
+    {
+      name: "author",
+      content: "Lexikongo",
+    },
     {
       property: "og:title",
-      content:
-        "Contactez Cyrille Plomberie - Services de Plomberie et Chauffage à Votre Écoute",
+      content: "Contactez-nous - Lexikongo",
     },
     {
       property: "og:description",
       content:
-        "Contactez Ambès Cyrille Plomberie pour des services sur mesure en plomberie, chauffage, climatisation, et installations photovoltaïques. Notre équipe est prête à répondre à tous vos besoins résidentiels et professionnels.",
+        "Vous avez des questions ou souhaitez contribuer à Lexikongo ? Contactez-nous via notre formulaire en ligne. Rejoignez notre mission pour préserver la langue Kikongo.",
     },
-    { property: "og:image", content: "~/assets/images/service-3.jpg" }, // Remplacez avec l'URL de votre image de partage
-    { property: "og:url", content: "https://cyrille-plomberie/contact" }, // Remplacez avec l'URL de votre page
-    { property: "og:type", content: "website" },
-    // Twitter Card meta tags
-    { name: "twitter:card", content: "summary_large_image" },
+    {
+      property: "og:image",
+      content: "https://www.lexikongo.fr/images/logo.webp",
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr/contact",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
     {
       name: "twitter:title",
-      content:
-        "Contactez Cyrille Plomberie - Services de Plomberie et Chauffage à Votre Écoute",
+      content: "Contactez-nous - Lexikongo",
     },
     {
       name: "twitter:description",
       content:
-        "Contactez Ambès Cyrille Plomberie pour des services sur mesure en plomberie, chauffage, climatisation, et installations photovoltaïques. Notre équipe est prête à répondre à tous vos besoins résidentiels et professionnels.",
+        "Vous avez des questions ou souhaitez contribuer à Lexikongo ? Contactez-nous et participez à notre mission linguistique.",
     },
-    { name: "twitter:image", content: "~/assets/images/service-3.jpg" }, // Remplacez avec l'URL de votre image de partage
-    // Additional SEO meta tags
     {
-      name: "keywords",
-      content:
-        "contact, plomberie, chauffage, climatisation, Cyrille Plomberie, services à domicile",
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
     },
-    { name: "author", content: "Cyrille Plomberie" },
-    { name: "robots", content: "index, follow" },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        name: "Contactez-nous - Lexikongo",
+        description:
+          "Page de contact pour poser des questions, envoyer des suggestions ou établir des partenariats avec Lexikongo.",
+        url: "https://www.lexikongo.fr/contact",
+        mainEntity: {
+          "@type": "Organization",
+          name: "Lexikongo",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+            width: 200,
+            height: 200,
+          },
+        },
+        potentialAction: {
+          "@type": "CommunicateAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: "https://www.lexikongo.fr/contact",
+            actionPlatform: [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/MobileWebPlatform",
+            ],
+          },
+        },
+      }),
+    },
   ],
 });
 </script>
+
 <style scoped>
-.my-image {
-  width: 50%;
+.contact-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
 }
 </style>

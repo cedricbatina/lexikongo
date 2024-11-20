@@ -1,18 +1,21 @@
 <template>
   <div class="container mt-5">
     <!-- Titre principal -->
-    <div class="text-center mb-4">
-      <h1 class="display-4 text-primary">Liste des Mots en Kikongo</h1>
+    <header class="text-center mb-4">
+      <h1 class="display-4 text-primary mb-4 mt-4">
+        Liste des mots en Kikongo
+      </h1>
       <p class="lead">
-        Découvrez la liste complète des mots en Kikongo et leurs significations.
+        Découvrez la liste des mots en Kikongo, présents dans la base de
+        données, et leurs significations.
       </p>
-      <!-- Boutons vers les pages de recherche -->
+      <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />
-    </div>
+    </header>
     <h1 class="card-title text-primary mb-4 text-left">
-      <i class="fa-solid fa-arrow-down-a-z"></i> Liste des Verbes
+      <i class="fa-solid fa-arrow-down-a-z"></i> Liste des Mots
     </h1>
     <!-- Affichage de la liste des mots -->
     <WordList />
@@ -121,75 +124,3 @@ useHead({
 });
 </script>
 
-
-<style scoped>
-/* Variables CSS pour les couleurs */
-:root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --text-default: #03080d;
-}
-
-/* Styles pour le titre et le texte principal */
-.display-4 {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-}
-
-.lead {
-  font-size: 1.25rem;
-  color: var(--text-default);
-}
-
-/* Styles pour les boutons */
-.btn {
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-}
-
-.btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
-}
-
-.btn-secondary {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
-  color: #fff;
-}
-
-.btn-secondary:hover {
-  background-color: #545b62;
-  border-color: #545b62;
-}
-
-/* Responsivité */
-@media (max-width: 768px) {
-  .display-4 {
-    font-size: 2rem;
-  }
-  .lead {
-    font-size: 1rem;
-  }
-  .btn {
-    font-size: 0.875rem;
-    padding: 0.5rem 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .display-4 {
-    font-size: 1.75rem;
-  }
-  .lead {
-    font-size: 0.875rem;
-  }
-}
-</style>

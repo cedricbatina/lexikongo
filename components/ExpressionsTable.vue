@@ -10,7 +10,7 @@
           <th>Type</th>
           <th>Singulier</th>
           <th>Pluriel</th>
-          <th>Phonétique.</th>
+          <th>Phonétique</th>
           <th>Français</th>
           <th>Anglais</th>
         </tr>
@@ -27,7 +27,7 @@
         >
           <td>
             <span class="searched-text">{{
-              item.type === "word" ? "Subst." : "Verb"
+              item.type === "word" ? "Mot" : "Verbe"
             }}</span>
           </td>
           <td>
@@ -37,16 +37,16 @@
             <span class="searchedExpression">{{ item.plural || " " }}</span>
           </td>
           <td>
-            <span class="phonetic-text">{{ item.phonetic || " " }}</span>
+            <span class="phonetic">{{ item.phonetic || " " }}</span>
           </td>
           <td>
-            <span class="translation-text">{{
-              truncateText(item.translation_fr, 40) || " "
+            <span class="translation_fr">{{
+              truncateText(item.translation_fr, 60) || " "
             }}</span>
           </td>
           <td>
-            <span class="translation-text">{{
-              truncateText(item.translation_en, 40) || " "
+            <span class="translation_en">{{
+              truncateText(item.translation_en, 60) || " "
             }}</span>
           </td>
         </tr>
@@ -75,7 +75,3 @@ const truncateText = (text, limit) => {
 };
 </script>
 
-<style scoped>
-/* Pas de styles redondants ici */
-/* Nous utilisons uniquement les classes globales définies dans `global.css`. */
-</style>

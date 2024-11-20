@@ -2,11 +2,14 @@
   <div class="container mt-4">
     <!-- Titre principal -->
     <header class="text-center mb-4">
-      <h1 class="display-4 text-primary">Liste des verbes en Kikongo</h1>
+      <h1 class="display-4 text-primary mb-4 mt-4">
+        Liste des verbes en Kikongo
+      </h1>
       <p class="lead">
         Découvrez la liste des verbes en Kikongo, présents dans la base de
         données, et leurs significations.
       </p>
+      <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />
@@ -119,51 +122,3 @@ useHead({
   ],
 });
 </script>
-
-<style scoped>
-/* Styles principaux */
-.card {
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease-in-out;
-  border: none;
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 1.75rem;
-  color: var(--primary-color);
-}
-
-.card-body {
-  padding: 2rem;
-}
-
-.btn {
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.btn:hover {
-  border-color: var(--primary-color);
-  background-color: var(--primary-color);
-  color: white;
-}
-
-/* Responsivité */
-@media (max-width: 768px) {
-  .card-body {
-    padding: 1.5rem;
-  }
-
-  .card-title {
-    font-size: 1.5rem;
-  }
-
-  .btn {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-  }
-}
-</style>

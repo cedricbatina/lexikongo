@@ -1,27 +1,29 @@
 <template>
   <div class="container mt-4">
     <!-- Texte explicatif au-dessus de la table des expressions -->
-    <div class="row justify-content-center mb-3">
+    <header class="text-center mb-4">
+      <h1 class="display-4 text-primary mt-4 mb-4">
+        Liste des mots et verbes en Kikongo
+      </h1>
+      <p class="text-center lead m-3">
+        Cette section présente une liste complète des expressions en Kikongo,
+        regroupant des mots et verbes essentiels pour une meilleure
+        compréhension de la langue. Explorez ces expressions avec leurs
+        traductions et enrichissez votre vocabulaire et votre compréhension
+        culturelle du Kikongo.
+      </p>
       <LogoSlogan />
-
-      <div class="col-lg-10 col-md-12 col-sm-12">
-        <p class="text-center lead m-3">
-          Cette section présente une liste complète des expressions en Kikongo,
-          regroupant des substantifs et verbes essentiels pour une meilleure
-          compréhension de la langue. Explorez ces expressions avec leurs
-          traductions et enrichissez votre vocabulaire et votre compréhension
-          culturelle du Kikongo.
-        </p>
-      </div>
       <SearchButtons />
-    </div>
+      <ContributorButtons />
+      <AdminButtons />
+    </header>
 
     <!-- Section du tableau des expressions -->
     <section class="row justify-content-center">
       <div class="col-lg-10 col-md-12 col-sm-12">
         <div class="card shadow-sm p-4">
-          <h4 class="card-title text-center text-primary mb-4">
-            Toutes les expressions
+          <h4 class="card-title text-left text-primary mb-4">
+            <i class="fas fa-book"></i> Toutes les expressions
           </h4>
           <ExpressionsTable :paginatedAllWordsVerbs="paginatedAllWordsVerbs" />
           <Pagination
@@ -189,43 +191,3 @@ useHead({
   ],
 });
 </script>
-
-<style scoped>
-.container {
-  max-width: 100%;
-  padding: 0 15px;
-}
-
-.card {
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 1.5rem;
-  color: var(--primary-color);
-}
-
-/* Adaptation aux tablettes */
-@media (max-width: 768px) {
-  .card-title {
-    font-size: 1.25rem;
-  }
-  h4 {
-    font-size: 1.25rem;
-  }
-}
-
-/* Adaptation aux mobiles */
-@media (max-width: 576px) {
-  .card-title {
-    font-size: 1.15rem;
-  }
-  h4 {
-    font-size: 1.15rem;
-  }
-  .lead {
-    font-size: 0.875rem;
-  }
-}
-</style>

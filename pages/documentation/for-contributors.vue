@@ -15,7 +15,7 @@
 
     <!-- Pourquoi devenir contributeur -->
     <section class="mb-5">
-      <h2 class="text-secondary">
+      <h2 class="text-primary">
         <i class="fas fa-question-circle me-2"></i> Pourquoi devenir
         contributeur ?
       </h2>
@@ -45,7 +45,7 @@
 
     <!-- Conditions pour contribuer -->
     <section class="mb-5">
-      <h2 class="text-secondary">
+      <h2 class="text-primary">
         <i class="fas fa-user-check me-2"></i> Conditions pour contribuer
       </h2>
       <p>
@@ -81,7 +81,7 @@
 
     <!-- Comment contribuer -->
     <section class="mb-5">
-      <h2 class="text-secondary">
+      <h2 class="text-primary">
         <i class="fas fa-pencil-alt me-2"></i> Comment contribuer ?
       </h2>
       <p>
@@ -126,7 +126,7 @@
 
     <!-- Soutenir autrement -->
     <section class="mb-5">
-      <h2 class="text-secondary">
+      <h2 class="text-primary">
         <i class="fas fa-hand-holding-heart me-2"></i> Soutenir autrement
       </h2>
       <p>
@@ -154,14 +154,15 @@
     </section>
 
     <!-- Appel à l'action -->
-    <div class="text-center mt-5">
-      <NuxtLink to="/register" class="btn btn-primary btn-lg me-3">
+    <div class="text-center mt-4 mb-4">
+      <NuxtLink to="/register" class="btn btn-outline-primary btn-lg me-3">
         <i class="fas fa-user-plus me-2"></i> Rejoignez-nous maintenant
       </NuxtLink>
       <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
         <i class="fas fa-envelope me-2"></i> Contactez-nous
       </NuxtLink>
     </div>
+    <SearchButtons />
   </div>
 </template>
 
@@ -234,23 +235,4 @@ useHead({
   ],
 });
 </script>
-<style scoped>
-ul,
-ol {
-  padding-left: 1.5rem;
-}
 
-p,
-li {
-  color: var(--text-default);
-}
-
-a {
-  text-decoration: underline;
-}
-
-a:hover {
-  color: var(--hover-primary);
-  text-decoration: none;
-}
-</style>

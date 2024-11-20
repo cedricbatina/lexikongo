@@ -125,12 +125,60 @@ useHead({
     {
       name: "description",
       content:
-        "Aidez à préserver la langue Kikongo en soutenant le projet Lexikongo. Découvrez comment vos dons sont utilisés pour développer des fonctionnalités, enrichir le contenu et étendre l'accès à notre lexique numérique.",
+        "Participez à la préservation de la langue Kikongo en soutenant Lexikongo. Découvrez comment vos contributions permettent d'améliorer notre plateforme et d'enrichir le patrimoine linguistique.",
     },
     {
       name: "keywords",
       content:
-        "Contribuer, Dons, Lexikongo, Kikongo, Préservation linguistique, Langues africaines",
+        "Contribuer, Dons, Lexikongo, Kikongo, Préservation linguistique, Langues africaines, Lexique numérique, Héritage culturel",
+    },
+    {
+      name: "author",
+      content: "Lexikongo",
+    },
+    {
+      name: "robots",
+      content: "index, follow",
+    },
+    {
+      property: "og:title",
+      content:
+        "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
+    },
+    {
+      property: "og:description",
+      content:
+        "Découvrez comment vos contributions aident Lexikongo à enrichir le patrimoine linguistique Kikongo et à offrir des ressources éducatives accessibles.",
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr/contribution",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:image",
+      content: "https://www.lexikongo.fr/images/logo.webp",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content:
+        "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Rejoignez Lexikongo pour préserver la langue Kikongo. Vos dons permettent de développer des outils modernes et d'enrichir le lexique.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
     },
   ],
   script: [
@@ -139,14 +187,42 @@ useHead({
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebPage",
-        name: "Soutenez Lexikongo - Préservez la Langue Kikongo",
+        name: "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
         description:
-          "Découvrez comment contribuer au projet Lexikongo pour enrichir et préserver la langue Kikongo.",
+          "Participez activement à la préservation de la langue Kikongo. Découvrez comment vos dons soutiennent Lexikongo dans son développement et son engagement culturel.",
         url: "https://www.lexikongo.fr/contribution",
+        publisher: {
+          "@type": "Organization",
+          name: "Lexikongo",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+            width: 1200,
+            height: 630,
+          },
+        },
         mainEntity: {
-          "@type": "Action",
-          name: "Faire un don",
-          target: "https://www.lexikongo.fr/contribution",
+          "@type": "DonateAction",
+          name: "Contribuer à Lexikongo",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: "https://www.lexikongo.fr/contribution",
+            actionPlatform: [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/MobileWebPlatform",
+            ],
+          },
+          description:
+            "Contribuez financièrement à Lexikongo pour soutenir le développement de la plateforme et enrichir le patrimoine linguistique Kikongo.",
+          recipient: {
+            "@type": "Organization",
+            name: "Lexikongo",
+            sameAs: "https://www.lexikongo.fr",
+          },
+        },
+        potentialAction: {
+          "@type": "DonateAction",
+          target: "https://www.paypal.com/donate/lexikongo",
         },
       }),
     },

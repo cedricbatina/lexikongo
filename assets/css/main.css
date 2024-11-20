@@ -44,14 +44,6 @@
   margin: 0.5rem 0;
 }
 
-/* Responsive Card Design */
-@media (max-width: 768px) {
-  .card {
-    border: none;
-    box-shadow: none;
-    background-color: transparent;
-  }
-}
 
 
 /* Titres */
@@ -61,16 +53,45 @@
 }
 
 /* Boutons */
+/* Styles pour le titre et le texte principal */
+.display-4 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+}
+
+.lead {
+  font-size: 1.25rem;
+  color: var(--text-default);
+}
+
+/* Styles pour les boutons */
+.btn {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}
+
 .btn-primary {
   background-color: var(--primary-color);
-  border: none;
-  transition: background-color 0.3s ease;
+  border-color: var(--primary-color);
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background-color: var(--hover-primary);
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
 
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+  border-color: #545b62;
+}
 /* Effet d'hover pour les liens */
 a {
   color: var(--primary-color);
@@ -139,9 +160,20 @@ a:hover {
   overflow-x: auto;
 }
 
+
 @media (max-width: 768px) {
   .table thead {
     display: none;
+      .display-4 {
+    font-size: 2rem;
+  }
+  .lead {
+    font-size: 1rem;
+  }
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
   }
 
   .table tbody tr {
@@ -166,5 +198,24 @@ a:hover {
     font-weight: bold;
     color: var(--secondary-color);
     margin-right: 0.5rem;
+  }
+    .card {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+
+}
+
+@media (max-width: 576px) {
+  .display-4 {
+    font-size: 1.75rem;
+  }
+  .lead {
+    font-size: 0.875rem;
   }
 }
