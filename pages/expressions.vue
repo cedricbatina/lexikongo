@@ -1,20 +1,27 @@
 <template>
   <div class="container mt-5">
     <!-- Titre principal -->
-    <div class="text-center mb-4">
-      <h2 class="display-4 text-orange">Lexique Kikongo</h2>
+
+    <header class="text-center mb-4">
+      <h1 class="display-4 text-primary mb-4 mt-4">
+        Liste des mots et verbes en Kikongo
+      </h1>
       <p class="lead">
-        Explorez les mots et verbes en Kikongo et découvrez leurs
-        significations.
+        Découvrez la liste des mots et des verbes en Kikongo, présents dans la
+        base de données, et leurs significations.
       </p>
-    </div>
+      <LogoSlogan />
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </header>
 
     <!-- Colonne pour afficher les mots et verbes -->
     <div class="row justify-content-center">
       <div class="col-lg-10 col-md-12">
         <div class="card shadow-sm p-3">
           <h4 class="card-title text-left text-primary">
-            Tous les Mots et Verbes
+            <i class="fas fa-book"></i> Toutes les expressions
           </h4>
           <ExpressionsTable :paginatedAllWordsVerbs="paginatedAllWordsVerbs" />
           <Pagination
@@ -36,6 +43,101 @@ import ExpressionsTable from "@/components/ExpressionsTable.vue";
 const allWordsVerbs = ref([]);
 const currentPageAllWordsVerbs = ref(1);
 const pageSizeAllWordsVerbs = 30;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Liste des mots et verbes en Kikongo | Lexique Kikongo",
+  description:
+    "Découvrez la liste complète des mots et verbes en Kikongo avec leurs significations en français et en anglais.",
+  url: "https://www.lexikongo.fr/expressions",
+  image: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+  inLanguage: "fr",
+  publisher: {
+    "@type": "Organization",
+    name: "Lexikongo",
+    url: "https://www.lexikongo.fr",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.lexikongo.fr/images/logo.webp",
+      width: 200,
+      height: 200,
+    },
+  },
+  about: {
+    "@type": "Thing",
+    name: "Kikongo Language",
+    sameAs: [
+      "https://en.wikipedia.org/wiki/Kikongo",
+      "https://fr.wikipedia.org/wiki/Kikongo",
+    ],
+  },
+};
+
+useHead({
+  title: "Lexikongo - Liste des mots et verbes en Kikongo",
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
+    },
+  ],
+  meta: [
+    {
+      name: "description",
+      content:
+        "Découvrez la liste complète des mots et verbes en Kikongo avec leurs significations en français et en anglais.",
+    },
+    {
+      name: "keywords",
+      content:
+        "Kikongo, mots, verbes, expressions, lexique, dictionnaire, langue, Congo, Lexikongo, liste des mots, kikongo",
+    },
+    {
+      name: "author",
+      content: "Lexikongo",
+    },
+    // Meta tags Open Graph pour les réseaux sociaux
+    {
+      property: "og:title",
+      content: "Lexikongo - Liste des mots et verbes en Kikongo",
+    },
+    {
+      property: "og:description",
+      content:
+        "Découvrez la liste complète des mots et verbes en Kikongo avec leurs significations en français et en anglais.",
+    },
+    {
+      property: "og:image",
+      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr/expressions",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    // Twitter meta tags
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Lexikongo - Liste des mots et des verbes en Kikongo",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Découvrez la liste complète des mots et verbes en Kikongo avec leurs significations en français et en anglais.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+    },
+  ],
+});
 
 const fetchAllWordsVerbs = async () => {
   try {
@@ -74,7 +176,7 @@ onMounted(async () => {
 
 .card-title {
   font-size: 1.25rem;
-  color: #007bff;
+  color: #ff8a1d;
   text-align: center;
 }
 

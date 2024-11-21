@@ -1,6 +1,10 @@
 <template>
   <div class="container mt-4">
-    <table class="table table-hover" role="table" aria-label="Liste des verbes">
+    <table
+      class="table table-hover verb-list-table"
+      role="table"
+      aria-label="Liste des verbes"
+    >
       <thead>
         <tr>
           <th scope="col" class="text-primary">Verbe</th>
@@ -19,20 +23,19 @@
           :aria-label="`Détails pour le verbe ${item.singular}`"
         >
           <td>
-            <span class="ku-prefix">ku</span>
-            <span class="searchedExpression ms-1">{{ item.singular }}</span>
+            ku <span class="searchedExpression ms-1">{{ item.singular }}</span>
           </td>
           <td>
-            <span class="phonetic">{{ item.phonetic || " " }}</span>
+            <span class="phonetic">{{ item.phonetic || "-" }}</span>
           </td>
           <td>
             <span class="translation_fr">{{
-              truncateText(item.translation_fr, 30) || " "
+              truncateText(item.translation_fr, 30) || "-"
             }}</span>
           </td>
           <td>
             <span class="translation_en">{{
-              truncateText(item.translation_en, 30) || " "
+              truncateText(item.translation_en, 30) || "-"
             }}</span>
           </td>
         </tr>
@@ -85,7 +88,7 @@ const goToDetails = (slug) => {
 };
 
 const truncateText = (text, limit) => {
-  if (!text) return " ";
+  if (!text) return "-";
   return text.length > limit ? text.slice(0, limit) + "..." : text;
 };
 
@@ -94,12 +97,95 @@ onMounted(() => {
 });
 </script>
 
+
 <style scoped>
-/* Styles spécifiques */
-.ku-prefix {
-  color: black;
-  margin-right: 0.25rem;
+.verb-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
 }
 
-/* Les autres styles globaux comme .phonetic, .searchedExpression, etc., sont dans le fichier global */
+.verb-list-table thead th {
+  color: var(--primary-color);
+  font-weight: bold;
+  text-align: left;
+}
+
+.verb-list-table tbody td {
+  vertical-align: middle;
+  padding: 0.75rem;
+  border-top: 1px solid var(--dark-color);
+}
+
+.link-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.link-row:hover {
+  background-color: var(--hover-primary);
+  color: #fff;
+}
+
+.searchedExpression {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.phonetic {
+  font-style: italic;
+  color: var(--highlight-color);
+}
+
+.translation_fr,
+.translation_en {
+  color: var(--text-default);
+  font-size: 0.9rem;
+}
+
+/* Responsive styles for small screens */
+@media (max-width: 576px) {
+  .verb-list-table thead {
+    display: none;
+  }
+
+  .verb-list-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--dark-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+
+  .verb-list-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  .verb-list-table tbody td:nth-child(1)::before {
+    content: "Verbe";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .verb-list-table tbody td:nth-child(2)::before {
+    content: "Phonétique";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .verb-list-table tbody td:nth-child(3)::before {
+    content: "Français";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .verb-list-table tbody td:nth-child(4)::before {
+    content: "Anglais";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+}
 </style>

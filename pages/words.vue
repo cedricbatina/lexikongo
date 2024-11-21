@@ -15,7 +15,7 @@
       <AdminButtons />
     </header>
     <h1 class="card-title text-primary mb-4 text-left">
-      <i class="fa-solid fa-arrow-down-a-z"></i> Liste des Mots
+      <i class="fas fa-spell-check me-1"></i> Liste des Mots
     </h1>
     <!-- Affichage de la liste des mots -->
     <WordList />

@@ -1,6 +1,10 @@
 <template>
   <div class="container mt-4">
-    <table class="table table-hover" role="table" aria-label="Liste des mots">
+    <table
+      class="table table-hover word-list-table"
+      role="table"
+      aria-label="Liste des mots"
+    >
       <thead>
         <tr>
           <th scope="col" class="text-primary">Singulier</th>
@@ -20,22 +24,16 @@
           :aria-label="`Détails pour ${item.singular}`"
         >
           <td>
-            <span class="searchedExpression">{{ item.singular }}</span>
-          </td>
-          <td v-if="item.plural">
-            <span class="searchedExpression">{{ item.plural }}</span>
-          </td>
-          <td v-else>
-            <span class="text-muted">-</span>
-          </td>
-          <td v-if="item.phonetic">
-            <span class="phonetic">{{ item.phonetic }}</span>
-          </td>
-          <td v-else>
-            <span class="text-muted">-</span>
+            <span class="searchedExpression">{{ item.singular || "-" }}</span>
           </td>
           <td>
-            <span class="translation_en">{{
+            <span class="searchedExpression">{{ item.plural || "-" }}</span>
+          </td>
+          <td>
+            <span class="phonetic">{{ item.phonetic || "-" }}</span>
+          </td>
+          <td>
+            <span class="translation_fr">{{
               truncateText(item.translation_fr, 30) || "-"
             }}</span>
           </td>
@@ -56,7 +54,6 @@
     />
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -106,5 +103,99 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Responsiveness and table-specific styles are now in global.css */
+.word-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.word-list-table thead th {
+  color: var(--primary-color);
+  font-weight: bold;
+  text-align: left;
+}
+
+.word-list-table tbody td {
+  vertical-align: middle;
+  padding: 0.75rem;
+  border-top: 1px solid var(--dark-color);
+}
+
+.link-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.link-row:hover {
+  background-color: var(--hover-primary);
+  color: #fff;
+}
+
+.searchedExpression {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.phonetic {
+  font-style: italic;
+  color: var(--highlight-color);
+}
+
+.translation_fr,
+.translation_en {
+  color: var(--text-default);
+  font-size: 0.9rem;
+}
+
+/* Responsive styles for small screens */
+@media (max-width: 576px) {
+  .word-list-table thead {
+    display: none;
+  }
+
+  .word-list-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--dark-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+
+  .word-list-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  .word-list-table tbody td:nth-child(1)::before {
+    content: "Singulier";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .word-list-table tbody td:nth-child(2)::before {
+    content: "Pluriel";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .word-list-table tbody td:nth-child(3)::before {
+    content: "Phonétique";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .word-list-table tbody td:nth-child(4)::before {
+    content: "Français";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .word-list-table tbody td:nth-child(5)::before {
+    content: "Anglais";
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+}
 </style>
