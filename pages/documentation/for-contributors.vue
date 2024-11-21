@@ -177,7 +177,7 @@ const jsonLd = {
   name: "Guide des Contributeurs - Lexikongo",
   description:
     "Découvrez comment enrichir Lexikongo en soumettant des mots et verbes en Kikongo. Rejoignez-nous pour préserver cette langue riche et son patrimoine culturel.",
-  url: "https://www.lexikongo.fr/contributeurs",
+  url: "https://www.lexikongo.fr/contributors",
   image: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
   publisher: {
     "@type": "Organization",
@@ -216,7 +216,7 @@ useHead({
     },
     {
       property: "og:url",
-      content: "https://www.lexikongo.fr/contributeurs",
+      content: "https://www.lexikongo.fr/contributors",
     },
     {
       property: "og:image",

@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { useHead } from "@vueuse/head";
+import { useHead } from "#app";
 
 const jsonLd = {
   "@context": "https://schema.org",

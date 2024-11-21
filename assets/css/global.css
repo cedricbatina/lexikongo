@@ -19,7 +19,7 @@
 /* Texte principal (singulier/pluriel) */
 .searched-text {
   color: var(--primary-color);
-  /*font-weight: bold;*/
+  font-weight: 400;
 }
 
 /* Expressions mises en avant */
@@ -110,18 +110,22 @@
   }
 
   .table tbody tr td:nth-child(1)::before {
-    content: "Sing.";
+    content: "Type";
   }
+  
   .table tbody tr td:nth-child(2)::before {
-    content: "Plur.";
+    content: "Sing./Inf.";
   }
   .table tbody tr td:nth-child(3)::before {
-    content: "Phon.";
+    content: "Plur.";
   }
   .table tbody tr td:nth-child(4)::before {
-    content: "Fr";
+    content: "Phon.";
   }
   .table tbody tr td:nth-child(5)::before {
+    content: "Fr";
+  }
+  .table tbody tr td:nth-child(6)::before {
     content: "En";
   }
 }
@@ -267,4 +271,3 @@
     text-align: center;
   }
 }
-
