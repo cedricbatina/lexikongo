@@ -1,19 +1,19 @@
 <template>
   <div>
-    <!-- Affichage des résultats paginés -->
+    <!-- Résultats de recherche -->
     <div v-if="paginatedWords.length" class="table-responsive">
       <table
         class="table table-hover"
         role="table"
-        aria-label="Résultats de recherche pour les mots"
+        aria-label="Résultats de recherche pour les mots en Kikongo"
       >
         <thead>
           <tr>
-            <th>Sing.</th>
-            <th>Plur.</th>
-            <th>Phon.</th>
-            <th>Fr.</th>
-            <th>En.</th>
+            <th scope="col">Singulier</th>
+            <th scope="col">Pluriel</th>
+            <th scope="col">Phonétique</th>
+            <th scope="col">Français</th>
+            <th scope="col">Anglais</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
             class="link-row"
           >
             <td>
-              <span class="searchedExpression">{{ item.singular }}</span>
+              <span class="searchedExpression">{{ item.singular || "-" }}</span>
             </td>
             <td>
               <span class="searchedExpression">{{ item.plural || "-" }}</span>
@@ -60,8 +60,11 @@
     </div>
 
     <!-- Message si aucun résultat trouvé -->
-    <div v-else-if="searchPerformed" class="mt-4 text-center">
-      <div class="alert alert-info" role="alert">Aucun mot trouvé.</div>
+    <div v-else-if="searchPerformed && !paginatedWords.length" class="mt-4">
+      <div class="alert alert-info text-center" role="alert">
+        Aucun mot trouvé pour "<strong>{{ searchQuery }}</strong
+        >".
+      </div>
     </div>
 
     <!-- Message d'erreur -->
@@ -79,6 +82,10 @@ const props = defineProps({
   searchQuery: {
     type: String,
     default: "",
+  },
+  language: {
+    type: String,
+    default: "kikongo",
   },
 });
 
@@ -99,12 +106,13 @@ const fetchWords = async () => {
 
   try {
     const response = await fetch(
-      `/api/search-words?query=${encodeURIComponent(props.searchQuery)}`
+      `/api/search-words?query=${encodeURIComponent(
+        props.searchQuery
+      )}&language=${props.language}`
     );
     if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-
     const result = await response.json();
-    words.value = result;
+    words.value = result || [];
     searchPerformed.value = true;
     error.value = null;
   } catch (err) {
@@ -114,9 +122,8 @@ const fetchWords = async () => {
   }
 };
 
-// Watcher pour surveiller les changements de searchQuery
 watch(
-  () => props.searchQuery,
+  () => [props.searchQuery, props.language],
   () => {
     currentPage.value = 1;
     fetchWords();

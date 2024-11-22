@@ -1,5 +1,5 @@
 // api/search-words.js
-/*
+
 import { getConnection } from "./db.config";
 import { getQuery } from "h3";
 
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
     return { error: "Erreur lors de la récupération des mots." };
   }
 });
-*/
+/*
 import { getConnection } from "./db.config";
 import { getQuery } from "h3"; // Pour récupérer les paramètres de la requête
 
@@ -92,3 +92,4 @@ export default defineEventHandler(async (event) => {
     return { error: "Erreur lors de la récupération des mots." };
   }
 });
+*/

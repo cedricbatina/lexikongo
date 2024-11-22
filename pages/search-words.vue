@@ -210,6 +210,8 @@ const fetchResults = async () => {
     items.value = [];
   }
 };
+console.log("Requête API reçue :", query);
+console.log("Résultats retournés :", results);
 
 const paginatedWords = computed(() => {
   const start = (currentPage.value - 1) * pageSize;

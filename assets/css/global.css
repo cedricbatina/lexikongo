@@ -269,7 +269,32 @@ ol li {
     margin-bottom: 0;
   }
 }
-
+/* Styles pour le bouton Effacer */
+.btn-effacer {
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* Visually hidden class for accessibility */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.btn-effacer:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+}
 /* Visually hidden class for accessibility */
 .visually-hidden {
   position: absolute !important;

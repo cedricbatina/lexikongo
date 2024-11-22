@@ -38,7 +38,10 @@
         Vous ne trouvez pas un verbe spécifique ? Participez à enrichir notre
         base de données ou contactez-nous pour plus d'informations.
       </p>
-      <NuxtLink to="/contributors" class="btn btn-outline-success btn-lg me-3">
+      <NuxtLink
+        to="/documentation/for-contributors"
+        class="btn btn-outline-success btn-lg me-3"
+      >
         <i class="fas fa-hands-helping me-2"></i> Contribuez
       </NuxtLink>
       <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
@@ -48,11 +51,6 @@
   </div>
 </template>
 
----
-
-### Script Amélioré (SEO et Recherche)
-
-```vue
 <script setup>
 import { ref } from "vue";
 import { useHead } from "#app";
