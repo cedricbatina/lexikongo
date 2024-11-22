@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Résultats de recherche -->
+    <!-- Résultats paginés -->
     <div v-if="paginatedWords.length" class="table-responsive">
       <table
         class="table table-hover"
@@ -9,11 +9,11 @@
       >
         <thead>
           <tr>
-            <th scope="col">Singulier</th>
-            <th scope="col">Pluriel</th>
-            <th scope="col">Phonétique</th>
-            <th scope="col">Français</th>
-            <th scope="col">Anglais</th>
+            <th>Singulier</th>
+            <th>Pluriel</th>
+            <th>Phonétique</th>
+            <th>Français</th>
+            <th>Anglais</th>
           </tr>
         </thead>
         <tbody>
@@ -25,7 +25,9 @@
             @keydown.space.prevent="goToDetails(item.slug)"
             tabindex="0"
             role="button"
-            :aria-label="`Voir les détails du mot ${item.singular}`"
+            :aria-label="`Voir les détails du mot ${
+              item.singular || 'mot inconnu'
+            }`"
             class="link-row"
           >
             <td>
@@ -60,16 +62,18 @@
     </div>
 
     <!-- Message si aucun résultat trouvé -->
-    <div v-else-if="searchPerformed && !paginatedWords.length" class="mt-4">
-      <div class="alert alert-info text-center" role="alert">
-        Aucun mot trouvé pour "<strong>{{ searchQuery }}</strong
-        >".
+    <div
+      v-else-if="searchPerformed && !paginatedWords.length"
+      class="mt-4 text-center"
+    >
+      <div class="alert alert-info" role="alert">
+        Aucun mot trouvé pour votre recherche.
       </div>
     </div>
 
     <!-- Message d'erreur -->
-    <div v-if="error" class="alert alert-danger" role="alert">
-      {{ error }}
+    <div v-if="errorMessage" class="alert alert-danger mt-4" role="alert">
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -77,87 +81,89 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import Pagination from "@/components/Pagination.vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
-  searchQuery: {
-    type: String,
-    default: "",
-  },
-  language: {
-    type: String,
-    default: "kikongo",
+  results: {
+    type: Array,
+    default: () => [], // Par défaut, un tableau vide
   },
 });
 
-const words = ref([]);
-const currentPage = ref(1);
-const pageSize = 15;
-const searchPerformed = ref(false);
-const error = ref(null);
+const words = ref([]); // Données affichées
+const searchPerformed = ref(false); // Indique si une recherche a été effectuée
+const errorMessage = ref(null); // Message d'erreur
 
-// Fonction pour récupérer les mots depuis l'API
-const fetchWords = async () => {
-  if (!props.searchQuery.trim()) {
-    words.value = [];
-    searchPerformed.value = false;
-    error.value = null;
+const currentPage = ref(1); // Page actuelle
+const pageSize = 15; // Nombre d'éléments par page
+
+const router = useRouter();
+
+// Naviguer vers les détails
+const goToDetails = (slug) => {
+  if (!slug) {
+    errorMessage.value = "Une erreur s'est produite : identifiant introuvable.";
     return;
   }
+  router.push(`/details/word/${slug}`);
+};
 
-  try {
-    const response = await fetch(
-      `/api/search-words?query=${encodeURIComponent(
-        props.searchQuery
-      )}&language=${props.language}`
-    );
-    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-    const result = await response.json();
-    words.value = result || [];
-    searchPerformed.value = true;
-    error.value = null;
-  } catch (err) {
-    words.value = [];
-    searchPerformed.value = true;
-    error.value = "Erreur lors de la récupération des mots.";
+// Changer de page
+const changePage = (page) => {
+  if (page > 0 && page <= totalPages.value) {
+    currentPage.value = page;
+  } else {
+    errorMessage.value = "Numéro de page invalide.";
   }
 };
 
-watch(
-  () => [props.searchQuery, props.language],
-  () => {
-    currentPage.value = 1;
-    fetchWords();
-  },
-  { immediate: true }
-);
-
-// Calcul des mots paginés
+// Calculer les mots paginés
 const paginatedWords = computed(() => {
   const start = (currentPage.value - 1) * pageSize;
   return words.value.slice(start, start + pageSize);
 });
 
-// Calcul du nombre total de pages
+// Calculer le nombre total de pages
 const totalPages = computed(() => Math.ceil(words.value.length / pageSize));
 
-// Fonction pour changer de page
-const changePage = (page) => {
-  if (page > 0 && page <= totalPages.value) {
-    currentPage.value = page;
-  }
-};
-
-// Fonction pour rediriger vers les détails
-const goToDetails = (slug) => {
-  if (!slug) {
-    console.error("Slug est indéfini pour cet élément");
-    return;
-  }
-  window.location.href = `/details/word/${slug}`;
-};
+// Watcher pour surveiller les changements de props.results
+watch(
+  () => props.results,
+  (newResults) => {
+    if (Array.isArray(newResults)) {
+      words.value = newResults;
+      searchPerformed.value = true;
+      errorMessage.value = null; // Réinitialise le message d'erreur
+      currentPage.value = 1; // Réinitialiser à la première page
+    } else {
+      errorMessage.value = "Format de données inattendu. Veuillez réessayer.";
+    }
+  },
+  { immediate: true }
+);
 </script>
 
+
+
+
 <style scoped>
-/* Aucun style redondant ici */
-/* Tout repose sur les classes et variables de `global.css` pour les couleurs et la responsivité */
+/* Style cohérent avec VerbSearchResults */
+.table {
+  margin-bottom: 0;
+}
+
+.link-row {
+  cursor: pointer;
+}
+
+.link-row:hover {
+  background-color: var(--hover-primary);
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
 </style>

@@ -215,7 +215,7 @@ const jsonLd = {
   name: "Rejoignez la Communauté - Contributeurs de Lexikongo",
   description:
     "Rejoignez Lexikongo pour contribuer à enrichir le lexique Kikongo, préserver cette langue unique, et participer activement à un projet culturel et éducatif ambitieux. Découvrez comment vous impliquer dès aujourd'hui.",
-  url: "https://www.lexikongo.fr/for-contributors",
+  url: "https://www.lexikongo.fr/documentation/for-contributors",
   image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
   publisher: {
     "@type": "Organization",
@@ -241,7 +241,7 @@ const jsonLd = {
     "@type": "JoinAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: "https://www.lexikongo.fr/for-contributors",
+      urlTemplate: "https://www.lexikongo.fr/documentation/for-contributors",
     },
     description:
       "Rejoignez la communauté Lexikongo et contribuez à la préservation de la langue Kikongo en participant activement à notre projet.",
@@ -289,7 +289,7 @@ useHead({
     },
     {
       property: "og:url",
-      content: "https://www.lexikongo.fr/for-contributors",
+      content: "https://www.lexikongo.fr/documentation/for-contributors",
     },
     {
       property: "og:type",

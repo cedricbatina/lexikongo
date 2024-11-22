@@ -16,7 +16,9 @@
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
         <div class="card shadow-sm p-4 mb-4">
-          <h4 class="card-title text-left text-primary">Recherche</h4>
+          <h4 class="card-title text-left text-primary">
+            <i class="fa-solid fa-magnifying-glass"></i> Recherche
+          </h4>
           <SearchingForm @search="handleSearch" />
         </div>
 
@@ -49,7 +51,7 @@
           verbes.
         </p>
         <NuxtLink
-          to="/for-contributors"
+          to="/documentation/for-contributors"
           class="btn btn-outline-success btn-lg me-3"
         >
           <i class="fas fa-hands-helping me-2"></i> Rejoignez les Contributeurs

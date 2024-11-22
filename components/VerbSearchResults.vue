@@ -9,10 +9,10 @@
       >
         <thead>
           <tr>
-            <th>Sing.</th>
-            <th>Phon.</th>
-            <th>Fr.</th>
-            <th>En.</th>
+            <th>Infinitif</th>
+            <th>Phonétique</th>
+            <th>Français</th>
+            <th>Anglais</th>
           </tr>
         </thead>
         <tbody>

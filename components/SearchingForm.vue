@@ -1,9 +1,5 @@
 <template>
-  <form
-    @submit.prevent="submitSearch"
-    role="search"
-    aria-label="Formulaire de recherche"
-  >
+  <form @submit.prevent role="search" aria-label="Formulaire de recherche">
     <div class="input-group">
       <label for="search-input" class="visually-hidden">Recherche</label>
       <input
@@ -81,19 +77,8 @@ const languageLabel = computed(() => {
 </script>
 
 <style scoped>
-/* Utilisation des variables CSS pour les couleurs */
-:root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
-  --secondary-color: #a52a2a;
-  --dark-color: #2a0600;
-  --highlight-color: #28a745;
-  --text-default: #03080d;
-  --third-color: #ff4500;
-}
-
 /* Styles pour le bouton Effacer */
-.btn-effacer {
+.btn-clear {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   background-color: transparent;
@@ -102,7 +87,7 @@ const languageLabel = computed(() => {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-effacer:hover {
+.btn-clear:hover {
   background-color: var(--primary-color);
   color: #fff;
   cursor: pointer;
@@ -130,12 +115,12 @@ const languageLabel = computed(() => {
 
   .form-control,
   .form-select,
-  .btn-effacer {
+  .btn-clear {
     width: 100%;
     margin-bottom: 0.5rem;
   }
 
-  .btn-effacer {
+  .btn-clear {
     margin-bottom: 0;
   }
 }

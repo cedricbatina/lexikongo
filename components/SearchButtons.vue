@@ -15,8 +15,8 @@
     <nuxt-link to="/expressions" class="btn btn-outline-info m-2">
       <i class="fas fa-book"></i> Liste de mots & verbes
     </nuxt-link>
-    <nuxt-link to="/for-contributors" class="btn btn-outline-warning m-2">
-      <i class="fas fa-book"></i> Contribuer sur Lexikongo
+    <nuxt-link to="/for-contributors" class="btn btn-outline-success m-2">
+      <i class="fas fa-hands-helping me-2"></i> Contribuer sur Lexikongo
     </nuxt-link>
     <nuxt-link to="/" class="btn btn-outline-secondary m-2">
       <i class="fas fa-home"></i> Retour à l'accueil

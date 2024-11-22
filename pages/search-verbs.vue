@@ -17,7 +17,7 @@
       <div class="col-lg-8 col-md-10 col-sm-12">
         <div class="card shadow-sm p-4">
           <h4 class="card-title text-primary mb-4">
-            Recherche par langue et mot-clé
+            <i class="fa-solid fa-magnifying-glass"></i> Recherche
           </h4>
           <VerbSearchForm
             @search="handleSearch"
