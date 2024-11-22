@@ -18,9 +18,7 @@
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
         <div class="card shadow-sm p-4 mb-4">
-          <h4 class="card-title text-left text-primary">
-            Lancez votre recherche
-          </h4>
+          <h4 class="card-title text-left text-primary">Recherche</h4>
           <SearchingForm
             @search="handleSearch"
             :languages="['kg', 'fr', 'en']"
@@ -84,7 +82,7 @@ import Pagination from "@/components/Pagination.vue";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Lexikongo - Recherche de Mots et Verbes en Kikongo",
+  name: "Lexikongo - Recherche de mots en Kikongo",
   description:
     "Découvrez des mots, verbes et expressions en Kikongo, Français ou Anglais. Recherchez des traductions, significations et détails phonétiques pour enrichir votre connaissance de cette langue fascinante.",
   url: "https://www.lexikongo.fr/search-words",
@@ -117,7 +115,7 @@ const jsonLd = {
 };
 
 useHead({
-  title: "Lexikongo - Recherche de Mots et Verbes en Kikongo",
+  title: "Lexikongo - Recherche de mots et verbes en Kikongo",
   script: [
     {
       type: "application/ld+json",
@@ -145,7 +143,7 @@ useHead({
     },
     {
       property: "og:title",
-      content: "Lexikongo - Recherche de Mots et Verbes en Kikongo",
+      content: "Lexikongo - Recherche de mots en Kikongo",
     },
     {
       property: "og:description",

@@ -61,7 +61,6 @@
     </div>
 
     <section class="text-center mt-4 mb-4">
-      <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />

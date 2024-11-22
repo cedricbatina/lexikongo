@@ -1,25 +1,61 @@
 <template>
   <div class="container mt-5">
     <!-- Titre principal -->
-    <div class="text-center mb-4">
-      <h1 class="display-4 text-primary">Recherche de Verbes en Kikongo</h1>
-      <p class="lead">
-        Recherchez des verbes en Kikongo et découvrez leurs conjugaisons et
-        significations.
+    <header class="text-center mb-4">
+      <h1 class="display-4 text-primary mb-4 mt-4">
+        <i class="fa-solid fa-search me-2"></i> Recherche de Verbes en Kikongo
+      </h1>
+      <p class="lead text-muted">
+        Recherchez des verbes en Kikongo et découvrez leurs conjugaisons, leurs
+        significations en français et en anglais. Explorez la richesse des
+        verbes de cette langue fascinante.
       </p>
+    </header>
+
+    <!-- Section de recherche -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card shadow-sm p-4">
+          <h4 class="card-title text-primary mb-4">
+            Recherche par langue et mot-clé
+          </h4>
+          <VerbSearchForm
+            @search="handleSearch"
+            :languages="['kg', 'fr', 'en']"
+          />
+        </div>
+      </div>
     </div>
 
-    <!-- Formulaire de recherche -->
-    <VerbSearchForm @search="handleSearch" />
-
     <!-- Résultats de la recherche -->
-    <VerbSearchResults :searchQuery="searchQuery" />
+    <section v-if="searchQuery" class="mt-5">
+      <VerbSearchResults :searchQuery="searchQuery" />
+    </section>
+
+    <!-- Appel à l'action -->
+    <section class="text-center mt-5">
+      <p class="text-muted">
+        Vous ne trouvez pas un verbe spécifique ? Participez à enrichir notre
+        base de données ou contactez-nous pour plus d'informations.
+      </p>
+      <NuxtLink to="/contributors" class="btn btn-outline-success btn-lg me-3">
+        <i class="fas fa-hands-helping me-2"></i> Contribuez
+      </NuxtLink>
+      <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
+        <i class="fas fa-envelope me-2"></i> Contactez-nous
+      </NuxtLink>
+    </section>
   </div>
 </template>
 
+---
+
+### Script Amélioré (SEO et Recherche)
+
+```vue
 <script setup>
 import { ref } from "vue";
-import { useHead } from "#app"; // Importation de useHead pour Nuxt 3
+import { useHead } from "#app";
 import VerbSearchForm from "@/components/VerbSearchForm.vue";
 import VerbSearchResults from "@/components/VerbSearchResults.vue";
 
@@ -29,37 +65,82 @@ const handleSearch = (query) => {
   searchQuery.value = query;
 };
 
-// Configuration des meta tags SEO
+// SEO Configuration
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Recherche de Verbes en Kikongo | Lexikongo",
+  description:
+    "Recherchez des verbes en Kikongo et découvrez leurs conjugaisons ainsi que leurs significations en français et anglais. Explorez notre base enrichie de verbes Kikongo.",
+  url: "https://www.lexikongo.fr/search-verbs",
+  image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+  inLanguage: "fr",
+  publisher: {
+    "@type": "Organization",
+    name: "Lexikongo",
+    url: "https://www.lexikongo.fr",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+      width: 200,
+      height: 200,
+    },
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target:
+      "https://www.lexikongo.fr/search-verbs?q={search_term_string}&lang={lang}",
+    "query-input": ["required name=search_term_string", "optional name=lang"],
+  },
+  about: {
+    "@type": "Thing",
+    name: "Kikongo Verbs",
+    sameAs: [
+      "https://en.wikipedia.org/wiki/Kikongo",
+      "https://fr.wikipedia.org/wiki/Kikongo",
+    ],
+  },
+};
+
 useHead({
-  title: "Lexikongo - Recherche de Verbes en Kikongo",
+  title: "Recherche de Verbes en Kikongo | Lexikongo",
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
+    },
+  ],
   meta: [
     {
       name: "description",
       content:
-        "Recherchez des verbes en Kikongo et découvrez leurs conjugaisons et significations en français et en anglais.",
+        "Recherchez des verbes en Kikongo et découvrez leurs conjugaisons, ainsi que leurs significations en français et en anglais. Une ressource pour explorer la richesse des verbes Kikongo.",
     },
     {
       name: "keywords",
       content:
-        "Kikongo, recherche, verbes, conjugaison, lexique, dictionnaire, langue, Congo, Lexikongo",
+        "Kikongo, verbes, conjugaison, recherche, langue africaine, traduction, français, anglais, linguistique, patrimoine culturel, expressions Kikongo",
     },
     {
       name: "author",
       content: "Lexikongo",
     },
-    // Meta tags Open Graph pour les réseaux sociaux
+    {
+      name: "robots",
+      content: "index, follow",
+    },
     {
       property: "og:title",
-      content: "Lexikongo - Recherche de Verbes en Kikongo",
+      content: "Recherche de Verbes en Kikongo | Lexikongo",
     },
     {
       property: "og:description",
       content:
-        "Recherchez des verbes en Kikongo et découvrez leurs conjugaisons et significations en français et en anglais.",
+        "Explorez un dictionnaire complet des verbes en Kikongo avec leurs conjugaisons et significations en français et en anglais.",
     },
     {
       property: "og:image",
-      content: "/images/lexikongo-cover.jpg", // Remplacez par le chemin réel de votre image
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
     },
     {
       property: "og:url",
@@ -69,17 +150,26 @@ useHead({
       name: "twitter:card",
       content: "summary_large_image",
     },
+    {
+      name: "twitter:title",
+      content: "Recherche de Verbes en Kikongo | Lexikongo",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Découvrez les conjugaisons et significations des verbes en Kikongo grâce à notre base de données enrichie.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+    },
   ],
 });
 </script>
 
-<style scoped>
-/* Variables CSS pour les couleurs */
-:root {
-  --primary-color: #007bff;
-  --text-default: #03080d;
-}
 
+
+<style scoped>
 /* Styles pour le titre et le texte principal */
 .display-4 {
   font-size: 2.5rem;
