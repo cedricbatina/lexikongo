@@ -3,7 +3,7 @@
     <!-- Titre principal -->
     <header class="text-center mb-4">
       <h1 class="display-4 text-primary mb-4 mt-4">
-        Recherche de mots et verbes
+        <i class="fa-solid fa-magnifying-glass"></i> Recherche de mots et verbes
       </h1>
       <p class="lead">
         Recherchez, dans le formulaire ci-dessous, des mots et verbes en Kikongo
@@ -41,11 +41,31 @@
           Aucun mot trouvé.
         </div>
       </div>
+      <!-- Appel à l'action -->
+      <section class="text-center mt-4">
+        <p class="text-default">
+          Vous ne trouvez pas ce que vous cherchez ? <br />
+          Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou
+          verbes.
+        </p>
+        <NuxtLink
+          to="/for-contributors"
+          class="btn btn-outline-success btn-lg me-3"
+        >
+          <i class="fas fa-hands-helping me-2"></i> Rejoignez les Contributeurs
+        </NuxtLink>
+        <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
+          <i class="fas fa-envelope me-2"></i> Contactez-nous
+        </NuxtLink>
+      </section>
     </div>
 
-    <SearchButtons />
-    <ContributorButtons />
-    <AdminButtons />
+    <section class="text-center mt-4 mb-4">
+      <LogoSlogan />
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </section>
   </div>
 </template>
 
@@ -57,26 +77,118 @@ import SearchingForm from "@/components/SearchingForm.vue";
 import SearchingResults from "@/components/SearchingResults.vue";
 import Pagination from "@/components/Pagination.vue";
 import AdminButtons from "@/components/AdminButtons.vue";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Lexikongo - Explorez le Lexique Kikongo Complet",
+  description:
+    "Accédez à un lexique complet des mots et expressions en Kikongo avec des traductions précises en français et en anglais. Découvrez la richesse de cette langue africaine.",
+  url: "https://www.lexikongo.fr",
+  image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+  inLanguage: "fr",
+  publisher: {
+    "@type": "Organization",
+    name: "Lexikongo",
+    url: "https://www.lexikongo.fr",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+      width: 200,
+      height: 200,
+    },
+  },
+  mainEntity: {
+    "@type": "CreativeWork",
+    headline: "Lexikongo - Le Lexique Kikongo à Portée de Main",
+    text: "Lexikongo offre un dictionnaire complet des mots, verbes et expressions en Kikongo, avec des traductions en français et en anglais, ainsi que des informations phonétiques et étymologiques.",
+    author: {
+      "@type": "Organization",
+      name: "Lexikongo",
+    },
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://www.lexikongo.fr/words?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+  about: {
+    "@type": "Thing",
+    name: "Kikongo Language",
+    sameAs: [
+      "https://en.wikipedia.org/wiki/Kikongo",
+      "https://fr.wikipedia.org/wiki/Kikongo",
+    ],
+  },
+};
 
 // Configuration des meta tags SEO
 useHead({
-  title: "Lexikongo - Lexique Kikongo en ligne",
+  title: "Lexikongo - Découvrez le Lexique Complet en Kikongo",
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
+    },
+  ],
   meta: [
     {
       name: "description",
       content:
-        "Recherchez des mots et verbes en Kikongo et découvrez leurs significations.",
+        "Explorez le lexique complet des mots en Kikongo avec leurs significations en français et en anglais. Apprenez la phonétique et l'étymologie des mots Kikongo.",
     },
     {
       name: "keywords",
       content:
-        "Kikongo, dictionnaire, lexique, recherche, mots, verbes, lexikongo, langue, Congo",
+        "Kikongo, lexique Kikongo, mots Kikongo, verbes kikongo, langue africaine, Congo, patrimoine, culture, dictionnaire Kikongo, traduction Kikongo, culture africaine, expressions Kikongo, Kikongo - Français",
     },
     {
       name: "author",
       content: "Lexikongo",
     },
-    // Vous pouvez ajouter d'autres meta tags si nécessaire
+    {
+      name: "robots",
+      content: "index, follow",
+    },
+    // Meta tags Open Graph pour les réseaux sociaux
+    {
+      property: "og:title",
+      content: "Lexikongo - Découvrez le Lexique Complet en Kikongo",
+    },
+    {
+      property: "og:description",
+      content:
+        "Accédez à un dictionnaire complet en Kikongo avec des traductions précises en français et en anglais. Explorez la richesse de cette langue africaine.",
+    },
+    {
+      property: "og:image",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    // Twitter meta tags
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Lexikongo - Explorez le Lexique Complet en Kikongo",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Découvrez le lexique complet des mots en Kikongo avec des traductions en français et en anglais. Une ressource pour préserver cette langue africaine.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+    },
   ],
 });
 

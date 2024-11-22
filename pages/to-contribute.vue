@@ -3,7 +3,7 @@
     <!-- En-tête principale -->
     <header class="text-center mb-5">
       <h1 class="display-4 text-primary mb-4 mt-4">
-        <i class="fas fa-hands-helping me-2"></i> Rejoignez la communauté
+        <i class="fas fa-hands-helping me-2"></i> Rejoignez la Communauté
         Lexikongo
       </h1>
       <p class="lead text-default">
@@ -70,14 +70,14 @@
       <ul>
         <li>
           <strong>Connaissances linguistiques :</strong> Avoir une maîtrise de
-          base du Kikongo ou suivre le cours:
+          base du Kikongo ou suivre notre
           <a
-            href="https://longoka.fr/course/apprenez-les-bases-du-kikongo-classique/"
+            href="https://longoka.fr/cours/apprenez-les-bases-du-kikongo-classique/"
             target="_blank"
             rel="noopener noreferrer"
             class="text-primary fw-bold"
           >
-            Apprenez les bases du kikongo classique</a
+            cours sur le Kikongo classique</a
           >.
         </li>
         <li>
@@ -85,20 +85,7 @@
           <NuxtLink to="/register" class="text-primary fw-bold">
             Inscrivez-vous gratuitement
           </NuxtLink>
-          pour accéder aux outils de contribution. Après avoir confirmé votre
-          inscription en cliquant sur lien envoyé, dans votre boîte mail. Si
-          vous ne voyez pas l'email, vérifiez les spams. Une fois inscrit,
-          faites une demande de contribution en envoyant un message à
-          l'administrateur, via le formulaire de contact:
-          <NuxtLink to="/contact" class="text-primary fw-bold">
-            Formulaire de contact </NuxtLink
-          >. <br />
-          <p>
-            Vous pouvez directement envoyer un email à l'adresse :
-            <a href="mailto:info@lexikongo.fr" class="email-link fw-bold"
-              >info@lexikongo.fr</a
-            >
-          </p>
+          pour accéder aux outils de contribution.
         </li>
         <li>
           <strong>Respect des consignes :</strong> Soumettez des données
@@ -115,9 +102,9 @@
       <p>Contribuer à Lexikongo est un processus simple et structuré :</p>
       <ol>
         <li>
-          <strong>Inscrivez-vous :</strong> Créez un compte sur notre plateforme
+          <strong>Inscrivez-vous :</strong> Créez un compte sur notre
           <NuxtLink to="/register" class="text-primary fw-bold">
-            Lexikongo </NuxtLink
+            page d’inscription </NuxtLink
           >.
         </li>
         <li>
@@ -175,10 +162,10 @@
       </p>
       <ul>
         <li>
-          <strong>Faire un don :</strong> Visitez notre page
+          <strong>Faire un don :</strong> Visitez notre
           <NuxtLink to="/contribution" class="text-primary fw-bold">
-            Contribution</NuxtLink
-          >, pour savoir commment votre don sera utilisé.
+            page de dons </NuxtLink
+          >.
         </li>
         <li>
           <strong>Partager Lexikongo :</strong> Faites connaître notre
@@ -193,11 +180,11 @@
 
     <!-- Appel à l'action -->
     <div class="text-center mt-4">
-      <NuxtLink to="/register" class="btn btn-outline-primary btn-lg me-3">
+      <NuxtLink to="/register" class="btn btn-primary btn-lg me-3">
         <i class="fas fa-user-plus me-2"></i> Rejoignez-nous
       </NuxtLink>
       <NuxtLink to="/contribution" class="btn btn-outline-success btn-lg me-3">
-        <i class="fas fa-donate me-2"></i> Faire un Don à Lexikongo
+        <i class="fas fa-donate me-2"></i> Contribuez avec un Don
       </NuxtLink>
       <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
         <i class="fas fa-envelope me-2"></i> Contactez-nous
@@ -206,145 +193,18 @@
   </div>
 </template>
 
-
-<script setup>
-import { useHead } from "@vueuse/head";
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Rejoignez la Communauté - Contributeurs de Lexikongo",
-  description:
-    "Rejoignez Lexikongo pour contribuer à enrichir le lexique Kikongo, préserver cette langue unique, et participer activement à un projet culturel et éducatif ambitieux. Découvrez comment vous impliquer dès aujourd'hui.",
-  url: "https://www.lexikongo.fr/for-contributors",
-  image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-  publisher: {
-    "@type": "Organization",
-    name: "Lexikongo",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-      width: 200,
-      height: 200,
-    },
-  },
-  mainEntity: {
-    "@type": "CreativeWork",
-    headline:
-      "Rejoignez Lexikongo - Participez à la préservation et à l’enrichissement du lexique Kikongo",
-    text: "Découvrez comment rejoindre notre communauté de contributeurs et aider à préserver la langue Kikongo. Devenez un acteur clé dans la création d'une ressource linguistique et culturelle inestimable.",
-    author: {
-      "@type": "Organization",
-      name: "Lexikongo",
-    },
-  },
-  potentialAction: {
-    "@type": "JoinAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: "https://www.lexikongo.fr/for-contributors",
-    },
-    description:
-      "Rejoignez la communauté Lexikongo et contribuez à la préservation de la langue Kikongo en participant activement à notre projet.",
-  },
-  about: {
-    "@type": "Thing",
-    name: "Kikongo Language",
-    sameAs: [
-      "https://en.wikipedia.org/wiki/Kikongo",
-      "https://fr.wikipedia.org/wiki/Kikongo",
-    ],
-  },
-};
-
-useHead({
-  title: "Rejoignez la Communauté - Contributeurs de Lexikongo",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Rejoignez Lexikongo pour enrichir le lexique Kikongo, préserver cette langue unique, et participer à un projet culturel et éducatif ambitieux. Découvrez comment vous impliquer.",
-    },
-    {
-      name: "keywords",
-      content:
-        "Lexikongo, contributeurs, langue Kikongo, préservation linguistique, lexique Kikongo, culture africaine, langue africaine, communauté linguistique",
-    },
-    {
-      name: "robots",
-      content: "index, follow",
-    },
-    // Meta Open Graph pour les réseaux sociaux
-    {
-      property: "og:title",
-      content: "Rejoignez la Communauté - Contributeurs de Lexikongo",
-    },
-    {
-      property: "og:description",
-      content:
-        "Participez activement à la préservation de la langue Kikongo en rejoignant notre communauté de contributeurs passionnés. Aidez-nous à enrichir un lexique linguistique unique.",
-    },
-    {
-      property: "og:image",
-      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-    },
-    {
-      property: "og:url",
-      content: "https://www.lexikongo.fr/for-contributors",
-    },
-    {
-      property: "og:type",
-      content: "website",
-    },
-    // Twitter meta tags
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-    {
-      name: "twitter:title",
-      content: "Rejoignez la Communauté - Contributeurs de Lexikongo",
-    },
-    {
-      name: "twitter:description",
-      content:
-        "Découvrez comment contribuer à Lexikongo pour enrichir le lexique Kikongo, préserver cette langue unique, et participer à un projet culturel ambitieux.",
-    },
-    {
-      name: "twitter:image",
-      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-    },
-  ],
-  script: [
-    {
-      type: "application/ld+json",
-      children: JSON.stringify(jsonLd),
-    },
-  ],
-});
-</script>
-
-
-
-
 <style scoped>
-.contributors-page {
-  max-width: 800px;
-  margin: 0 auto;
+ul,
+ol {
+  margin-left: 1.5rem;
 }
 
-a {
-  text-decoration: none;
-}
-.btn-lg {
-  margin-top: 1rem;
+.btn {
+  border-radius: 0.25rem;
 }
 
 @media (max-width: 768px) {
-  .contributors-page {
-    padding: 0.5rem;
-  }
-
-  .btn-lg {
+  .btn {
     width: 100%;
     margin-bottom: 1rem;
   }

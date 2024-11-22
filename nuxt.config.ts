@@ -48,8 +48,8 @@ export default defineNuxtConfig({
     name: 'Lexikongo'  // Optionnel, nom du site
   },
   sitemap: {
-    // Configuration spécifique au module Sitemap
-    // trailingSlash: true // Garder les barres obliques finales si nécessaire
-  },
 
-})
+  },
+},
+
+)

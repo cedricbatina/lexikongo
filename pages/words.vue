@@ -3,23 +3,27 @@
     <!-- Titre principal -->
     <header class="text-center mb-4">
       <h1 class="display-4 text-primary mb-4 mt-4">
-        Liste des mots en Kikongo
+        <i class="fas fa-spell-check me-1"></i> Liste des mots en Kikongo
       </h1>
       <p class="lead">
         Découvrez la liste des mots en Kikongo, présents dans la base de
         données, et leurs significations.
       </p>
+    </header>
+    <section class="text-center mb-4 mt-4">
       <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />
-    </header>
+    </section>
     <h1 class="card-title text-primary mb-4 text-left">
       <i class="fas fa-spell-check me-1"></i> Liste des Mots
     </h1>
     <!-- Affichage de la liste des mots -->
     <WordList />
-    <SearchButtons />
+    <div class="text-center mt-4 mb-4">
+      <SearchButtons />
+    </div>
   </div>
 </template>
 
@@ -32,9 +36,9 @@ const jsonLd = {
   "@type": "WebPage",
   name: "Liste des Mots en Kikongo | Lexique Kikongo",
   description:
-    "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
+    "Explorez la liste exhaustive des mots en Kikongo, enrichie de traductions précises en français et en anglais, ainsi que de leur phonétique et étymologie.",
   url: "https://www.lexikongo.fr/words",
-  image: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+  image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
   inLanguage: "fr",
   publisher: {
     "@type": "Organization",
@@ -42,7 +46,7 @@ const jsonLd = {
     url: "https://www.lexikongo.fr",
     logo: {
       "@type": "ImageObject",
-      url: "https://www.lexikongo.fr/images/logo.webp",
+      url: "https://www.lexikongo.fr/images/text_logo@1x.webp",
       width: 200,
       height: 200,
     },
@@ -55,44 +59,50 @@ const jsonLd = {
       "https://fr.wikipedia.org/wiki/Kikongo",
     ],
   },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://www.lexikongo.fr/search?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
 };
 
 useHead({
-  title: "Lexikongo - Liste des Mots en Kikongo",
-  script: [
-    {
-      type: "application/ld+json",
-      children: JSON.stringify(jsonLd),
-    },
-  ],
+  title: "Lexikongo - Découvrez et Explorez les Mots en Kikongo",
   meta: [
+    // Meta Description
     {
       name: "description",
       content:
-        "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
+        "Explorez le lexique complet des mots en Kikongo, incluant leurs traductions en français et en anglais, leur phonétique et leurs origines culturelles.",
     },
+    // Meta Keywords
     {
       name: "keywords",
       content:
-        "Kikongo, mots, lexique, dictionnaire, langue, Congo, Lexikongo, liste des mots",
+        "Kikongo, dictionnaire Kikongo, mots en Kikongo, traduction Kikongo, langue africaine, lexique, Congo, culture africaine, étymologie Kikongo",
     },
+    // Author and Robots
     {
       name: "author",
       content: "Lexikongo",
     },
-    // Meta tags Open Graph pour les réseaux sociaux
+    {
+      name: "robots",
+      content: "index, follow",
+    },
+    // Open Graph Tags
     {
       property: "og:title",
-      content: "Lexikongo - Liste des Mots en Kikongo",
+      content: "Lexikongo - Découvrez et Explorez les Mots en Kikongo",
     },
     {
       property: "og:description",
       content:
-        "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
+        "Accédez à un lexique enrichi des mots en Kikongo, avec des traductions en français et anglais. Une ressource essentielle pour la langue Kikongo.",
     },
     {
       property: "og:image",
-      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
     },
     {
       property: "og:url",
@@ -102,23 +112,34 @@ useHead({
       property: "og:type",
       content: "website",
     },
-    // Twitter meta tags
+    // Twitter Tags
     {
       name: "twitter:card",
       content: "summary_large_image",
     },
     {
       name: "twitter:title",
-      content: "Lexikongo - Liste des Mots en Kikongo",
+      content: "Lexikongo - Découvrez et Explorez les Mots en Kikongo",
     },
     {
       name: "twitter:description",
       content:
-        "Découvrez la liste complète des mots en Kikongo avec leurs significations en français et en anglais.",
+        "Explorez un dictionnaire enrichi des mots en Kikongo avec des traductions, phonétiques et explications culturelles.",
     },
     {
       name: "twitter:image",
-      content: "https://www.lexikongo.fr/images/lexikongo_logo@2x.png",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+    },
+    // Canonical Link
+    {
+      rel: "canonical",
+      href: "https://www.lexikongo.fr/words",
+    },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
     },
   ],
 });

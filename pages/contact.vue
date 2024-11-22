@@ -11,7 +11,12 @@
         ci-dessous et nous vous répondrons rapidement.
       </p>
     </header>
-
+    <section class="text-center mb-5">
+      <LogoSlogan />
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </section>
     <!-- Section Contact -->
     <section class="row justify-content-center">
       <div class="col-12 col-md-6">

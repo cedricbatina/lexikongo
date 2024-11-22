@@ -4,18 +4,19 @@
 
     <header class="text-center mb-4">
       <h1 class="display-4 text-primary mb-4 mt-4">
-        Liste des mots et verbes en Kikongo
+        <i class="fas fa-book"></i> Liste des mots et verbes en Kikongo
       </h1>
       <p class="lead">
         Découvrez la liste des mots et des verbes en Kikongo, présents dans la
         base de données, et leurs significations.
       </p>
+    </header>
+    <section class="text-center mb-4 mt-4">
       <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />
-    </header>
-
+    </section>
     <!-- Colonne pour afficher les mots et verbes -->
     <div class="row justify-content-center">
       <div class="col-lg-10 col-md-12">
@@ -32,6 +33,11 @@
         </div>
       </div>
     </div>
+    <section class="text-center mb-4 mt-4">
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </section>
   </div>
 </template>
 
@@ -178,16 +184,6 @@ onMounted(async () => {
   font-size: 1.25rem;
   color: #ff8a1d;
   text-align: center;
-}
-
-.display-4 {
-  font-size: 2.5rem;
-  color: #ff8a1d;
-}
-
-.lead {
-  font-size: 1.25rem;
-  color: #666;
 }
 
 .text-primary {

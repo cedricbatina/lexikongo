@@ -63,13 +63,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Bouton de déconnexion -->
-  <div class="text-center mt-4">
-    <button class="btn btn-danger" @click="logout">
-      <i class="fas fa-sign-out-alt"></i> Se déconnecter
-    </button>
-  </div>
 </template>
 
 <script setup>

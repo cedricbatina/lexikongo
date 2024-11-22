@@ -1,213 +1,273 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <!-- Première colonne avec le formulaire de recherche -->
-      <div class="col-md-4 col-sm-12 mt-4">
-        <SearchForm @search="handleSearch" />
-        <!-- Affichage des résultats de recherche -->
-        <div v-if="paginatedWords.length">
-          <ul class="list-group mt-4">
-            <li
-              v-for="item in paginatedWords"
-              :key="item.id"
-              class="list-group-item"
-            >
-              <span v-if="item.type === 'word'"
-                ><small class="notice fw-bold">Subst. : </small>
-                <span class="searched-word fw-bold">{{
-                  item.singular + " - " + item.plural
-                }}</span></span
-              >
-              <span v-else-if="item.type === 'verb'"
-                ><small class="notice fw-bold">Verb : </small>
-                <span class="searched-word">{{ item.singular }}</span></span
-              >
-              <br />
-              <small class="notice text-primary">FR : </small>
-              <span v-if="item.translation_fr">{{ item.translation_fr }}</span>
-              <br />
-              <small class="notice text-primary">EN : </small>
-              <span v-if="item.translation_en">{{ item.translation_en }}</span>
-            </li>
-          </ul>
-          <Pagination
-            :currentPage="currentPage"
-            :totalPages="totalPages"
-            @pageChange="changePage"
-          />
-        </div>
+  <div class="container mt-5">
+    <!-- En-tête principale -->
+    <header class="text-center mb-5">
+      <h1 class="display-4 text-primary mb-4 mt-4">
+        <i class="fas fa-hand-holding-heart me-2"></i> Soutenez Lexikongo
+      </h1>
+      <p class="lead">
+        Votre soutien peut transformer Lexikongo en une ressource incontournable
+        pour la préservation et l’enseignement de la langue Kikongo. Ensemble,
+        construisons un héritage linguistique durable.
+      </p>
 
-        <!-- Message si aucun mot n'est trouvé -->
-        <div v-else class="mt-4">
-          <div class="alert alert-info">Aucun mot trouvé.</div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <nuxt-link to="/words">Voir les Mots</nuxt-link>
-        <nuxt-link to="/verbs">Voir les Verbes</nuxt-link>
-      </div>
+      <LogoSlogan />
+    </header>
 
-      <!-- Deuxième colonne pour afficher les mots et verbes -->
-      <div class="col-md-6 col-sm-12">
-        <!-- Tableau pour afficher les mots et verbes -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Sing.</th>
-              <th>Plur.</th>
-              <th>Phon.</th>
-              <th>Fr.</th>
-              <th>En.</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in paginatedAllWordsVerbs" :key="item.id">
-              <td>
-                <span class="searched-word notice">{{
-                  item.type === "word" ? "Subst." : "Verb"
-                }}</span>
-              </td>
-              <td>{{ item.singular }}</td>
-              <td>{{ item.plural || "-" }}</td>
-              <td>{{ item.phonetic }}</td>
-              <td>{{ item.translation_fr || "-" }}</td>
-              <td>{{ item.translation_en || "-" }}</td>
-              <td>
-                <router-link :to="`/details/${item.type}/${item.id}`">
-                  <button class="btn btn-primary fw-bold details">+</button>
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- Importance du projet -->
+    <section class="mb-5">
+      <h2 class="text-secondary">
+        <i class="fas fa-question-circle me-2"></i> Pourquoi soutenir Lexikongo
+        ?
+      </h2>
+      <p>
+        Lexikongo n’est pas seulement une plateforme, mais une mission pour
+        préserver et promouvoir la langue Kikongo. Votre soutien permet de :
+      </p>
+      <ul>
+        <li>
+          <strong>Sauvegarder le patrimoine linguistique :</strong> Enrichir la
+          base de données pour qu’elle reste une référence culturelle accessible
+          à tous.
+        </li>
+        <li>
+          <strong>Encourager les études linguistiques :</strong> Offrir une
+          ressource trilingue (Kikongo, Français, Anglais) pour les étudiants,
+          chercheurs et passionnés.
+        </li>
+        <li>
+          <strong>Créer des opportunités éducatives :</strong> Permettre aux
+          jeunes générations et aux curieux de découvrir cette langue unique.
+        </li>
+      </ul>
+    </section>
 
-        <!-- Pagination -->
-        <Pagination
-          :currentPage="currentPageAllWordsVerbs"
-          :totalPages="totalPagesAllWordsVerbs"
-          @pageChange="changePageAllWordsVerbs"
-        />
+    <!-- Bouton de dons via Stripe -->
+    <section class="donation-section mb-5 text-center">
+      <h2 class="text-primary mb-4">
+        <i class="fas fa-donate me-2"></i> Faire un Don Sécurisé
+      </h2>
+      <p class="mb-3">
+        Contribuez dès aujourd’hui avec un don sécurisé en euros via Stripe.
+      </p>
+      <button @click="handleStripePayment" class="btn btn-primary btn-lg">
+        Faire un don de 10€
+      </button>
+    </section>
+
+    <!-- Utilisation des fonds -->
+    <section class="mb-5">
+      <h2 class="text-secondary">
+        <i class="fas fa-coins me-2"></i> Où vont vos dons ?
+      </h2>
+      <p>
+        Chaque contribution est utilisée de manière responsable pour améliorer
+        Lexikongo et étendre son impact. Voici comment vos dons sont investis :
+      </p>
+      <ul>
+        <li>
+          <strong>Développement de nouvelles fonctionnalités :</strong> Ajouter
+          des outils comme la recherche avancée et des tableaux de bord
+          personnalisés.
+        </li>
+        <li>
+          <strong>Extension à d’autres langues :</strong> Créer un réseau de
+          lexiques numériques pour d'autres langues africaines.
+        </li>
+        <li>
+          <strong>Amélioration de l’interface utilisateur :</strong> Garantir
+          une expérience fluide et intuitive.
+        </li>
+        <li>
+          <strong>Production de contenu éducatif :</strong> Publier des guides
+          et articles pédagogiques sur le Kikongo.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Options de dons -->
+    <section class="donation-options mb-5">
+      <h2 class="text-primary">
+        <i class="fas fa-hand-holding-usd me-2"></i> Autres Moyens de Soutien
+      </h2>
+      <p>
+        Si vous souhaitez soutenir Lexikongo d’une autre manière, voici des
+        options disponibles :
+      </p>
+      <div class="d-flex flex-column flex-md-row justify-content-center">
+        <button @click="donate('paypal')" class="btn btn-primary me-3 mb-3">
+          <i class="fab fa-paypal me-2"></i> Don via PayPal
+        </button>
+        <button
+          @click="donate('bank-transfer')"
+          class="btn btn-outline-secondary me-3 mb-3"
+        >
+          <i class="fas fa-university me-2"></i> Don par Virement Bancaire
+        </button>
+        <button @click="donate('other')" class="btn btn-outline-info mb-3">
+          <i class="fas fa-hands-helping me-2"></i> Autres Options
+        </button>
       </div>
-    </div>
+    </section>
+
+    <!-- Appel à l’action -->
+    <section class="text-center mt-5">
+      <p class="text-muted">
+        Chaque contribution nous rapproche de notre objectif : préserver et
+        partager la richesse de la langue Kikongo avec le monde.
+      </p>
+      <NuxtLink to="/contact" class="btn btn-outline-success btn-lg mt-3">
+        <i class="fas fa-envelope me-2"></i> Contactez-nous
+      </NuxtLink>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import Pagination from "@/components/Pagination.vue";
-import SearchForm from "@/components/SearchForm.vue";
+import { useHead } from "#app";
+import { loadStripe } from "@stripe/stripe-js";
 
-const query = ref("");
-const language = ref("kikongo"); // Langue par défaut
-const items = ref([]); // Fusion des mots et des verbes dans un tableau unique
-const currentPage = ref(1);
-const pageSize = 15; // Nombre d'éléments par page
-
-const handleSearch = async ({
-  query: searchQuery,
-  language: selectedLanguage,
-}) => {
-  query.value = searchQuery;
-  language.value = selectedLanguage;
-  await fetchWords(); // Lancer la recherche avec la nouvelle requête
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
+  description:
+    "Aidez à préserver la langue Kikongo en soutenant Lexikongo. Découvrez comment vos contributions permettent de développer le lexique et d'enrichir le patrimoine linguistique.",
+  url: "https://www.lexikongo.fr/contribution",
+  image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+  inLanguage: "fr",
+  publisher: {
+    "@type": "Organization",
+    name: "Lexikongo",
+    url: "https://www.lexikongo.fr",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+      width: 200,
+      height: 200,
+    },
+  },
 };
 
-const fetchWords = async () => {
-  if (!query.value) {
-    items.value = [];
-    return;
+useHead({
+  title:
+    "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(jsonLd),
+    },
+  ],
+  meta: [
+    {
+      name: "description",
+      content:
+        "Aidez à préserver la langue Kikongo en soutenant Lexikongo. Vos dons permettent d'améliorer la plateforme et de développer des outils linguistiques modernes.",
+    },
+    {
+      name: "keywords",
+      content:
+        "Kikongo, contribution, préservation linguistique, Lexikongo, soutien, dons",
+    },
+    {
+      name: "author",
+      content: "Lexikongo",
+    },
+    {
+      property: "og:title",
+      content:
+        "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
+    },
+    {
+      property: "og:description",
+      content:
+        "Aidez à enrichir le patrimoine linguistique Kikongo grâce à vos contributions.",
+    },
+    {
+      property: "og:image",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr/contribution",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content:
+        "Soutenez Lexikongo - Contribuez à la Préservation de la Langue Kikongo",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Découvrez comment vos dons permettent d'enrichir le lexique Kikongo et de développer des outils linguistiques modernes.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
+    },
+  ],
+});
+
+const handleStripePayment = async () => {
+  const stripe = await loadStripe("STRIPE_KEY");
+  const response = await $fetch("/api/create-checkout-session", {
+    method: "POST",
+    body: { amount: 10 },
+  });
+
+  if (response && response.id) {
+    await stripe.redirectToCheckout({ sessionId: response.id });
+  } else {
+    console.error("Erreur lors de la création de la session de paiement.");
   }
+};
 
-  try {
-    const response = await fetch(
-      `/api/words?query=${query.value}&language=${language.value}`
-    );
-    const result = await response.json();
-    items.value = result; // Charger à la fois les mots et les verbes
-  } catch (error) {
-    console.error("Erreur lors de la récupération des mots et verbes :", error);
-    items.value = [];
+const donate = (method) => {
+  if (method === "paypal") {
+    window.open("https://www.paypal.com/donate/lexikongo", "_blank");
+  } else if (method === "bank-transfer") {
+    console.info("Veuillez nous contacter pour les informations bancaires.");
+  } else {
+    console.info("Contactez-nous pour explorer d'autres options.");
   }
 };
-
-// Pagination des résultats de recherche
-const paginatedWords = computed(() => {
-  const start = (currentPage.value - 1) * pageSize;
-  return items.value.slice(start, start + pageSize);
-});
-
-const totalPages = computed(() => Math.ceil(items.value.length / pageSize));
-
-const changePage = (page) => {
-  currentPage.value = page;
-};
-
-// Chargement initial des mots
-onMounted(async () => {
-  await fetchWords(); // Charger initialement les mots
-});
-
-// Partie pour la 2e colonne (mots et verbes de la DB)
-const allWordsVerbs = ref([]);
-const currentPageAllWordsVerbs = ref(1);
-const pageSizeAllWordsVerbs = 60;
-
-const fetchAllWordsVerbs = async () => {
-  try {
-    const response = await fetch(`/api/all-words-verbs`);
-    const result = await response.json();
-    allWordsVerbs.value = result;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des mots et verbes :", error);
-    allWordsVerbs.value = [];
-  }
-};
-
-const paginatedAllWordsVerbs = computed(() => {
-  const start = (currentPageAllWordsVerbs.value - 1) * pageSizeAllWordsVerbs;
-  return allWordsVerbs.value.slice(start, start + pageSizeAllWordsVerbs);
-});
-
-const totalPagesAllWordsVerbs = computed(() =>
-  Math.ceil(allWordsVerbs.value.length / pageSizeAllWordsVerbs)
-);
-
-const changePageAllWordsVerbs = (page) => {
-  currentPageAllWordsVerbs.value = page;
-};
-
-// Chargement initial des mots et verbes
-onMounted(async () => {
-  await fetchAllWordsVerbs();
-});
 </script>
+
 <style scoped>
-.searched-word {
-  color: #ff8a1d;
-}
-.notice {
-  font-size: xx-small;
-}
-.input-group {
-  display: flex;
-  align-items: stretch; /* Assure que l'input et le select sont de même hauteur */
+/* Styles principaux */
+
+section {
+  margin-bottom: 2rem;
 }
 
-.input-group .form-control {
-  flex: 3; /* Input occupe 3 parts */
+.donation-section button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 0.5rem;
 }
 
-.input-group .form-select {
-  flex: 1; /* Select occupe 1 part */
+.donation-buttons .btn {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
 }
 
-.input-group .btn-clear {
-  flex: 1; /* Le bouton occupe 1 part */
-}
-th {
-  color: #ff8a1d;
-  font-weight: 400;
+/* Responsive */
+@media (max-width: 768px) {
+  .donation-buttons {
+    flex-direction: column;
+  }
+
+  .donation-buttons .btn {
+    margin-bottom: 1rem;
+  }
 }
 </style>

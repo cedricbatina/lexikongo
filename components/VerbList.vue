@@ -23,7 +23,8 @@
           :aria-label="`Détails pour le verbe ${item.singular}`"
         >
           <td>
-            ku <span class="searchedExpression ms-1">{{ item.singular }}</span>
+            <span class="ku-prefix">ku</span>
+            <span class="searchedExpression ms-1">{{ item.singular }}</span>
           </td>
           <td>
             <span class="phonetic">{{ item.phonetic || "-" }}</span>
@@ -127,20 +128,9 @@ onMounted(() => {
   color: #fff;
 }
 
-.searchedExpression {
-  color: var(--secondary-color);
-  font-weight: 600;
-}
-
-.phonetic {
-  font-style: italic;
-  color: var(--highlight-color);
-}
-
-.translation_fr,
-.translation_en {
-  color: var(--text-default);
-  font-size: 0.9rem;
+.ku-prefix {
+  color: black;
+  margin-right: 0.1rem;
 }
 
 /* Responsive styles for small screens */
