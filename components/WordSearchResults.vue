@@ -86,7 +86,11 @@ import { useRouter } from "vue-router";
 const props = defineProps({
   results: {
     type: Array,
-    default: () => [], // Par défaut, un tableau vide
+    default: () => [], // Données de recherche
+  },
+  mode: {
+    type: String,
+    default: "auto", // Par défaut, mode de recherche automatique
   },
 });
 
@@ -126,20 +130,31 @@ const paginatedWords = computed(() => {
 // Calculer le nombre total de pages
 const totalPages = computed(() => Math.ceil(words.value.length / pageSize));
 
-// Watcher pour surveiller les changements de props.results
+// Watcher pour surveiller les changements de `props.results`
 watch(
   () => props.results,
   (newResults) => {
     if (Array.isArray(newResults)) {
       words.value = newResults;
       searchPerformed.value = true;
-      errorMessage.value = null; // Réinitialise le message d'erreur
+      errorMessage.value = null;
       currentPage.value = 1; // Réinitialiser à la première page
     } else {
       errorMessage.value = "Format de données inattendu. Veuillez réessayer.";
     }
   },
   { immediate: true }
+);
+
+// Watcher pour détecter le mode de recherche
+watch(
+  () => props.mode,
+  (newMode) => {
+    if (newMode === "strict") {
+      // Logique pour prendre en charge la recherche stricte
+      searchPerformed.value = true;
+    }
+  }
 );
 </script>
 

@@ -10,11 +10,11 @@
         <thead>
           <tr>
             <th>Type</th>
-            <th>Sing.</th>
-            <th>Plur.</th>
-            <th>Phon.</th>
-            <th>Fr.</th>
-            <th>En.</th>
+            <th>Singulier/Infinitif</th>
+            <th>Pluriel</th>
+            <th>Phonétique</th>
+            <th>Français</th>
+            <th>Anglais</th>
           </tr>
         </thead>
         <tbody>

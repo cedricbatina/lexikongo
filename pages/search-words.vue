@@ -11,9 +11,13 @@
         en Kikongo, Français ou Anglais, et découvrez leurs traductions et
         significations détaillées.
       </p>
-      <LogoSlogan />
     </header>
-
+    <section class="text-center mb-5">
+      <LogoSlogan />
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </section>
     <!-- Formulaire de recherche avec sélection de langue -->
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
@@ -28,13 +32,16 @@
     </div>
 
     <!-- Résultats de recherche -->
-    <div v-if="results.length" class="row justify-content-center mb-4">
+    <div v-if="isLoading" class="text-center mt-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p>Recherche en cours...</p>
+    </div>
+
+    <div v-else-if="results.length" class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
         <div class="card shadow-sm p-4">
-          <h4 class="card-title text-center text-primary">
-            Résultats de votre recherche
-          </h4>
-          <!-- Résultats -->
           <WordSearchResults :results="results" />
         </div>
       </div>
@@ -42,10 +49,15 @@
 
     <!-- Aucun résultat -->
     <div
-      v-else-if="searchQuery && !results.length"
+      v-else-if="searchQuery && !results.length && !isLoading"
       class="alert alert-info mt-4 text-center"
     >
       Aucun résultat trouvé pour votre recherche.
+    </div>
+
+    <!-- Message d'erreur -->
+    <div v-if="errorMessage" class="alert alert-danger mt-4 text-center">
+      {{ errorMessage }}
     </div>
 
     <!-- Appel à l'action -->
@@ -76,8 +88,16 @@ import WordSearchResults from "@/components/WordSearchResults.vue";
 const searchQuery = ref("");
 const selectedLanguage = ref("kikongo");
 const results = ref([]);
+const isLoading = ref(false); // Ajout d'un état de chargement
+const errorMessage = ref(""); // Ajout pour capturer les erreurs
+const handleButtonSearch = () => {
+  if (searchQuery.value.trim() !== "") {
+    fetchWords(searchQuery.value, selectedLanguage.value, "strict");
+  }
+};
 
-const handleSearch = async ({ query, language }) => {
+// Fonction pour gérer la recherche
+const handleSearch = async ({ query, language, mode = "partial" }) => {
   searchQuery.value = query;
   selectedLanguage.value = language;
 
@@ -85,7 +105,7 @@ const handleSearch = async ({ query, language }) => {
     const response = await fetch(
       `/api/search-words?query=${encodeURIComponent(
         query
-      )}&language=${encodeURIComponent(language)}`
+      )}&language=${encodeURIComponent(language)}&mode=${mode}`
     );
     const data = await response.json();
     results.value = Array.isArray(data) ? data : [];
@@ -95,6 +115,7 @@ const handleSearch = async ({ query, language }) => {
   }
 };
 </script>
+
 
 
 

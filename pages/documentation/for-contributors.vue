@@ -89,7 +89,7 @@
           inscription en cliquant sur lien envoyé, dans votre boîte mail. Si
           vous ne voyez pas l'email, vérifiez les spams. Une fois inscrit,
           faites une demande de contribution en envoyant un message à
-          l'administrateur, via le formulaire de contact:
+          l'administrateur, via le:
           <NuxtLink to="/contact" class="text-primary fw-bold">
             Formulaire de contact </NuxtLink
           >. <br />
@@ -128,8 +128,14 @@
           <strong>Soumettez vos contributions :</strong> Ajoutez des mots,
           verbes et expressions avec des détails tels que :
           <ul>
-            <li>Singulier et pluriel pour les noms.</li>
-            <li>Racine, suffixe et phonétique pour les verbes.</li>
+            <li>
+              Singulier et pluriel, phonétique et au moins une traduction en
+              français, pour les mots.
+            </li>
+            <li>
+              Infinitif, Racine, suffixe et phonétique et au moins une
+              traduction en français, pour les verbes.
+            </li>
             <li>Traductions en Français et Anglais.</li>
           </ul>
         </li>

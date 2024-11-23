@@ -7,8 +7,8 @@
           <th>Singulier</th>
           <th>Pluriel</th>
           <th>Phonétique</th>
-          <th>Traduction FR</th>
-          <th>Traduction EN</th>
+          <th>Français</th>
+          <th>Anglais</th>
         </tr>
       </thead>
       <tbody>
