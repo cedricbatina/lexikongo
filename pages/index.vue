@@ -10,8 +10,12 @@
         Recherchez des mots et verbes en Kikongo, Français ou Anglais, et
         découvrez leurs significations.
       </p>
-      <LogoSlogan />
     </header>
+    <section class="text-center mt-5 mb5">
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </section>
 
     <!-- Formulaire de recherche -->
     <div class="row justify-content-center mb-4">
@@ -37,6 +41,22 @@
     <div v-else-if="searchQuery" class="alert alert-info mt-4 text-center">
       Aucun mot ou verbe trouvé pour votre recherche.
     </div>
+    <!-- Appel à l'action -->
+    <section class="text-center mt-4">
+      <p class="text-default">
+        Vous ne trouvez pas l'expression que vous cherchez ? <br />
+        Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou verbes.
+      </p>
+      <NuxtLink
+        to="/documentation/for-contributors"
+        class="btn btn-outline-success btn-lg me-3"
+      >
+        <i class="fas fa-hands-helping me-2"></i> Rejoignez les Contributeurs
+      </NuxtLink>
+      <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
+        <i class="fas fa-envelope me-2"></i> Contactez-nous
+      </NuxtLink>
+    </section>
   </div>
 </template>
 

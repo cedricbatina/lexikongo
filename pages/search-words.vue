@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="mt-5">
     <!-- Titre principal -->
     <header class="text-center mb-4">
       <h1 class="display-4 text-primary">
@@ -63,7 +63,7 @@
     <!-- Appel à l'action -->
     <section class="text-center mt-4">
       <p class="text-default">
-        Vous ne trouvez pas ce que vous cherchez ? <br />
+        Vous ne trouvez pas le mot que vous cherchez ? <br />
         Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou verbes.
       </p>
       <NuxtLink
