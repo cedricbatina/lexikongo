@@ -12,12 +12,7 @@
         significations détaillées.
       </p>
     </header>
-    <section class="text-center mb-5">
-      <LogoSlogan />
-      <SearchButtons />
-      <ContributorButtons />
-      <AdminButtons />
-    </section>
+
     <!-- Formulaire de recherche avec sélection de langue -->
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
@@ -41,9 +36,9 @@
 
     <div v-else-if="results.length" class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
-        <div class="card shadow-sm p-4">
+        <section>
           <WordSearchResults :results="results" />
-        </div>
+        </section>
       </div>
     </div>
 
@@ -75,6 +70,12 @@
       <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
         <i class="fas fa-envelope me-2"></i> Contactez-nous
       </NuxtLink>
+    </section>
+    <section class="text-center mb-5">
+      <LogoSlogan />
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
     </section>
   </div>
 </template>

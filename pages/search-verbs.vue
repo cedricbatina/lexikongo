@@ -12,13 +12,6 @@
       </p>
     </header>
 
-    <section class="text-center mb-5">
-      <LogoSlogan />
-      <SearchButtons />
-      <ContributorButtons />
-      <AdminButtons />
-    </section>
-
     <!-- Section de recherche -->
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">

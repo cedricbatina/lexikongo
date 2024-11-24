@@ -163,9 +163,6 @@ watch(
 
 <style scoped>
 /* Style cohérent avec VerbSearchResults */
-.table {
-  margin-bottom: 0;
-}
 
 .link-row {
   cursor: pointer;
@@ -173,12 +170,5 @@ watch(
 
 .link-row:hover {
   background-color: var(--hover-primary);
-}
-
-/* Responsivité */
-@media (max-width: 768px) {
-  .table-responsive {
-    overflow-x: auto;
-  }
 }
 </style>
