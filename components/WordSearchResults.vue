@@ -9,11 +9,11 @@
       >
         <thead>
           <tr>
-            <th>Singulier</th>
-            <th>Pluriel</th>
-            <th>Phonétique</th>
-            <th>Français</th>
-            <th>Anglais</th>
+            <th scope="col">Singulier</th>
+            <th scope="col">Pluriel</th>
+            <th scope="col">Phonétique</th>
+            <th scope="col">Français</th>
+            <th scope="col">Anglais</th>
           </tr>
         </thead>
         <tbody>

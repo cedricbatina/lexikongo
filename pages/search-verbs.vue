@@ -11,12 +11,14 @@
         verbes de cette langue fascinante.
       </p>
     </header>
+
     <section class="text-center mb-5">
       <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />
     </section>
+
     <!-- Section de recherche -->
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
@@ -24,18 +26,38 @@
           <h4 class="card-title text-primary mb-4">
             <i class="fa-solid fa-magnifying-glass"></i> Recherche
           </h4>
-          <VerbSearchForm
-            @search="handleSearch"
-            :languages="['kg', 'fr', 'en']"
-          />
+          <VerbSearchForm @search="handleSearch" />
         </div>
       </div>
     </div>
 
+    <!-- Spinner pendant le chargement -->
+    <div v-if="isLoading" class="text-center mt-4">
+      <span
+        class="spinner-border text-primary"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <p class="mt-2">Recherche en cours...</p>
+    </div>
+
     <!-- Résultats de la recherche -->
-    <section v-if="searchQuery" class="mt-5">
-      <VerbSearchResults :searchQuery="searchQuery" />
+    <section v-if="results.length && !isLoading" class="mt-5">
+      <VerbSearchResults :results="results" />
     </section>
+
+    <!-- Aucun résultat -->
+    <div
+      v-else-if="searchQuery && !results.length && !isLoading"
+      class="alert alert-info mt-4 text-center"
+    >
+      Aucun résultat trouvé pour votre recherche.
+    </div>
+
+    <!-- Message d'erreur -->
+    <div v-if="errorMessage" class="alert alert-danger mt-4 text-center">
+      {{ errorMessage }}
+    </div>
 
     <!-- Appel à l'action -->
     <section class="text-center mt-5">
@@ -53,8 +75,8 @@
         <i class="fas fa-envelope me-2"></i> Contactez-nous
       </NuxtLink>
     </section>
+
     <section class="text-center mb-5">
-      <LogoSlogan />
       <SearchButtons />
       <ContributorButtons />
       <AdminButtons />
@@ -62,18 +84,56 @@
   </div>
 </template>
 
+
 <script setup>
 import { ref } from "vue";
 import { useHead } from "#app";
+import LogoSlogan from "@/components/LogoSlogan.vue";
+import SearchButtons from "@/components/SearchButtons.vue";
+import ContributorButtons from "@/components/ContributorButtons.vue";
+import AdminButtons from "@/components/AdminButtons.vue";
 import VerbSearchForm from "@/components/VerbSearchForm.vue";
 import VerbSearchResults from "@/components/VerbSearchResults.vue";
 
+// États de la recherche
 const searchQuery = ref("");
+const selectedLanguage = ref("kikongo");
+const results = ref([]);
+const isLoading = ref(false); // Indicateur de chargement
+const errorMessage = ref(null); // Message d'erreur
 
-const handleSearch = (query) => {
+// Gérer les recherches
+const handleSearch = async ({ query, language, mode }) => {
   searchQuery.value = query;
-};
+  selectedLanguage.value = language;
 
+  // Initialisation des états
+  isLoading.value = true;
+  errorMessage.value = null;
+
+  try {
+    const response = await fetch(
+      `/api/search-verbs?query=${encodeURIComponent(
+        query
+      )}&language=${encodeURIComponent(language)}&mode=${encodeURIComponent(
+        mode
+      )}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP : ${response.status}`);
+    }
+
+    const data = await response.json();
+    results.value = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Erreur lors de la recherche :", error);
+    errorMessage.value = "Une erreur s'est produite lors de la recherche.";
+    results.value = [];
+  } finally {
+    isLoading.value = false;
+  }
+};
 // SEO Configuration
 const jsonLd = {
   "@context": "https://schema.org",
@@ -175,6 +235,7 @@ useHead({
   ],
 });
 </script>
+
 
 
 

@@ -3,254 +3,168 @@
     <!-- Titre principal -->
     <header class="text-center mb-4">
       <h1 class="display-4 text-primary mb-4 mt-4">
-        <i class="fa-solid fa-magnifying-glass"></i> Recherche de mots et verbes
+        <i class="fa-solid fa-magnifying-glass me-2"></i> Recherche de mots et
+        verbes
       </h1>
       <p class="lead">
-        Recherchez, dans le formulaire ci-dessous, des mots et verbes en Kikongo
-        et découvrez leurs significations.
+        Recherchez des mots et verbes en Kikongo, Français ou Anglais, et
+        découvrez leurs significations.
       </p>
       <LogoSlogan />
     </header>
 
-    <!-- Section de recherche et résultats -->
+    <!-- Formulaire de recherche -->
     <div class="row justify-content-center mb-4">
       <div class="col-lg-8 col-md-10 col-sm-12">
         <div class="card shadow-sm p-4 mb-4">
-          <h4 class="card-title text-left text-primary">
+          <h2 class="card-title text-left text-primary">
             <i class="fa-solid fa-magnifying-glass"></i> Recherche
-          </h4>
+          </h2>
           <SearchingForm @search="handleSearch" />
         </div>
-
-        <!-- Résultats de recherche -->
-        <div v-if="paginatedWords.length" class="card shadow-sm p-4 mb-4">
-          <h4 class="card-title text-center text-primary">
-            Résultats de la recherche
-          </h4>
-          <SearchingResults :paginatedWords="paginatedWords" />
-          <Pagination
-            :currentPage="currentPage"
-            :totalPages="totalPages"
-            @pageChange="changePage"
-          />
-        </div>
-
-        <!-- Message si aucun résultat et une recherche a été effectuée -->
-        <div
-          v-else-if="query && !paginatedWords.length"
-          class="alert alert-info mt-4 text-center"
-        >
-          Aucun mot trouvé.
-        </div>
       </div>
-      <!-- Appel à l'action -->
-      <section class="text-center mt-4">
-        <p class="text-default">
-          Vous ne trouvez pas ce que vous cherchez ? <br />
-          Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou
-          verbes.
-        </p>
-        <NuxtLink
-          to="/documentation/for-contributors"
-          class="btn btn-outline-success btn-lg me-3"
-        >
-          <i class="fas fa-hands-helping me-2"></i> Rejoignez les Contributeurs
-        </NuxtLink>
-        <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
-          <i class="fas fa-envelope me-2"></i> Contactez-nous
-        </NuxtLink>
-      </section>
     </div>
 
-    <section class="text-center mt-4 mb-4">
-      <SearchButtons />
-      <ContributorButtons />
-      <AdminButtons />
-    </section>
+    <!-- Résultats de recherche -->
+    <div v-if="filteredResults.length" class="card shadow-sm p-4 mb-4">
+      <h3 class="card-title text-center text-primary">
+        Résultats de la recherche
+      </h3>
+      <SearchingResults :data="filteredResults" :columns="columns" />
+    </div>
+
+    <!-- Aucun résultat trouvé -->
+    <div v-else-if="searchQuery" class="alert alert-info mt-4 text-center">
+      Aucun mot ou verbe trouvé pour votre recherche.
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+import LogoSlogan from "@/components/LogoSlogan.vue";
+import SearchingForm from "@/components/SearchingForm.vue";
+import SearchingResults from "@/components/SearchingResults.vue";
+
+const searchQuery = ref(""); // Contient le texte de recherche
+const results = ref([]); // Contient les résultats de l'API
+
+// Colonnes pour SearchingResults
+const columns = [
+  { label: "Type", key: "type" },
+  { label: "Singulier", key: "singular" },
+  { label: "Pluriel", key: "plural" },
+  { label: "Phonétique", key: "phonetic" },
+  { label: "Français", key: "translation_fr" },
+  { label: "Anglais", key: "translation_en" },
+];
+
+// Résultats filtrés pour l'affichage
+const filteredResults = computed(() => {
+  if (!searchQuery.value) return [];
+  return results.value.filter(
+    (item) =>
+      item.singular.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (item.translation_fr &&
+        item.translation_fr
+          .toLowerCase()
+          .includes(searchQuery.value.toLowerCase())) ||
+      (item.translation_en &&
+        item.translation_en
+          .toLowerCase()
+          .includes(searchQuery.value.toLowerCase()))
+  );
+});
+
+// Gestion de la recherche
+const handleSearch = async ({ query, language, mode }) => {
+  searchQuery.value = query; // Mise à jour de la recherche
+  try {
+    const response = await fetch(
+      `/api/all-words-verbs?query=${encodeURIComponent(
+        query
+      )}&language=${language}&mode=${mode}`
+    );
+    const data = await response.json();
+    results.value = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Erreur lors de la recherche :", error);
+  }
+};
+</script>
+
+
+
+
+<!---<script setup>
 import { ref, computed } from "vue";
 import { useHead } from "#app"; // Importation de useHead pour Nuxt 3
 import LogoSlogan from "@/components/LogoSlogan.vue";
 import SearchingForm from "@/components/SearchingForm.vue";
 import SearchingResults from "@/components/SearchingResults.vue";
 import Pagination from "@/components/Pagination.vue";
-import AdminButtons from "@/components/AdminButtons.vue";
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Lexikongo - Explorez le Lexique Kikongo Complet",
-  description:
-    "Accédez à un lexique complet des mots et expressions en Kikongo avec des traductions précises en français et en anglais. Découvrez la richesse de cette langue africaine.",
-  url: "https://www.lexikongo.fr",
-  image: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-  inLanguage: "fr",
-  publisher: {
-    "@type": "Organization",
-    name: "Lexikongo",
-    url: "https://www.lexikongo.fr",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-      width: 200,
-      height: 200,
-    },
-  },
-  mainEntity: {
-    "@type": "CreativeWork",
-    headline: "Lexikongo - Le Lexique Kikongo à Portée de Main",
-    text: "Lexikongo offre un dictionnaire complet des mots, verbes et expressions en Kikongo, avec des traductions en français et en anglais, ainsi que des informations phonétiques et étymologiques.",
-    author: {
-      "@type": "Organization",
-      name: "Lexikongo",
-    },
-  },
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://www.lexikongo.fr/words?q={search_term_string}",
-    "query-input": "required name=search_term_string",
-  },
-  about: {
-    "@type": "Thing",
-    name: "Kikongo Language",
-    sameAs: [
-      "https://en.wikipedia.org/wiki/Kikongo",
-      "https://fr.wikipedia.org/wiki/Kikongo",
-    ],
-  },
-};
 
-// Configuration des meta tags SEO
-useHead({
-  title: "Lexikongo - Découvrez le Lexique Complet en Kikongo",
-  script: [
-    {
-      type: "application/ld+json",
-      children: JSON.stringify(jsonLd),
-    },
-  ],
-  meta: [
-    {
-      name: "description",
-      content:
-        "Explorez le lexique complet des mots en Kikongo avec leurs significations en français et en anglais. Apprenez la phonétique et l'étymologie des mots Kikongo.",
-    },
-    {
-      name: "keywords",
-      content:
-        "Kikongo, lexique Kikongo, mots Kikongo, verbes kikongo, langue africaine, Congo, patrimoine, culture, dictionnaire Kikongo, traduction Kikongo, culture africaine, expressions Kikongo, Kikongo - Français",
-    },
-    {
-      name: "author",
-      content: "Lexikongo",
-    },
-    {
-      name: "robots",
-      content: "index, follow",
-    },
-    // Meta tags Open Graph pour les réseaux sociaux
-    {
-      property: "og:title",
-      content: "Lexikongo - Découvrez le Lexique Complet en Kikongo",
-    },
-    {
-      property: "og:description",
-      content:
-        "Accédez à un dictionnaire complet en Kikongo avec des traductions précises en français et en anglais. Explorez la richesse de cette langue africaine.",
-    },
-    {
-      property: "og:image",
-      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-    },
-    {
-      property: "og:url",
-      content: "https://www.lexikongo.fr",
-    },
-    {
-      property: "og:type",
-      content: "website",
-    },
-    // Twitter meta tags
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-    {
-      name: "twitter:title",
-      content: "Lexikongo - Explorez le Lexique Complet en Kikongo",
-    },
-    {
-      name: "twitter:description",
-      content:
-        "Découvrez le lexique complet des mots en Kikongo avec des traductions en français et en anglais. Une ressource pour préserver cette langue africaine.",
-    },
-    {
-      name: "twitter:image",
-      content: "https://www.lexikongo.fr/images/text_logo@1x.webp",
-    },
-  ],
-});
-
-const query = ref("");
-const language = ref("kikongo");
-const items = ref([]);
+// État global pour gérer la recherche et la pagination
+const searchQuery = ref("");
+const selectedLanguage = ref("kikongo");
+const items = ref([]); // Contient les résultats de recherche
 const currentPage = ref(1);
-const pageSize = 15;
 
-const handleSearch = async ({
-  query: searchQuery,
-  language: selectedLanguage,
-}) => {
-  query.value = searchQuery;
-  language.value = selectedLanguage;
-  currentPage.value = 1; // Réinitialiser la page actuelle lors d'une nouvelle recherche
-  await fetchWords();
-};
+const pageSize = 15; // Nombre de résultats par page
 
-const fetchWords = async () => {
-  if (!query.value) {
-    items.value = [];
-    return;
-  }
-
+// Fonction pour récupérer les mots et verbes via l'API
+const fetchWordsAndVerbs = async (query, language, mode) => {
   try {
-    // Effectuer une recherche à la fois sur les mots et les verbes
     const response = await fetch(
-      `/api/all-words-verbs?query=${encodeURIComponent(query.value)}&language=${
-        language.value
-      }&type=all`
+      `/api/all-words-verbs?query=${encodeURIComponent(
+        query
+      )}&language=${encodeURIComponent(language)}&mode=${encodeURIComponent(
+        mode
+      )}`
     );
-
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-
-    if (!Array.isArray(result)) {
-      throw new Error("Le format des données retournées n'est pas valide");
-    }
-
-    items.value = result;
+    const data = await response.json();
+    items.value = Array.isArray(data) ? data : []; // Mettez à jour les résultats
+    currentPage.value = 1; // Réinitialisez à la première page après une nouvelle recherche
   } catch (error) {
     console.error("Erreur lors de la récupération des mots et verbes :", error);
-    items.value = []; // Réinitialiser en cas d'erreur
+    items.value = []; // Videz les résultats en cas d'erreur
   }
 };
 
+// Gestion de l'événement de recherche déclenché par SearchingForm
+const handleSearch = ({ query, language, mode }) => {
+  searchQuery.value = query;
+  selectedLanguage.value = language;
+  fetchWordsAndVerbs(query, language, mode);
+};
+
+// Calcul des résultats paginés
 const paginatedWords = computed(() => {
   const start = (currentPage.value - 1) * pageSize;
   return items.value.slice(start, start + pageSize);
 });
 
+// Calcul du nombre total de pages
 const totalPages = computed(() => Math.ceil(items.value.length / pageSize));
 
+// Fonction pour changer de page
 const changePage = (page) => {
   currentPage.value = page;
 };
-</script>
+
+// Configuration des meta tags SEO
+useHead({
+  title: "Lexikongo - Découvrez le Lexique Complet en Kikongo",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Explorez les mots et verbes en Kikongo avec leurs significations en français et anglais.",
+    },
+  ],
+});
+</script>-->
+
 
 <style scoped>
 /* Variables CSS pour les couleurs */

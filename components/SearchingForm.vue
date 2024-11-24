@@ -1,31 +1,44 @@
 <template>
-  <form @submit.prevent role="search" aria-label="Formulaire de recherche">
+  <form
+    @submit.prevent="handleButtonSearch"
+    role="search"
+    aria-label="Formulaire de recherche"
+  >
     <div class="input-group">
+      <!-- Champ de recherche -->
       <label for="search-input" class="visually-hidden">Recherche</label>
       <input
         id="search-input"
         type="text"
         v-model="searchQuery"
         class="form-control"
-        :placeholder="`Rechercher en ${languageLabel}`"
-        @input="submitSearch"
+        placeholder="Rechercher en Kikongo, Français ou Anglais"
         aria-label="Champ de recherche"
+        @input="handleAutoSearch"
       />
 
-      <label for="language-select" class="visually-hidden"
-        >Langue de recherche</label
-      >
+      <!-- Sélection de langue -->
+      <label for="language-select" class="visually-hidden">Langue</label>
       <select
         id="language-select"
         v-model="selectedLanguage"
         class="form-select"
-        aria-label="Sélection de la langue"
+        aria-label="Langue de recherche"
       >
         <option value="kikongo">Kikongo</option>
         <option value="fr">Français</option>
         <option value="en">Anglais</option>
       </select>
 
+      <!-- Boutons -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="handleButtonSearch"
+        aria-label="Lancer la recherche"
+      >
+        Rechercher
+      </button>
       <button
         type="button"
         class="btn btn-clear"
@@ -39,41 +52,43 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
+// Champs de recherche
 const searchQuery = ref("");
-const selectedLanguage = ref("kikongo"); // Langue par défaut
+const selectedLanguage = ref("kikongo");
 
+// Événements à transmettre au parent
 const emit = defineEmits(["search"]);
 
-// Fonction pour soumettre la recherche automatiquement à chaque modification
-const submitSearch = () => {
-  emit("search", {
-    query: searchQuery.value,
-    language: selectedLanguage.value,
-  });
-};
-
-// Fonction pour réinitialiser le formulaire
-const clearForm = () => {
-  searchQuery.value = ""; // Vide le champ de recherche
-  selectedLanguage.value = "kikongo"; // Remet la langue par défaut
-  submitSearch(); // Relance une recherche avec le formulaire vide
-};
-
-// Libellé de la langue pour le placeholder
-const languageLabel = computed(() => {
-  switch (selectedLanguage.value) {
-    case "kikongo":
-      return "Kikongo";
-    case "fr":
-      return "Français";
-    case "en":
-      return "Anglais";
-    default:
-      return "";
+// Recherche stricte
+const handleButtonSearch = () => {
+  if (searchQuery.value.trim() !== "") {
+    emit("search", {
+      query: searchQuery.value,
+      language: selectedLanguage.value,
+      mode: "strict",
+    });
   }
-});
+};
+
+// Recherche automatique
+const handleAutoSearch = () => {
+  if (searchQuery.value.trim() !== "") {
+    emit("search", {
+      query: searchQuery.value,
+      language: selectedLanguage.value,
+      mode: "auto",
+    });
+  }
+};
+
+// Effacer les champs
+const clearForm = () => {
+  searchQuery.value = "";
+  selectedLanguage.value = "kikongo";
+  emit("search", { query: "", language: "kikongo", mode: "auto" });
+};
 </script>
 
 <style scoped>

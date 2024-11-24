@@ -9,10 +9,10 @@
       >
         <thead>
           <tr>
-            <th>Infinitif</th>
-            <th>Phonétique</th>
-            <th>Français</th>
-            <th>Anglais</th>
+            <th scope="col">Infinitif</th>
+            <th scope="col">Phonétique</th>
+            <th scope="col">Français</th>
+            <th scope="col">Anglais</th>
           </tr>
         </thead>
         <tbody>
@@ -24,23 +24,25 @@
             @keydown.space.prevent="goToDetails(verb.slug)"
             tabindex="0"
             role="button"
-            :aria-label="`Voir les détails du verbe ${verb.singular}`"
+            :aria-label="`Voir les détails du verbe ${
+              verb.singular || 'verbe inconnu'
+            }`"
             class="link-row"
           >
             <td>
-              <span class="searchedExpression">{{ verb.singular }}</span>
+              <span class="searchedExpression">{{ verb.singular || "-" }}</span>
             </td>
             <td>
-              <span class="phonetic-text">{{ verb.phonetic || " " }}</span>
+              <span class="phonetic-text">{{ verb.phonetic || "-" }}</span>
             </td>
             <td>
               <span class="translation-text">{{
-                verb.translation_fr || " "
+                verb.translation_fr || "-"
               }}</span>
             </td>
             <td>
               <span class="translation-text">{{
-                verb.translation_en || " "
+                verb.translation_en || "-"
               }}</span>
             </td>
           </tr>
@@ -56,13 +58,18 @@
     </div>
 
     <!-- Message si aucun résultat trouvé -->
-    <div v-else-if="searchPerformed" class="mt-4 text-center">
-      <div class="alert alert-info" role="alert">Aucun verbe trouvé.</div>
+    <div
+      v-else-if="searchPerformed && !paginatedVerbs.length"
+      class="mt-4 text-center"
+    >
+      <div class="alert alert-info" role="alert">
+        Aucun verbe trouvé pour votre recherche.
+      </div>
     </div>
 
     <!-- Message d'erreur -->
-    <div v-if="error" class="alert alert-danger" role="alert">
-      {{ error }}
+    <div v-if="errorMessage" class="alert alert-danger mt-4" role="alert">
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -73,34 +80,36 @@ import Pagination from "@/components/Pagination.vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps({
-  searchQuery: {
-    type: String,
-    default: "",
+  results: {
+    type: Array,
+    default: () => [], // Par défaut, un tableau vide
   },
 });
 
-const verbs = ref([]);
-const searchPerformed = ref(false);
-const error = ref(null);
+const verbs = ref([]); // Liste des verbes
+const searchPerformed = ref(false); // Indique si une recherche a été effectuée
+const errorMessage = ref(null); // Message d'erreur
 
-const currentPage = ref(1);
-const pageSize = 15;
+const currentPage = ref(1); // Page actuelle
+const pageSize = 15; // Nombre d'éléments par page
 
 const router = useRouter();
 
-// Fonction pour naviguer vers les détails d'un verbe
+// Naviguer vers les détails d'un verbe
 const goToDetails = (slug) => {
   if (!slug) {
-    console.error("Slug est indéfini pour cet élément");
+    errorMessage.value = "Une erreur s'est produite : identifiant introuvable.";
     return;
   }
   router.push(`/details/verb/${slug}`);
 };
 
-// Fonction pour changer de page
+// Changer de page
 const changePage = (page) => {
   if (page > 0 && page <= totalPages.value) {
     currentPage.value = page;
+  } else {
+    errorMessage.value = "Numéro de page invalide.";
   }
 };
 
@@ -113,42 +122,24 @@ const paginatedVerbs = computed(() => {
 // Calcul du nombre total de pages
 const totalPages = computed(() => Math.ceil(verbs.value.length / pageSize));
 
-// Fonction pour récupérer les verbes depuis l'API
-const fetchVerbs = async () => {
-  if (!props.searchQuery.trim()) {
-    verbs.value = [];
-    searchPerformed.value = false;
-    error.value = null;
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `/api/search-verbs?query=${encodeURIComponent(props.searchQuery)}`
-    );
-    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-
-    const result = await response.json();
-    verbs.value = result;
-    searchPerformed.value = true;
-    error.value = null;
-    currentPage.value = 1; // Réinitialiser à la première page
-  } catch (err) {
-    verbs.value = [];
-    searchPerformed.value = true;
-    error.value = "Erreur lors de la récupération des verbes.";
-  }
-};
-
-// Watcher pour réagir aux changements de searchQuery
+// Watcher pour surveiller les changements de props.results
 watch(
-  () => props.searchQuery,
-  () => {
-    fetchVerbs();
+  () => props.results,
+  (newResults) => {
+    console.log("Nouveaux résultats reçus :", newResults);
+    if (Array.isArray(newResults)) {
+      verbs.value = newResults;
+      searchPerformed.value = true;
+      errorMessage.value = null; // Réinitialise le message d'erreur
+      currentPage.value = 1; // Réinitialiser à la première page
+    } else {
+      errorMessage.value = "Format de données inattendu. Veuillez réessayer.";
+    }
   },
   { immediate: true }
 );
 </script>
+
 
 <style scoped>
 /* Aucun style redondant ici */

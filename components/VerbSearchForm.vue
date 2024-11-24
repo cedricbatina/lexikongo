@@ -1,10 +1,11 @@
 <template>
   <form
-    @submit.prevent="submitSearch"
+    @submit.prevent="handleButtonSearch"
     role="search"
     aria-label="Formulaire de recherche de verbes"
   >
     <div class="input-group">
+      <!-- Champ de recherche -->
       <label for="search-input" class="visually-hidden"
         >Recherche de verbes</label
       >
@@ -13,13 +14,36 @@
         type="text"
         v-model="searchQuery"
         class="form-control"
-        placeholder="Rechercher un verbe en Kikongo"
+        :placeholder="`Rechercher un verbe en ${languageLabel}`"
         @input="submitSearch"
         aria-label="Champ de recherche de verbes"
       />
+
+      <!-- Sélecteur de langue -->
+      <label for="language-select" class="visually-hidden"
+        >Langue de recherche</label
+      >
+      <select
+        id="language-select"
+        v-model="selectedLanguage"
+        class="form-select"
+        aria-label="Sélection de la langue"
+        @change="submitSearch"
+      >
+        <option value="kikongo">Kikongo</option>
+        <option value="fr">Français</option>
+        <option value="en">Anglais</option>
+      </select>
+
+      <!-- Bouton "Rechercher" -->
+      <button type="button" class="btn btn-primary" @click="handleButtonSearch">
+        Rechercher
+      </button>
+
+      <!-- Bouton "Effacer" -->
       <button
         type="button"
-        class="btn btn-outline btn-effacer"
+        class="btn btn-clear"
         @click="clearForm"
         aria-label="Effacer la recherche"
       >
@@ -30,34 +54,57 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-const searchQuery = ref("");
+const searchQuery = ref(""); // Champ de recherche
+const selectedLanguage = ref("kikongo"); // Langue par défaut : Kikongo
 
 const emit = defineEmits(["search"]);
 
+// Fonction pour la recherche via le bouton "Rechercher"
+const handleButtonSearch = () => {
+  if (searchQuery.value.trim() !== "") {
+    emit("search", {
+      query: searchQuery.value,
+      language: selectedLanguage.value,
+      mode: "strict", // Mode strict pour le bouton Rechercher
+    });
+  }
+};
+
+// Fonction pour la recherche automatique
 const submitSearch = () => {
-  emit("search", searchQuery.value);
+  emit("search", {
+    query: searchQuery.value,
+    language: selectedLanguage.value,
+    mode: "auto", // Mode automatique pour les saisies
+  });
 };
 
+// Fonction pour réinitialiser le formulaire
 const clearForm = () => {
-  searchQuery.value = "";
-  submitSearch();
+  searchQuery.value = ""; // Vide le champ de recherche
+  selectedLanguage.value = "kikongo"; // Remet la langue par défaut
+  submitSearch(); // Relance une recherche avec le formulaire vide
 };
-</script>
 
+// Libellé de la langue pour le placeholder
+const languageLabel = computed(() => {
+  switch (selectedLanguage.value) {
+    case "kikongo":
+      return "Kikongo";
+    case "fr":
+      return "Français";
+    case "en":
+      return "Anglais";
+    default:
+      return "";
+  }
+});
+</script>
 
 <style scoped>
 /* Utilisation des variables CSS pour les couleurs */
-:root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
-  --secondary-color: #a52a2a;
-  --dark-color: #2a0600;
-  --highlight-color: #28a745;
-  --text-default: #03080d;
-  --third-color: #ff4500;
-}
 
 /* Styles pour le bouton Effacer */
 .btn-effacer {
