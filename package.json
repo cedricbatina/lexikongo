@@ -19,6 +19,7 @@
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
+    "esbuild": "^0.24.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "mysql2": "^3.11.3",

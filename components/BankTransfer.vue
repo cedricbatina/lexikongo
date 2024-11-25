@@ -5,9 +5,9 @@
       suivantes :
     </p>
     <ul>
-      <li><strong>Bénéficiaire :</strong> Lexikongo</li>
-      <li><strong>IBAN :</strong> FR76 1234 5678 9012 3456 7890 123</li>
-      <li><strong>BIC :</strong> ABCD1234</li>
+      <li><strong>Bénéficiaire :</strong> MONSIEUR CEDRIC BATINA</li>
+      <li><strong>IBAN :</strong> FR76 1741 8000 0100 0083 0001 392</li>
+      <li><strong>BIC :</strong> SNNNFR22XXX</li>
       <li>
         <strong>Référence :</strong> Votre email ou identifiant utilisateur
       </li>
