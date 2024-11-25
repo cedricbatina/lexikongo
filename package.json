@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@nuxt/kit": "^3.14.1592",
-    "@nuxt/schema": "^3.14.1592"
+    "@nuxt/schema": "^3.14.1592",
+    "rollup": "^4.27.4"
   }
 }

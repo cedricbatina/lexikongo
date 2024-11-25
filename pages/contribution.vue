@@ -163,7 +163,7 @@
         Chaque action compte. Aidez-nous à préserver et moderniser la langue
         Kikongo pour les générations à venir.
       </p>
-      <NuxtLink to="/donations" class="btn btn-success btn-lg me-3">
+      <NuxtLink to="/contribute" class="btn btn-success btn-lg me-3">
         <i class="fas fa-donate me-2"></i> Contribuez Maintenant
       </NuxtLink>
       <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
