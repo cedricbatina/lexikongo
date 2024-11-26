@@ -34,9 +34,6 @@
       class="card shadow-sm p-4 mb-4"
       aria-labelledby="results-section"
     >
-      <h3 id="results-section" class="card-title text-center text-primary">
-        Résultats de la recherche
-      </h3>
       <SearchingResults :data="filteredResults" :columns="columns" />
     </section>
 

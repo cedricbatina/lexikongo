@@ -3,8 +3,13 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     stripeSecretKey: process.env.STRIPE_KEY,
+
+    paypalKey: process.env.PAYPAL_KEY, // Clé publique PayPal
+
+
     public: {
       baseUrl: process.env.BASE_URL,
+      stripePublicKey: process.env.STRIPE_PUBLIC_KEY || "",
     },
   },
   compatibilityDate: '2024-04-03',
@@ -37,7 +42,7 @@ export default defineNuxtConfig({
     { src: '~/plugins/bootstrap.js', mode: 'client' }
   ],
   css: [
-    '~/assets/css/data-style.css',
+    // '~/assets/css/data-style.css',
     '~/assets/css/global.css',
     '~/assets/css/main.css',
     '~/assets/css/button-styles.css',

@@ -56,7 +56,6 @@ const props = defineProps({
 });
 
 const goToDetails = (type, slug) => {
-  console.log("Slug récupéré :", slug); // Debug
   if (!slug) {
     console.error("Slug manquant pour cet élément:", slug);
     return;

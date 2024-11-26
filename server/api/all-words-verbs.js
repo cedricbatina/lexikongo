@@ -4,25 +4,29 @@ export default defineEventHandler(async (event) => {
   try {
     const connection = await getConnection();
 
-    // Requête SQL sans LIMIT pour récupérer tous les mots et verbes
+    // Requête SQL corrigée pour inclure les slugs
     const [results] = await connection.execute(`
-      (SELECT 'word' AS type, w.word_id AS id, w.singular, w.plural, w.phonetic,
+      (SELECT 'word' AS type, w.word_id AS id, s.slug, w.singular, w.plural, w.phonetic,
               (SELECT GROUP_CONCAT(wm.meaning SEPARATOR ', ') 
                FROM word_meanings wm 
                WHERE wm.word_id = w.word_id AND wm.language_code = 'fr') AS translation_fr,
               (SELECT GROUP_CONCAT(wm.meaning SEPARATOR ', ') 
                FROM word_meanings wm 
                WHERE wm.word_id = w.word_id AND wm.language_code = 'en') AS translation_en
-        FROM words w)
+        FROM words w
+        JOIN slugs s ON w.word_id = s.word_id -- Jointure avec la table slugs
+      )
       UNION
-      (SELECT 'verb' AS type, v.verb_id AS id, v.name AS singular, NULL AS plural, v.phonetic,
+      (SELECT 'verb' AS type, v.verb_id AS id, s.slug, v.name AS singular, NULL AS plural, v.phonetic,
               (SELECT GROUP_CONCAT(vm.meaning SEPARATOR ', ') 
                FROM verb_meanings vm 
                WHERE vm.verb_id = v.verb_id AND vm.language_code = 'fr') AS translation_fr,
               (SELECT GROUP_CONCAT(vm.meaning SEPARATOR ', ') 
                FROM verb_meanings vm 
                WHERE vm.verb_id = v.verb_id AND vm.language_code = 'en') AS translation_en
-        FROM verbs v)
+        FROM verbs v
+        JOIN slugs s ON v.verb_id = s.verb_id -- Jointure avec la table slugs
+      )
       ORDER BY singular;
     `);
 
@@ -180,9 +184,9 @@ export default defineEventHandler(async (event) => {
     console.error("Erreur lors de la récupération des mots et verbes :", error);
     return [];
   }
-});*/
+});
 
-/*import { getConnection } from "./db.config";
+import { getConnection } from "./db.config";
 import { getQuery } from "h3";
 
 export default defineEventHandler(async (event) => {

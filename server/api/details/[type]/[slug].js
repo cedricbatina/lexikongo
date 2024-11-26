@@ -3,12 +3,22 @@ import { getConnection } from "../../db.config";
 export default defineEventHandler(async (event) => {
   const { type, slug } = event.context.params;
 
+  if (!type || !slug) {
+    console.error("Type ou slug manquant :", { type, slug });
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Type ou slug manquant.",
+    });
+  }
+
   try {
     const connection = await getConnection();
+    let query = "";
+    let params = [slug];
 
     if (type === "word") {
-      const [rows] = await connection.execute(
-        `SELECT 
+      query = `
+        SELECT 
           w.singular, 
           w.plural, 
           w.phonetic, 
@@ -25,24 +35,15 @@ export default defineEventHandler(async (event) => {
            WHERE wm.word_id = w.word_id AND wm.language_code = 'fr') AS translation_fr,
           (SELECT GROUP_CONCAT(wm.meaning SEPARATOR ', ') 
            FROM word_meanings wm 
-           WHERE wm.word_id = w.word_id AND wm.language_code = 'en') AS translation_en,
-          (SELECT GROUP_CONCAT(r.role_name SEPARATOR ', ')
-           FROM roles r
-           JOIN user_roles ur ON r.role_id = ur.role_id
-           WHERE ur.user_id = u.user_id) AS roles -- Récupération des rôles de l'auteur
+           WHERE wm.word_id = w.word_id AND wm.language_code = 'en') AS translation_en
         FROM words w
-        JOIN slugs s ON w.word_id = s.word_id -- Jointure avec la table slugs
+        JOIN slugs s ON w.word_id = s.word_id
         LEFT JOIN users u ON w.user_id = u.user_id  
         LEFT JOIN nominal_classes nc ON w.class_id = nc.class_id  
-        WHERE s.slug = ?`, // Utilisation du slug depuis la table slugs
-        [slug]
-      );
-      return rows.length ? rows[0] : {};
-    }
-
-    if (type === "verb") {
-      const [rows] = await connection.execute(
-        `SELECT 
+        WHERE s.slug = ?`;
+    } else if (type === "verb") {
+      query = `
+        SELECT 
           v.name, 
           v.phonetic, 
           v.root, 
@@ -54,23 +55,34 @@ export default defineEventHandler(async (event) => {
            WHERE vm.verb_id = v.verb_id AND vm.language_code = 'fr') AS translation_fr,
           (SELECT GROUP_CONCAT(vm.meaning SEPARATOR ', ') 
            FROM verb_meanings vm 
-           WHERE vm.verb_id = v.verb_id AND vm.language_code = 'en') AS translation_en,
-          (SELECT GROUP_CONCAT(r.role_name SEPARATOR ', ')
-           FROM roles r
-           JOIN user_roles ur ON r.role_id = ur.role_id
-           WHERE ur.user_id = u.user_id) AS roles -- Récupération des rôles de l'auteur
+           WHERE vm.verb_id = v.verb_id AND vm.language_code = 'en') AS translation_en
         FROM verbs v
-        JOIN slugs s ON v.verb_id = s.verb_id -- Jointure avec la table slugs
+        JOIN slugs s ON v.verb_id = s.verb_id
         LEFT JOIN users u ON v.user_id = u.user_id  
-        WHERE s.slug = ?`, // Utilisation du slug depuis la table slugs
-        [slug]
-      );
-      return rows.length ? rows[0] : {};
+        WHERE s.slug = ?`;
+    } else {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Type invalide.",
+      });
     }
 
+    const [rows] = await connection.execute(query, params);
     await connection.end();
+
+    if (rows.length === 0) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Détails non trouvés.",
+      });
+    }
+
+    return rows[0];
   } catch (error) {
     console.error("Erreur lors de la récupération des détails :", error);
-    return { error: "Erreur lors de la récupération des détails." };
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Erreur interne du serveur.",
+    });
   }
 });

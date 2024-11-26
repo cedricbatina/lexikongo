@@ -17,7 +17,7 @@
         <tr
           v-for="item in paginatedVerbs"
           :key="item.slug"
-          @click="goToDetails(item.slug)"
+          @click="goToDetails('verb', item.slug)"
           class="link-row"
           role="button"
           :aria-label="`Détails pour le verbe ${item.singular}`"
@@ -84,8 +84,8 @@ const changePage = (page) => {
   currentPage.value = page;
 };
 
-const goToDetails = (slug) => {
-  router.push(`/details/verb/${slug}`);
+const goToDetails = (type, slug) => {
+  router.push(`/details/${type}/${slug}`);
 };
 
 const truncateText = (text, limit) => {

@@ -1,190 +1,223 @@
 <template>
-  <div class="contribution-page container mt-5">
-    <!-- En-tête principale -->
-    <header class="text-center mb-5">
-      <h1 class="display-4 text-primary">
-        <i class="fas fa-hand-holding-heart me-2"></i> Soutenez Lexikongo
+  <div class="container mt-5">
+    <!-- Titre principal -->
+    <header class="text-center">
+      <h1 class="text-primary display-4">
+        <i class="fas fa-donate me-2"></i> Soutenez Lexikongo
       </h1>
-      <p class="lead">
+      <p class="lead mt-3 text-muted">
         Transformons ensemble Lexikongo en une ressource incontournable pour
-        préserver et promouvoir la langue Kikongo. Votre soutien est une pierre
-        angulaire de cette mission ambitieuse.
+        préserver et promouvoir la langue Kikongo.
       </p>
     </header>
-    <section class="text-center mb-5">
-      <LogoSlogan />
-      <SearchButtons />
-      <ContributorButtons />
-      <AdminButtons />
-    </section>
 
-    <!-- Pourquoi contribuer -->
-    <section class="mb-5">
-      <h2 class="text-primary">
-        <i class="fas fa-question-circle me-2"></i> Pourquoi contribuer ?
+    <!-- Formulaire de choix de méthode de paiement -->
+    <section class="mt-5">
+      <h2 class="text-center text-secondary">
+        Choisissez une méthode de paiement
       </h2>
-      <p>
-        Lexikongo n’est pas une simple plateforme numérique, mais une mission
-        qui vise à préserver et à moderniser l'une des langues les plus riches
-        et anciennes d'Afrique : le Kikongo. En soutenant ce projet, vous jouez
-        un rôle actif dans :
+      <p class="text-muted text-center mb-4">
+        Sélectionnez la méthode qui vous convient pour contribuer à notre
+        mission.
       </p>
-      <ul>
-        <li>
-          <strong>Préserver le patrimoine linguistique :</strong> Le Kikongo,
-          avec ses plus de <strong>350 000 mots et verbes</strong>, est une
-          langue en danger face à l’érosion culturelle. Chaque don contribue à
-          documenter et préserver ce trésor inestimable.
-        </li>
-        <li>
-          <strong>Favoriser l’éducation et la recherche :</strong> Votre soutien
-          permet de créer des outils modernes pour l’enseignement, comme des
-          cours interactifs, des guides d’apprentissage, et des lexiques
-          numériques multilingues (Kikongo-Français-Anglais).
-        </li>
-        <li>
-          <strong>Créer une langue vivante et moderne :</strong> Aidez-nous à
-          introduire de nouveaux mots pour parler des sciences, de la
-          technologie, et des concepts modernes tout en respectant la structure
-          du Kikongo classique.
-        </li>
-        <li>
-          <strong>Inspirer les générations futures :</strong> Grâce à votre
-          soutien, nous transmettons aux jeunes une langue qui ne se limite pas
-          à un héritage, mais devient un outil d’expression et d’innovation.
-        </li>
-      </ul>
-    </section>
-
-    <!-- Témoignage et engagement -->
-    <section class="mb-5">
-      <h2 class="text-primary">
-        <i class="fas fa-lightbulb me-2"></i> Un rêve collectif
-      </h2>
-      <p>
-        Imaginez une plateforme où le Kikongo devient une langue centrale pour
-        l’éducation, la recherche, et la culture. Imaginez des étudiants
-        apprenant à coder, à innover, à enseigner les sciences en Kikongo. C’est
-        une vision ambitieuse, mais réalisable grâce à votre soutien.
-      </p>
-      <p>
-        Chaque mot ajouté au lexique, chaque euro versé pour développer cette
-        plateforme, chaque partage de connaissances nous rapproche de cet
-        objectif. Votre soutien n’est pas qu’un don ; il est un investissement
-        dans l’avenir d’une culture millénaire.
-      </p>
-    </section>
-
-    <!-- Où vont vos dons -->
-    <section class="mb-5">
-      <h2 class="text-primary">
-        <i class="fas fa-coins me-2"></i> Où vont vos dons ?
-      </h2>
-      <p>
-        Vos dons sont utilisés avec soin et transparence. Voici quelques
-        exemples de ce qu’ils permettent de financer :
-      </p>
-      <ul>
-        <li>
-          <strong>Développement technique :</strong> Création et maintenance de
-          la plateforme, ajout de fonctionnalités comme la recherche avancée et
-          des tableaux de bord pour les contributeurs.
-        </li>
-        <li>
-          <strong>Production de contenu éducatif :</strong> Développement de
-          cours, guides, vidéos et autres supports pédagogiques pour promouvoir
-          l’apprentissage du Kikongo.
-        </li>
-        <li>
-          <strong>Extension linguistique :</strong> Ajout de dialectes et de
-          nouvelles langues africaines pour enrichir le réseau linguistique de
-          Lexikongo.
-        </li>
-        <li>
-          <strong>Formation et soutien des contributeurs :</strong> Mise en
-          place d’outils collaboratifs, formations pour les volontaires, et
-          partenariats avec des écoles et des universités.
-        </li>
-        <li>
-          <strong>Maintenance et sécurité :</strong> Garantir un accès fiable et
-          sécurisé à tous les utilisateurs à travers le monde.
-        </li>
-      </ul>
-    </section>
-
-    <!-- Comment contribuer -->
-    <section class="text-center mb-5">
-      <h2 class="text-primary">
-        <i class="fas fa-donate me-2"></i> Comment contribuer ?
-      </h2>
-      <p>Il existe plusieurs façons de soutenir Lexikongo :</p>
-      <div class="contribution-options mb-4">
-        <NuxtLink to="/donations" class="btn btn-primary btn-lg me-3">
-          <i class="fas fa-hand-holding-usd me-2"></i> Faire un Don
-        </NuxtLink>
-        <NuxtLink
-          to="/contributors"
-          class="btn btn-outline-success btn-lg me-3"
-        >
-          <i class="fas fa-users me-2"></i> Rejoindre les Contributeurs
-        </NuxtLink>
-        <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
-          <i class="fas fa-envelope me-2"></i> Contactez-nous
-        </NuxtLink>
+      <div class="payment-options d-flex flex-column align-items-center">
+        <PaymentForm />
       </div>
-      <p>
-        Votre contribution, qu’elle soit financière ou intellectuelle, est
-        précieuse pour bâtir un futur où le Kikongo est à la fois préservé et
-        modernisé.
-      </p>
     </section>
 
-    <!-- Vision collective -->
-    <section class="mb-5">
-      <h2 class="text-primary">
-        <i class="fas fa-rocket me-2"></i> Construire une plateforme pour tous
-      </h2>
-      <p>
-        Notre vision dépasse la préservation linguistique. Lexikongo ambitionne
-        de devenir une plateforme où le Kikongo est utilisé pour enseigner,
-        communiquer, et innover. Grâce à votre soutien, nous pourrons construire
-        une base de données dynamique et accessible, tout en inspirant les
-        générations futures à embrasser cette langue unique.
-      </p>
-      <p>
-        Rejoignez-nous dans ce voyage fascinant, où chaque contribution
-        rapproche le Kikongo d’une place centrale dans le monde numérique.
-      </p>
+    <!-- Informations sur le virement bancaire -->
+    <section class="mt-5">
+      <h3 class="text-center text-primary">
+        <i class="fas fa-university me-2"></i> Virement Bancaire
+      </h3>
+      <div class="bank-transfer mt-3">
+        <BankTransfer />
+      </div>
     </section>
 
-    <!-- Appel à l'action -->
-    <div class="text-center mt-5">
+    <!-- Informations supplémentaires -->
+    <section class="mt-5 text-center">
+      <h3 class="text-primary">
+        <i class="fas fa-hand-holding-heart me-2"></i> Participez autrement
+      </h3>
       <p class="text-muted">
-        Chaque action compte. Aidez-nous à préserver et moderniser la langue
-        Kikongo pour les générations à venir.
+        Soutenez-nous en partageant Lexikongo avec votre entourage ou en
+        envoyant des suggestions pour enrichir notre plateforme.
       </p>
-      <NuxtLink to="/donations" class="btn btn-primary btn-lg me-3">
-        <i class="fas fa-donate me-2"></i> Contribuez Maintenant
+      <NuxtLink
+        to="/contact"
+        class="btn btn-outline-primary btn-lg mt-3"
+        aria-label="Contactez-nous pour des suggestions"
+      >
+        <i class="fas fa-envelope me-2"></i> Contactez-nous
       </NuxtLink>
-      <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
-        <i class="fas fa-envelope me-2"></i> Contactez-nous pour plus
-        d’informations
-      </NuxtLink>
-    </div>
+    </section>
+
+    <!-- Appel à l'action : Partager -->
+    <section class="mt-5 text-center">
+      <h4 class="text-secondary">
+        <i class="fas fa-share-alt me-2"></i> Partagez notre mission
+      </h4>
+      <div class="social-icons mt-3">
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          class="btn btn-facebook me-2"
+          aria-label="Partagez sur Facebook"
+        >
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a
+          href="https://twitter.com"
+          target="_blank"
+          class="btn btn-twitter me-2"
+          aria-label="Partagez sur Twitter"
+        >
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          class="btn btn-linkedin"
+          aria-label="Partagez sur LinkedIn"
+        >
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </div>
+    </section>
   </div>
 </template>
 
+<script setup>
+import { useHead, useRuntimeConfig } from "#app";
+import PaymentForm from "@/components/PaymentForm.vue";
+import BankTransfer from "@/components/BankTransfer.vue";
+
+const config = useRuntimeConfig();
+const paypalKey = config.public.paypalKey;
+
+// Gestion des balises SEO et des scripts dynamiques
+useHead({
+  title: "Soutenez Lexikongo | Contributions",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Apportez votre soutien à Lexikongo pour préserver et moderniser la langue Kikongo. Contribuez dès aujourd'hui pour un futur où cette langue est valorisée et enseignée.",
+    },
+    {
+      name: "keywords",
+      content:
+        "Lexikongo, contributions, dons, soutenir le Kikongo, préservation linguistique, culture Kongo, donation",
+    },
+    {
+      name: "robots",
+      content: "index, follow",
+    },
+    {
+      property: "og:title",
+      content: "Soutenez Lexikongo | Contributions",
+    },
+    {
+      property: "og:description",
+      content:
+        "Soutenez Lexikongo dans sa mission de préserver la langue Kikongo. Contribuez et participez à la modernisation de cette langue unique.",
+    },
+    {
+      property: "og:url",
+      content: "https://www.lexikongo.fr/contribute",
+    },
+    {
+      property: "og:image",
+      content: "https://www.lexikongo.fr/images/contribute-banner.webp",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Soutenez Lexikongo | Contributions",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Aidez Lexikongo à préserver la langue Kikongo en contribuant dès aujourd'hui.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.lexikongo.fr/images/contribute-banner.webp",
+    },
+  ],
+  script: [
+    {
+      src: "https://pay.google.com/gp/p/js/pay.js",
+      async: true,
+    },
+    ...(paypalKey
+      ? [
+          {
+            src: `https://www.paypal.com/sdk/js?client-id=${paypalKey}`,
+            async: true,
+          },
+        ]
+      : []),
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: "Soutenez Lexikongo | Contributions",
+        description:
+          "Apportez votre soutien à Lexikongo pour préserver et moderniser la langue Kikongo. Contribuez dès aujourd'hui pour un futur où cette langue est valorisée et enseignée.",
+        url: "https://www.lexikongo.fr/contribute",
+        image: "https://www.lexikongo.fr/images/contribute-banner.webp",
+        inLanguage: "fr",
+        publisher: {
+          "@type": "Organization",
+          name: "Lexikongo",
+          url: "https://www.lexikongo.fr",
+        },
+      }),
+    },
+  ],
+});
+</script>
+
 <style scoped>
-.btn {
-  font-size: 1.1rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.25rem;
+.payment-options {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-  .btn {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
+.social-icons a {
+  font-size: 1.5rem;
+  padding: 0.75rem;
+  color: white;
+}
+
+.btn-facebook {
+  background-color: #3b5998;
+}
+
+.btn-twitter {
+  background-color: #1da1f2;
+}
+
+.btn-linkedin {
+  background-color: #0077b5;
+}
+
+.social-icons a:hover {
+  opacity: 0.8;
+}
+
+.bank-transfer {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 </style>

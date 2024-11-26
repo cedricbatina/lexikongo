@@ -104,11 +104,14 @@ const pageSize = 15; // Nombre d'éléments par page
 const router = useRouter();
 
 // Naviguer vers les détails
-const goToDetails = (slug) => {
+/*/const goToDetails = (slug) => {
   if (!slug) {
     errorMessage.value = "Une erreur s'est produite : identifiant introuvable.";
     return;
   }
+  router.push(`/details/word/${slug}`);
+};*/
+const goToDetails = (slug) => {
   router.push(`/details/word/${slug}`);
 };
 

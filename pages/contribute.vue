@@ -2,8 +2,10 @@
   <div class="container mt-5">
     <!-- Titre principal -->
     <header class="text-center">
-      <h1 class="text-primary">Soutenez Lexikongo</h1>
-      <p class="lead mt-3">
+      <h1 class="text-primary display-4">
+        <i class="fas fa-donate me-2"></i> Soutenez Lexikongo
+      </h1>
+      <p class="lead mt-3 text-muted">
         Transformons ensemble Lexikongo en une ressource incontournable pour
         préserver et promouvoir la langue Kikongo.
       </p>
@@ -11,13 +13,24 @@
 
     <!-- Formulaire de choix de méthode de paiement -->
     <section class="mt-5">
-      <h2 class="text-center">Choisissez une méthode de paiement</h2>
-      <PaymentForm />
+      <h2 class="text-center text-secondary">
+        Choisissez une méthode de paiement
+      </h2>
+      <p class="text-muted text-center mb-4">
+        Sélectionnez la méthode de paiement qui vous convient le mieux pour
+        contribuer à notre mission.
+      </p>
+      <div class="payment-options d-flex flex-column align-items-center">
+        <PaymentForm />
+      </div>
     </section>
 
     <!-- Informations supplémentaires -->
     <section class="mt-5 text-center">
-      <p>
+      <h3 class="text-primary">
+        <i class="fas fa-hand-holding-heart me-2"></i> Participez autrement
+      </h3>
+      <p class="text-muted mb-4">
         Vous pouvez également nous soutenir en partageant Lexikongo avec votre
         entourage ou en envoyant des suggestions pour enrichir notre plateforme.
       </p>
@@ -29,14 +42,51 @@
         <i class="fas fa-envelope me-2"></i> Contactez-nous
       </NuxtLink>
     </section>
+
+    <!-- Appel à l'action -->
+    <section class="mt-5 text-center">
+      <h4 class="text-secondary">
+        <i class="fas fa-share-alt me-2"></i> Aidez-nous à partager notre
+        mission
+      </h4>
+      <div class="social-icons mt-3">
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          class="btn btn-facebook me-2"
+          aria-label="Partagez sur Facebook"
+        >
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a
+          href="https://twitter.com"
+          target="_blank"
+          class="btn btn-twitter me-2"
+          aria-label="Partagez sur Twitter"
+        >
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          class="btn btn-linkedin"
+          aria-label="Partagez sur LinkedIn"
+        >
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </div>
+    </section>
   </div>
 </template>
 
-
 <script setup>
-import { useHead } from "#app";
+import { useHead, useRuntimeConfig } from "#app";
 import PaymentForm from "@/components/PaymentForm.vue";
 
+const config = useRuntimeConfig();
+const paypalKey = config.public.paypalKey;
+
+// Gestion des balises SEO et intégration des scripts dynamiques
 useHead({
   title: "Soutenez Lexikongo | Contributions",
   meta: [
@@ -91,6 +141,18 @@ useHead({
   ],
   script: [
     {
+      src: "https://pay.google.com/gp/p/js/pay.js",
+      async: true,
+    },
+    ...(paypalKey
+      ? [
+          {
+            src: `https://www.paypal.com/sdk/js?client-id=${paypalKey}`,
+            async: true,
+          },
+        ]
+      : []),
+    {
       type: "application/ld+json",
       children: JSON.stringify({
         "@context": "https://schema.org",
@@ -112,8 +174,39 @@ useHead({
 });
 </script>
 
+
 <style scoped>
-.donation-section {
-  text-align: center;
+/* Titre principal */
+header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+/* Sous-titre */
+header p.lead {
+  font-size: 1.25rem;
+}
+
+/* Section des options de paiement */
+.payment-options {
+  gap: 1.5rem;
+}
+
+/* Boutons */
+.btn-outline-primary {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* Couleurs secondaires */
+.text-secondary {
+  color: var(--text-default);
+}
+/* Espacement */
+.mt-5 {
+  margin-top: 3rem !important;
+}
+.mb-4 {
+  margin-bottom: 1.5rem !important;
 }
 </style>

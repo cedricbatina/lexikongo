@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="handlePayment" class="donation-form">
+    <!-- Montant -->
     <div class="form-group">
       <label for="amount" class="form-label">Montant (€)</label>
       <input
@@ -19,9 +20,26 @@
 
     <!-- Stripe Elements -->
     <div ref="cardElement" class="form-control mt-3" id="card-element"></div>
-    <div v-if="error" class="text-danger mt-2">{{ error }}</div>
+    <div
+      v-if="error"
+      class="text-danger mt-2"
+      aria-live="polite"
+      id="card-errors"
+    >
+      {{ error }}
+    </div>
 
-    <button type="submit" class="btn btn-primary mt-3" :disabled="isProcessing">
+    <!-- Bouton de contribution -->
+    <button
+      type="submit"
+      class="btn btn-primary mt-3"
+      :disabled="isProcessing"
+      aria-busy="true"
+    >
+      <span
+        v-if="isProcessing"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
       {{ isProcessing ? "Traitement en cours..." : "Contribuer" }}
     </button>
   </form>
@@ -30,6 +48,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { loadStripe } from "@stripe/stripe-js";
+import { useRuntimeConfig } from "#app"; // Importation de la configuration
+
+const config = useRuntimeConfig();
+const stripePublicKey = config.public.stripePublicKey; // Récupération de la clé publique
 
 const amount = ref("");
 const stripe = ref(null);
@@ -37,8 +59,14 @@ const elements = ref(null);
 const cardElement = ref(null);
 const error = ref("");
 const isProcessing = ref(false);
+const stripeInitialized = ref(false);
 
 const handlePayment = async () => {
+  if (!stripeInitialized.value) {
+    error.value = "Le paiement n'est pas prêt. Veuillez réessayer.";
+    return;
+  }
+
   try {
     if (!amount.value || parseFloat(amount.value) < 1) {
       error.value = "Veuillez entrer un montant valide.";
@@ -77,16 +105,35 @@ const handlePayment = async () => {
 };
 
 onMounted(async () => {
-  stripe.value = await loadStripe("pk_test_12345"); // Remplacez par votre clé publique Stripe
-  elements.value = stripe.value.elements();
-  cardElement.value = elements.value.create("card");
-  cardElement.value.mount("#card-element");
+  try {
+    if (!stripePublicKey) {
+      throw new Error("Clé publique Stripe manquante.");
+    }
+
+    stripe.value = await loadStripe(stripePublicKey); // Utilisation de la clé publique
+    elements.value = stripe.value.elements();
+    cardElement.value = elements.value.create("card");
+    cardElement.value.mount("#card-element");
+    stripeInitialized.value = true;
+  } catch (err) {
+    console.error("Erreur lors de l'initialisation de Stripe:", err);
+    error.value = "Impossible de charger les options de paiement.";
+  }
 });
 </script>
+
 
 <style scoped>
 .donation-form {
   max-width: 400px;
   margin: 0 auto;
+}
+
+.spinner-border {
+  vertical-align: middle;
+}
+
+.text-danger {
+  font-size: 0.875rem;
 }
 </style>
