@@ -13,7 +13,7 @@
         aria-label="Sélectionnez une méthode de paiement"
       >
         <option value="">Sélectionnez une méthode</option>
-        <option value="stripe">Carte Bancaire (Stripe)</option>
+        <option value="stripe">Carte Bancaire</option>
         <option value="paypal">PayPal</option>
         <option value="googlepay">Google Pay</option>
       </select>
@@ -24,7 +24,7 @@
       <h3 class="text-primary">
         <i class="fas fa-credit-card me-2"></i> Paiement par carte bancaire
       </h3>
-      <form @submit.prevent="processStripePayment">
+      <form @submit.prevent="processStripePayment" aria-live="polite">
         <div class="form-group mb-3">
           <label for="stripe-amount">Montant (€)</label>
           <input
@@ -35,7 +35,11 @@
             class="form-control"
             placeholder="Entrez le montant"
             required
+            aria-describedby="stripe-amount-help"
           />
+          <small id="stripe-amount-help" class="form-text text-muted">
+            Montant minimum : 1€.
+          </small>
         </div>
         <div
           ref="stripeCardElement"
@@ -48,7 +52,8 @@
           class="btn btn-primary mt-3"
           :disabled="isProcessing"
         >
-          {{ isProcessing ? "Traitement en cours..." : "Payer avec Stripe" }}
+          <span v-if="isProcessing">Traitement en cours...</span>
+          <span v-else>Payer avec Stripe</span>
         </button>
       </form>
     </div>
@@ -59,6 +64,7 @@
         <i class="fab fa-paypal me-2"></i> Paiement via PayPal
       </h3>
       <div id="paypal-button-container"></div>
+      <div v-if="isProcessing" class="spinner mt-2">Chargement...</div>
     </div>
 
     <!-- Bouton Google Pay -->
@@ -66,16 +72,14 @@
       <h3 class="text-primary">
         <i class="fab fa-google-pay me-2"></i> Paiement avec Google Pay
       </h3>
-      <div id="googlepay-button-container"></div>
+      <div v-if="googlePayReady" id="googlepay-button-container"></div>
+      <p v-else class="text-muted mt-3">
+        Google Pay n'est pas encore configuré. Veuillez réessayer plus tard.
+      </p>
     </div>
   </div>
 </template>
 
----
-
-### **Script amélioré :**
-
-```vue
 <script setup>
 import { ref, onMounted } from "vue";
 import { loadStripe } from "@stripe/stripe-js";
@@ -90,6 +94,7 @@ const stripeElements = ref(null);
 const stripeCardElement = ref(null);
 const stripeError = ref("");
 const isProcessing = ref(false);
+const googlePayReady = ref(false);
 
 // Processus de paiement avec Stripe
 const processStripePayment = async () => {
@@ -161,6 +166,8 @@ const renderPayPalButton = () => {
 
 // Rendu du bouton Google Pay
 const renderGooglePayButton = () => {
+  if (!stripeKey) return;
+
   const paymentsClient = new google.payments.api.PaymentsClient({
     environment: "TEST",
   });
@@ -196,23 +203,39 @@ const renderGooglePayButton = () => {
     .isReadyToPay(paymentRequest)
     .then((response) => {
       if (response.result) {
+        googlePayReady.value = true;
         const button = paymentsClient.createButton({
           onClick: () => paymentsClient.loadPaymentData(paymentRequest),
         });
         document
           .getElementById("googlepay-button-container")
           .appendChild(button);
+      } else {
+        googlePayReady.value = false;
       }
     })
-    .catch((err) => console.error("Erreur Google Pay :", err));
+    .catch((err) => {
+      console.error("Erreur Google Pay :", err);
+      googlePayReady.value = false;
+    });
 };
 
 // Initialisation Stripe
 onMounted(async () => {
-  stripe.value = await loadStripe(stripeKey);
-  stripeElements.value = stripe.value.elements();
-  stripeCardElement.value = stripeElements.value.create("card");
-  stripeCardElement.value.mount("#stripe-card-element");
+  try {
+    if (!stripePublicKey) {
+      throw new Error("Clé publique Stripe manquante.");
+    }
+
+    stripe.value = await loadStripe(stripePublicKey);
+    elements.value = stripe.value.elements();
+    cardElement.value = elements.value.create("card");
+    cardElement.value.mount("#card-element");
+    stripeInitialized.value = true;
+  } catch (err) {
+    console.error("Erreur lors de l'initialisation de Stripe:", err);
+    err.value = "Impossible de charger les options de paiement.";
+  }
 });
 </script>
 
@@ -232,5 +255,10 @@ onMounted(async () => {
 .payment-methods .form-group {
   width: 100%;
   max-width: 400px;
+}
+
+.spinner {
+  color: #007bff;
+  font-size: 1rem;
 }
 </style>

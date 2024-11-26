@@ -25,24 +25,29 @@
       </div>
     </section>
 
-    <!-- Informations supplémentaires -->
-    <section class="mt-5 text-center">
-      <h3 class="text-primary">
-        <i class="fas fa-hand-holding-heart me-2"></i> Participez autrement
-      </h3>
+    <!-- Comment contribuer -->
+    <section class="text-center mb-5">
+      <h2 class="text-primary">
+        <i class="fas fa-hands-helping me-2"></i> Contribuez autrement
+      </h2>
       <p class="text-muted mb-4">
         Vous pouvez également nous soutenir en partageant Lexikongo avec votre
         entourage ou en envoyant des suggestions pour enrichir notre plateforme.
       </p>
-      <NuxtLink
-        to="/contact"
-        class="btn btn-outline-primary btn-lg mt-3"
-        aria-label="Contactez-nous pour des suggestions"
-      >
-        <i class="fas fa-envelope me-2"></i> Contactez-nous
-      </NuxtLink>
-    </section>
+      <p class="m-3">Il existe plusieurs façons de soutenir Lexikongo :</p>
+      <div class="contribution-options mb-4">
+        <NuxtLink to="/contribute" class="btn btn-outline-success btn-lg me-3">
+          <i class="fas fa-hand-holding-usd me-3"></i> Faire un Don à Lexikongo
+        </NuxtLink>
 
+        <NuxtLink to="/register" class="btn btn-outline-info btn-lg me-3">
+          <i class="fas fa-users me-3"></i> Rejoindre les Contributeurs
+        </NuxtLink>
+        <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
+          <i class="fas fa-envelope me-3"></i> Contactez-nous
+        </NuxtLink>
+      </div>
+    </section>
     <!-- Appel à l'action -->
     <section class="mt-5 text-center">
       <h4 class="text-secondary">
@@ -200,7 +205,7 @@ header p.lead {
 
 /* Couleurs secondaires */
 .text-secondary {
-  color: var(--text-default);
+  color: var(--text-primary);
 }
 /* Espacement */
 .mt-5 {

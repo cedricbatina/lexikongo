@@ -19,7 +19,15 @@
     </div>
 
     <!-- Stripe Elements -->
-    <div ref="cardElement" class="form-control mt-3" id="card-element"></div>
+    <div
+      v-if="stripeInitialized"
+      ref="cardElement"
+      class="form-control mt-3"
+      id="card-element"
+    ></div>
+    <div v-else class="alert alert-warning mt-3" role="alert">
+      Chargement des options de paiement en cours...
+    </div>
     <div
       v-if="error"
       class="text-danger mt-2"
@@ -32,8 +40,8 @@
     <!-- Bouton de contribution -->
     <button
       type="submit"
-      class="btn btn-primary mt-3"
-      :disabled="isProcessing"
+      class="btn btn-primary mt-3 w-100"
+      :disabled="isProcessing || !stripeInitialized"
       aria-busy="true"
     >
       <span
@@ -45,6 +53,11 @@
   </form>
 </template>
 
+---
+
+### **Script corrigé**
+
+```javascript
 <script setup>
 import { ref, onMounted } from "vue";
 import { loadStripe } from "@stripe/stripe-js";
@@ -53,6 +66,11 @@ import { useRuntimeConfig } from "#app"; // Importation de la configuration
 const config = useRuntimeConfig();
 const stripePublicKey = config.public.stripePublicKey; // Récupération de la clé publique
 
+if (!stripePublicKey) {
+  console.error("Clé publique Stripe manquante.");
+} else {
+  console.log("Clé publique Stripe :", stripePublicKey);
+}
 const amount = ref("");
 const stripe = ref(null);
 const elements = ref(null);
@@ -96,9 +114,11 @@ const handlePayment = async () => {
       error.value = stripeError.message;
     } else {
       alert("Paiement réussi ! Merci pour votre contribution.");
+      amount.value = ""; // Réinitialisation du montant après succès
     }
   } catch (err) {
     error.value = "Une erreur est survenue. Veuillez réessayer.";
+    console.error("Erreur lors du paiement :", err);
   } finally {
     isProcessing.value = false;
   }
@@ -121,8 +141,6 @@ onMounted(async () => {
   }
 });
 </script>
-
-
 <style scoped>
 .donation-form {
   max-width: 400px;
@@ -135,5 +153,10 @@ onMounted(async () => {
 
 .text-danger {
   font-size: 0.875rem;
+}
+
+.alert {
+  font-size: 0.9rem;
+  text-align: center;
 }
 </style>
