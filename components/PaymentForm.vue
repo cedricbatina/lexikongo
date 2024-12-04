@@ -2,9 +2,9 @@
   <div class="payment-methods">
     <!-- Sélection des méthodes de paiement -->
     <div class="form-group mb-4">
-      <label for="payment-method-select" class="form-label"
-        >Choisissez une méthode de paiement :</label
-      >
+      <label for="payment-method-select" class="form-label">
+        Choisissez une méthode de paiement :
+      </label>
       <select
         id="payment-method-select"
         v-model="selectedMethod"
@@ -36,11 +36,10 @@
             class="form-control"
             placeholder="Entrez le montant"
             required
-            aria-describedby="stripe-amount-help"
           />
-          <small id="stripe-amount-help" class="form-text text-muted"
-            >Montant minimum : 1€.</small
-          >
+          <small id="stripe-amount-help" class="form-text text-muted">
+            Montant minimum : 1€.
+          </small>
         </div>
         <div
           ref="stripeCardElement"
@@ -101,7 +100,6 @@ import { ref, onMounted } from "vue";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRuntimeConfig } from "#app";
 
-// Variables et références
 const config = useRuntimeConfig();
 const stripeKey = config.public.stripeKey; // Clé publique Stripe
 const selectedMethod = ref("");
@@ -113,7 +111,6 @@ const stripeError = ref("");
 const isProcessing = ref(false);
 const googlePayReady = ref(false);
 
-// Fonction de paiement Stripe
 const processStripePayment = async () => {
   try {
     if (!amount.value || parseFloat(amount.value) < 1) {
@@ -124,7 +121,7 @@ const processStripePayment = async () => {
     isProcessing.value = true;
     stripeError.value = "";
 
-    const { clientSecret } = await $fetch("/api/create-payment-intent", {
+    const { clientSecret } = await $fetch("/api/stripe/donation", {
       method: "POST",
       body: { amount: parseFloat(amount.value) },
     });
@@ -148,7 +145,6 @@ const processStripePayment = async () => {
   }
 };
 
-// Réinitialiser les formulaires de paiement
 const resetPaymentForms = () => {
   stripeError.value = "";
   if (selectedMethod.value === "stripe" && stripeCardElement.value) {
@@ -156,7 +152,6 @@ const resetPaymentForms = () => {
   }
 };
 
-// Initialisation Stripe
 onMounted(async () => {
   try {
     if (!stripeKey) {

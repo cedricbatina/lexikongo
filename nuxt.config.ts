@@ -20,7 +20,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Lexique Kikongo - Français - Anglais en ligne' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'keywords', content: 'Vocabulaire, Kikongo, Français, Anglais, Langues, Afrique, Culturelle, Bantou, Congo, Kongo, Dictionnaire' },
+        { name: 'keywords', content: 'Vocabulaire, Kikongo, Français, Anglais, Langues, Afrique, Culturelle, Bantou, Congo, Kongo, préservation linguistique, culture Kongo, donation, Kikongo, mots, verbes, linguistique, traduction, français, anglais, culture africaine, patrimoine linguistique, Dictionnaire Kikongo - Français, Dictionnaire - Anglais, Dictionnaire Kikongo - Français - Anglais, Dictionnaire africain, Mbanza Kongo, Congo, Congo-Brazzaville, RDC, Angola, Gabon, Cameroun, RCA, Centrafrique, Langues, Langues Bantoues' },
         { name: '', content: 'Lexikongo' }
       ],
       link: [
