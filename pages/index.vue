@@ -11,8 +11,13 @@
         découvrez leurs significations.
       </p>
     </header>
+    <section class="text-center mb-5">
+      <LogoSlogan />
+      <SearchButtons />
+      <ContributorButtons />
+      <AdminButtons />
+    </section>
 
-    <!-- Formulaire de recherche -->
     <section
       class="row justify-content-center mb-4"
       aria-labelledby="search-section"
@@ -188,7 +193,7 @@ useHead({
     {
       name: "keywords",
       content:
-        "Kikongo, mots, verbes, linguistique, traduction, français, anglais, culture africaine, patrimoine linguistique",
+        "Kikongo, mots, verbes, linguistique, traduction, français, anglais, culture africaine, patrimoine linguistique, Dictionnaire Kikongo - Français, Dictionnaire - Anglais, Dictionnaire Kikongo - Français - Anglais, Dictionnaire africain, Mbanza Kongo, Congo, Congo-Brazzaville, RDC, Angola, Gabon, Cameroun, RCA, Centrafrique, Langues, Langues Bantoues",
     },
     {
       name: "author",

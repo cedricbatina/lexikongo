@@ -38,9 +38,9 @@
             required
             aria-describedby="stripe-amount-help"
           />
-          <small id="stripe-amount-help" class="form-text text-muted">
-            Montant minimum : 1€.
-          </small>
+          <small id="stripe-amount-help" class="form-text text-muted"
+            >Montant minimum : 1€.</small
+          >
         </div>
         <div
           ref="stripeCardElement"
@@ -66,7 +66,6 @@
       </h3>
       <PayPalPayment />
       <div id="paypal-button-container"></div>
-      <div v-if="isProcessing" class="spinner mt-2">Chargement...</div>
     </div>
 
     <!-- Bouton Google Pay -->
@@ -78,16 +77,21 @@
       <p v-else class="text-muted mt-3">
         Google Pay n'est pas encore configuré. Veuillez réessayer plus tard.
       </p>
-      <GooglePayPayment />
     </div>
-    <!-- Bouton Google Pay -->
-    <div v-if="selectedMethod === 'virement'" class="googlepay-form mt-4">
+
+    <!-- Bouton Virement -->
+    <div v-if="selectedMethod === 'virement'" class="bank-transfer mt-4">
       <h3 class="text-primary">
-        <i class="fab fa-google-pay me-2"></i> Virement bancaire
+        <i class="fas fa-university me-2"></i> Virement Bancaire
       </h3>
       <BankTransfer />
+    </div>
 
-      <GooglePayPayment />
+    <!-- Feedback global -->
+    <div v-if="stripeError || !googlePayReady" class="alert alert-danger mt-3">
+      {{
+        stripeError || "Certaines méthodes de paiement ne sont pas disponibles."
+      }}
     </div>
   </div>
 </template>
@@ -97,8 +101,9 @@ import { ref, onMounted } from "vue";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRuntimeConfig } from "#app";
 
+// Variables et références
 const config = useRuntimeConfig();
-const stripeKey = config.public.stripeKey; // Récupération de la clé publique Stripe
+const stripeKey = config.public.stripeKey; // Clé publique Stripe
 const selectedMethod = ref("");
 const amount = ref("");
 const stripe = ref(null);
@@ -107,7 +112,8 @@ const stripeCardElement = ref(null);
 const stripeError = ref("");
 const isProcessing = ref(false);
 const googlePayReady = ref(false);
-// Processus de paiement avec Stripe
+
+// Fonction de paiement Stripe
 const processStripePayment = async () => {
   try {
     if (!amount.value || parseFloat(amount.value) < 1) {
@@ -142,118 +148,41 @@ const processStripePayment = async () => {
   }
 };
 
-// Rendu des boutons PayPal et Google Pay
+// Réinitialiser les formulaires de paiement
 const resetPaymentForms = () => {
-  if (selectedMethod.value === "paypal") renderPayPalButton();
-  else if (selectedMethod.value === "googlepay") renderGooglePayButton();
-};
-
-// Rendu du bouton PayPal
-const renderPayPalButton = () => {
-  if (window.paypal) {
-    window.paypal
-      .Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: { value: amount.value || "1.00" },
-              },
-            ],
-          });
-        },
-        onApprove: (data, actions) => {
-          return actions.order.capture().then((details) => {
-            alert(`Paiement réussi : Merci, ${details.payer.name.given_name}`);
-          });
-        },
-        onError: (err) => {
-          alert("Erreur PayPal : " + err.message);
-        },
-      })
-      .render("#paypal-button-container");
+  stripeError.value = "";
+  if (selectedMethod.value === "stripe" && stripeCardElement.value) {
+    stripeCardElement.value.mount("#stripe-card-element");
   }
-};
-
-// Rendu du bouton Google Pay
-const renderGooglePayButton = () => {
-  if (!stripeKey) return;
-
-  const paymentsClient = new google.payments.api.PaymentsClient({
-    environment: "TEST",
-  });
-  const paymentRequest = {
-    apiVersion: 2,
-    apiVersionMinor: 0,
-    allowedPaymentMethods: [
-      {
-        type: "CARD",
-        parameters: {
-          allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-          allowedCardNetworks: ["MASTERCARD", "VISA"],
-        },
-        tokenizationSpecification: {
-          type: "PAYMENT_GATEWAY",
-          parameters: {
-            gateway: "stripe",
-            "stripe:publishableKey": stripeKey,
-            "stripe:version": "2020-08-27",
-          },
-        },
-      },
-    ],
-    merchantInfo: { merchantName: "Lexikongo" },
-    transactionInfo: {
-      totalPriceStatus: "FINAL",
-      totalPrice: amount.value || "1.00",
-      currencyCode: "EUR",
-    },
-  };
-
-  paymentsClient
-    .isReadyToPay(paymentRequest)
-    .then((response) => {
-      if (response.result) {
-        googlePayReady.value = true;
-        const button = paymentsClient.createButton({
-          onClick: () => paymentsClient.loadPaymentData(paymentRequest),
-        });
-        document
-          .getElementById("googlepay-button-container")
-          .appendChild(button);
-      } else {
-        googlePayReady.value = false;
-      }
-    })
-    .catch((err) => {
-      console.error("Erreur Google Pay :", err);
-      googlePayReady.value = false;
-    });
 };
 
 // Initialisation Stripe
 onMounted(async () => {
-  console.log("Début du montage de PaymentForm");
   try {
-    if (!stripePublicKey) {
-      throw new Error("Clé publique Stripe manquante.");
+    if (!stripeKey) {
+      throw new Error(
+        "Clé publique Stripe manquante. Vérifiez votre configuration."
+      );
     }
-    console.log("Clé publique Stripe disponible :", stripePublicKey);
 
-    stripe.value = await loadStripe(stripePublicKey);
-    console.log("Stripe chargé avec succès :", stripe.value);
+    stripe.value = await loadStripe(stripeKey);
+    if (!stripe.value) {
+      throw new Error("Erreur lors du chargement de Stripe.");
+    }
 
-    elements.value = stripe.value.elements();
-    cardElement.value = elements.value.create("card");
-    console.log("Stripe Elements initialisé.");
+    stripeElements.value = stripe.value.elements();
+    stripeCardElement.value = stripeElements.value.create("card");
+    stripeCardElement.value.mount("#stripe-card-element");
 
-    cardElement.value.mount("#stripe-card-element");
-    console.log("Champ de carte monté avec succès.");
+    console.log("Stripe initialisé avec succès.");
   } catch (err) {
-    console.error("Erreur lors de l'initialisation de PaymentForm :", err);
+    console.error("Erreur lors de l'initialisation de Stripe :", err);
+    stripeError.value = "Erreur lors de l'initialisation de Stripe.";
   }
 });
 </script>
+
+
 
 <style scoped>
 .payment-methods {

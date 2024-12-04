@@ -247,7 +247,7 @@
     <!-- Comment contribuer -->
     <section class="text-center mb-5">
       <h2 class="text-primary">
-        <i class="fas fa-hands-helping me-2"></i> Comment contribuer ?
+        <i class="fas fa-hands-helping me-2"></i> Autre contribution
       </h2>
       <p class="m-3">Il existe plusieurs façons de soutenir Lexikongo :</p>
       <div class="contribution-options mb-4">

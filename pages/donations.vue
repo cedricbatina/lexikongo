@@ -108,7 +108,7 @@ useHead({
     {
       name: "keywords",
       content:
-        "Lexikongo, contributions, dons, soutenir le Kikongo, préservation linguistique, culture Kongo, donation",
+        "Lexikongo, contributions, dons, soutenir le Kikongo, préservation linguistique, culture Kongo, donation, Kikongo, mots, verbes, linguistique, traduction, français, anglais, culture africaine, patrimoine linguistique, Dictionnaire Kikongo - Français, Dictionnaire - Anglais, Dictionnaire Kikongo - Français - Anglais, Dictionnaire africain, Mbanza Kongo, Congo, Congo-Brazzaville, RDC, Angola, Gabon, Cameroun, RCA, Centrafrique, Langues, Langues Bantoues",
     },
     {
       name: "robots",

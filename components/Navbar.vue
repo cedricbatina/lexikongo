@@ -66,7 +66,7 @@
             v-if="authStore.userRole.includes('contributor')"
             class="nav-item"
           >
-            <nuxt-link class="nav-link" to="/contributor/dashboard">
+            <nuxt-link class="nav-link" to="/contributor/">
               <i class="fas fa-tasks me-1"></i> Espace Contributeur
             </nuxt-link>
           </li>
@@ -80,7 +80,7 @@
           <li v-if="isLoggedIn" class="nav-item">
             <nuxt-link
               class="nav-link"
-              :to="`/${userRole}/profile`"
+              :to="`/${userRole}`"
               title="Voir mon profil"
             >
               <i class="fas fa-user-check"></i>

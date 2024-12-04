@@ -24,6 +24,22 @@
             <i class="fa-solid fa-arrow-down-a-z"></i> Liste des Verbes
           </h1>
           <VerbList />
+          <section class="text-center mt-4">
+            <p class="text-default">
+              Vous cherchez un verbe que vous ne trouvez pas ? <br />
+              Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou
+              verbes.
+            </p>
+            <NuxtLink
+              to="/documentation/for-contributors"
+              class="btn btn-outline-success btn-lg me-3"
+            >
+              <i class="fas fa-users me-2"></i> Rejoignez les Contributeurs
+            </NuxtLink>
+            <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
+              <i class="fas fa-envelope me-2"></i> Contactez-nous
+            </NuxtLink>
+          </section>
           <div class="mt-4 mb-4 text-center">
             <SearchButtons />
             <ContributorButtons />
@@ -86,7 +102,7 @@ useHead({
     {
       name: "keywords",
       content:
-        "Kikongo, verbes Kikongo, lexique Kikongo, dictionnaire des verbes, langue africaine, Congo, traductions Kikongo, linguistique, expressions Kikongo",
+        "Kikongo, verbes Kikongo, lexique Kikongo, dictionnaire des verbes, langue africaine, Congo, traductions Kikongo, linguistique, expressions Kikongo, Kikongo, mots, verbes, linguistique, traduction, français, anglais, culture africaine, patrimoine linguistique, Dictionnaire Kikongo - Français, Dictionnaire - Anglais, Dictionnaire Kikongo - Français - Anglais, Dictionnaire africain, Mbanza Kongo, Congo, Congo-Brazzaville, RDC, Angola, Gabon, Cameroun, RCA, Centrafrique, Langues, Langues Bantoues",
     },
     // Author and Robots
     {
@@ -119,7 +135,7 @@ useHead({
       property: "og:type",
       content: "website",
     },
-    // Twitter Tags
+
     {
       name: "twitter:card",
       content: "summary_large_image",

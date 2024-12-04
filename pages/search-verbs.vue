@@ -181,7 +181,7 @@ useHead({
     {
       name: "keywords",
       content:
-        "Kikongo, verbes, conjugaison, recherche, langue africaine, traduction, français, anglais, linguistique, patrimoine culturel, expressions Kikongo",
+        "Kikongo, verbes, conjugaison, recherche, langue africaine, traduction, français, anglais, linguistique, patrimoine culturel, expressions Kikongo, Kikongo, mots, verbes, linguistique, traduction, français, anglais, culture africaine, patrimoine linguistique, Dictionnaire Kikongo - Français, Dictionnaire - Anglais, Dictionnaire Kikongo - Français - Anglais, Dictionnaire africain, Mbanza Kongo, Congo, Congo-Brazzaville, RDC, Angola, Gabon, Cameroun, RCA, Centrafrique, Langues, Langues Bantoues",
     },
     {
       name: "author",

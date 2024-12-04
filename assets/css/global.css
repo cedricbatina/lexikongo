@@ -181,7 +181,9 @@ h2, h4 {
 }
 
 
-
+input {
+  border: #0056b3;
+}
 ul li,
 ol li {
   margin-bottom: 0.75rem;

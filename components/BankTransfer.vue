@@ -6,15 +6,16 @@
     </p>
     <ul class="list-group mt-3">
       <li class="list-group-item">
-        <strong>Bénéficiaire :</strong> MONSIEUR CEDRIC BATINA
+        <strong>Bénéficiaire :</strong>
+        <span>@rtful Batina Creative Studios</span>
       </li>
       <li class="list-group-item">
         <strong>IBAN :</strong>
         <span class="iban">FR76 1741 8000 0100 0083 0001 392</span>
         <button
           class="btn btn-sm btn-outline-primary ms-3 copy-button"
-          @click="copyToClipboard('FR76 1741 8000 0100 0083 0001 392')"
-          aria-label="Copier l'IBAN"
+          @click="copyToClipboard('FR76 1741 8000 0100 0083 0001 392', 'IBAN')"
+          aria-label="Copier l'IBAN dans le presse-papiers"
         >
           Copier
         </button>
@@ -24,16 +25,18 @@
         <span class="bic">SNNNFR22XXX</span>
         <button
           class="btn btn-sm btn-outline-primary ms-3 copy-button"
-          @click="copyToClipboard('SNNNFR22XXX')"
-          aria-label="Copier le BIC"
+          @click="copyToClipboard('SNNNFR22XXX', 'BIC')"
+          aria-label="Copier le BIC dans le presse-papiers"
         >
           Copier
         </button>
       </li>
       <li class="list-group-item">
-        <strong>Référence :</strong> Votre email ou identifiant utilisateur
+        <strong>Référence :</strong>
+        <span>Votre email ou identifiant utilisateur</span>
       </li>
     </ul>
+    <p class="mt-3 text-success" v-if="copiedText">{{ copiedText }}</p>
     <p class="mt-3">
       Une fois votre virement effectué, merci de nous envoyer un email à
       <a href="mailto:info@lexikongo.fr" class="text-primary"
@@ -47,11 +50,14 @@
 <script setup>
 import { ref } from "vue";
 
-const copyToClipboard = (text) => {
+const copiedText = ref("");
+
+const copyToClipboard = (text, field) => {
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      alert("Texte copié : " + text);
+      copiedText.value = `${field} copié !`;
+      setTimeout(() => (copiedText.value = ""), 2000); // Efface après 2 secondes
     })
     .catch((err) => {
       console.error("Erreur lors de la copie dans le presse-papiers :", err);
@@ -63,18 +69,26 @@ const copyToClipboard = (text) => {
 .bank-transfer {
   font-size: 1rem;
   line-height: 1.6;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 .info-text {
   font-size: 1.1rem;
-  color: var(--text-default, #333);
+  color: #333;
 }
 
 .list-group-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f8f9fa;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .copy-button {
@@ -86,7 +100,11 @@ const copyToClipboard = (text) => {
 .bic {
   font-family: monospace;
   font-size: 1rem;
-  color: var(--primary-color, #007bff);
+  color: #007bff;
+}
+
+.text-success {
+  color: #28a745;
 }
 
 a.text-primary {
