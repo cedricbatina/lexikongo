@@ -2,14 +2,14 @@
 
 export default defineNuxtConfig({
   runtimeConfig: {
-    stripeSecretKey: process.env.STRIPE_KEY,
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
 
     paypalKey: process.env.PAYPAL_KEY, // Clé publique PayPal
 
 
     public: {
       baseUrl: process.env.BASE_URL,
-      stripePublicKey: process.env.STRIPE_PUBLIC_KEY || "",
+      stripeKey: process.env.STRIPE_PUBLIC_KEY || "",
     },
   },
   compatibilityDate: '2024-04-03',
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
 
   plugins: [
     { src: '~/plugins/vue-carousel-client.js', mode: 'client' },
-    { src: '~/plugins/bootstrap.js', mode: 'client' }
+    { src: '~/plugins/bootstrap.js', mode: 'client' }, { src: '~/plugins/vue-toastification.js', mode: 'client' }
   ],
   css: [
     // '~/assets/css/data-style.css',
