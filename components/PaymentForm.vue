@@ -189,8 +189,18 @@ const processStripePayment = async () => {
 
 // Réinitialisation des formulaires
 const resetPaymentForms = async () => {
-  if (selectedMethod.value === "stripe") {
-    await initializeStripe();
+  switch (selectedMethod.value) {
+    case "stripe":
+      await initializeStripe();
+      break;
+    case "paypal":
+      await loadPayPalSdk(); // Charger le SDK PayPal
+      break;
+    case "googlepay":
+      console.log("Google Pay ready to initialize"); // Exemple pour Google Pay
+      break;
+    default:
+      console.warn("Méthode de paiement inconnue");
   }
 };
 
@@ -221,6 +231,7 @@ const initializeStripe = async () => {
         },
       },
     });
+    stripeCardElement.value.mount("#stripe-card-element");
 
     await nextTick();
 
