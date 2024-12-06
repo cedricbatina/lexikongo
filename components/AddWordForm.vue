@@ -8,11 +8,6 @@
               Ajouter un Mot
             </h4>
 
-            <!-- Affichage du message de succès ou d'erreur -->
-            <div v-if="message.text" :class="`alert ${message.type}`">
-              {{ message.text }}
-            </div>
-
             <form @submit.prevent="submitForm">
               <!-- Singulier -->
               <div class="mb-3">
@@ -142,7 +137,10 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useToast } from "vue-toastification"; // Import Toastification
 import { useAuthStore } from "@/stores/authStore";
+
+const toast = useToast(); // Initialise Toastification
 
 // Stockage des classes nominales
 const nominalClasses = ref([]);
@@ -154,12 +152,6 @@ const formData = ref({
   class_id: "", // Classe nominale
   translation_fr: "",
   translation_en: "",
-});
-
-// Message de succès ou d'erreur
-const message = ref({
-  text: "",
-  type: "", // 'alert-success' or 'alert-danger'
 });
 
 // Appel de l'API pour récupérer les classes nominales
@@ -185,10 +177,7 @@ const submitForm = async () => {
   const userId = authStore.userId;
 
   if (!userId) {
-    message.value = {
-      text: "Erreur : vous devez être connecté pour ajouter un mot.",
-      type: "alert-danger",
-    };
+    toast.error("Erreur : vous devez être connecté pour ajouter un mot.");
     return;
   }
 
@@ -212,10 +201,7 @@ const submitForm = async () => {
     });
 
     if (response.ok) {
-      message.value = {
-        text: "Mot ajouté avec succès ! Ajouter un autre mot",
-        type: "alert-success",
-      };
+      toast.success("Mot ajouté avec succès !");
       formData.value = {
         singular: "",
         plural: "",
@@ -225,20 +211,15 @@ const submitForm = async () => {
         translation_en: "",
       };
     } else {
-      message.value = {
-        text: "Erreur lors de l'ajout du mot.",
-        type: "alert-danger",
-      };
+      toast.error("Erreur lors de l'ajout du mot.");
     }
   } catch (error) {
     console.error("Erreur lors de l'ajout du mot :", error);
-    message.value = {
-      text: "Erreur lors de l'ajout du mot.",
-      type: "alert-danger",
-    };
+    toast.error("Erreur lors de l'ajout du mot.");
   }
 };
 </script>
+
 
 <style scoped>
 .container {

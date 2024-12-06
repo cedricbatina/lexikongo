@@ -17,7 +17,7 @@
       <ContributorButtons />
       <AdminButtons />
     </section>
-
+    <LastExpressionsCount />
     <section
       class="row justify-content-center mb-4"
       aria-labelledby="search-section"

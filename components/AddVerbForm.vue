@@ -55,54 +55,45 @@
 
         <button type="submit" class="btn btn-primary">Ajouter le verbe</button>
       </form>
-
-      <!-- Feedback message -->
-      <div v-if="message" class="alert mt-3" :class="messageClass">
-        {{ message }}
-      </div>
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref } from "vue";
-import { useAuthStore } from "~/stores/authStore"; // Import the auth store to get user info
+import { useAuthStore } from "~/stores/authStore";
+import { useToast } from "vue-toastification"; // Import Toastification
 
-const authStore = useAuthStore(); // Access the auth store
+const toast = useToast(); // Initialize Toastification
+const authStore = useAuthStore();
 
 const formData = ref({
   name: "",
   phonetic: "",
-  root: "", // Optional
-  suffix: "", // Optional
+  root: "",
+  suffix: "",
   translation_fr: "",
   translation_en: "",
 });
 
-const message = ref(""); // Feedback message for the user
-const messageClass = ref(""); // CSS class for feedback message
-
 const submitForm = async () => {
   if (!formData.value.name || !formData.value.translation_fr) {
-    message.value = "Le verbe et la traduction en français sont obligatoires.";
-    messageClass.value = "alert-danger";
+    toast.error("Le verbe et la traduction en français sont obligatoires.");
     return;
   }
 
-  // Check if the user is logged in
-  const userId = authStore.userId; // Get the user ID from the store
+  const userId = authStore.userId;
   if (!userId) {
-    message.value = "Veuillez vous connecter pour ajouter un verbe.";
-    messageClass.value = "alert-danger";
+    toast.error("Veuillez vous connecter pour ajouter un verbe.");
     return;
   }
 
-  // Structure the data for the API
   const dataToSubmit = {
     name: formData.value.name,
     phonetic: formData.value.phonetic,
     root: formData.value.root || null,
     suffix: formData.value.suffix || null,
-    user_id: userId, // Include the user ID in the API call
+    user_id: userId,
     translations: [
       { language_code: "fr", meaning: formData.value.translation_fr },
       { language_code: "en", meaning: formData.value.translation_en },
@@ -116,12 +107,10 @@ const submitForm = async () => {
       body: JSON.stringify(dataToSubmit),
     });
 
-    const result = await response.json(); // Parse response
+    const result = await response.json();
 
     if (response.ok && result.success) {
-      message.value = "Verbe ajouté avec succès !";
-      messageClass.value = "alert-success";
-      // Reset form data after success
+      toast.success("Verbe ajouté avec succès !");
       formData.value = {
         name: "",
         phonetic: "",
@@ -131,17 +120,15 @@ const submitForm = async () => {
         translation_en: "",
       };
     } else {
-      // Handle error response from API
-      message.value = result.error || "Erreur lors de l'ajout du verbe.";
-      messageClass.value = "alert-danger";
+      toast.error(result.error || "Erreur lors de l'ajout du verbe.");
     }
   } catch (error) {
     console.error("Erreur :", error);
-    message.value = "Erreur lors de l'ajout du verbe.";
-    messageClass.value = "alert-danger";
+    toast.error("Erreur lors de l'ajout du verbe.");
   }
 };
 </script>
+
 
 <style scoped>
 /* Style for the card layout */
