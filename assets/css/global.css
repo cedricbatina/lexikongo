@@ -1,9 +1,9 @@
 :root {
-  --primary-color: #007bff;
-  --hover-primary: #0056b3;
+  --primary-color: #0272eb;
+  --hover-primary: #024792;
   --secondary-color: #a52a2a;
   --dark-color: #2a0600;
-  --highlight-color: #28a745;
+  --highlight-color: #136326;
   --text-default: #03080d;
   --third-color: #ff4500;
 }
@@ -25,7 +25,7 @@
 /* Expressions mises en avant */
 .searchedExpression {
   color: var(--secondary-color);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Phonétique */

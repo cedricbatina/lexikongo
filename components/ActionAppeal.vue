@@ -7,7 +7,7 @@
       </p>
       <NuxtLink
         to="/documentation/for-contributors"
-        class="btn btn-outline-success btn-lg me-3"
+        class="btn btn-outline-success btn-lg m-2"
         aria-label="Rejoignez les contributeurs pour enrichir le lexique"
       >
         <i class="fas fa-hands-helping me-2" aria-hidden="true"></i>
@@ -15,7 +15,7 @@
       </NuxtLink>
       <NuxtLink
         to="/contact"
-        class="btn btn-outline-primary btn-lg"
+        class="btn btn-outline-primary btn-lg m-2"
         aria-label="Contactez-nous pour toute assistance ou suggestion"
       >
         <i class="fas fa-envelope me-2" aria-hidden="true"></i>

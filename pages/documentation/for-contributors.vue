@@ -323,17 +323,18 @@
       </p>
     </section>
     <!-- Appel à l'action -->
-    <div class="text-center mt-4">
-      <NuxtLink to="/register" class="btn btn-outline-primary btn-lg me-3">
-        <i class="fas fa-user-plus me-2"></i> Rejoignez-nous
+    <!-- <div class="contribution-options mb-4 text-center">
+      <NuxtLink to="/contribute" class="btn btn-outline-success btn-lg me-3">
+        <i class="fas fa-hand-holding-usd me-2"></i> Faire un Don à Lexikongo
       </NuxtLink>
-      <NuxtLink to="/contribution" class="btn btn-outline-success btn-lg me-3">
-        <i class="fas fa-donate me-2"></i> Faire un Don à Lexikongo
+
+      <NuxtLink to="/register" class="btn btn-outline-info btn-lg me-3">
+        <i class="fas fa-users me-2"></i> Rejoindre les Contributeurs
       </NuxtLink>
       <NuxtLink to="/contact" class="btn btn-outline-secondary btn-lg">
         <i class="fas fa-envelope me-2"></i> Contactez-nous
       </NuxtLink>
-    </div>
+    </div>-->
   </div>
 </template>
 

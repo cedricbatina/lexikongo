@@ -53,21 +53,8 @@
     </div>
 
     <!-- Appel à l'action -->
-    <section class="text-center mt-4">
-      <p class="text-default">
-        Vous ne trouvez pas le verbe que vous cherchez ? <br />
-        Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou verbes.
-      </p>
-      <NuxtLink
-        to="/documentation/for-contributors"
-        class="btn btn-outline-success btn-lg me-3"
-      >
-        <i class="fas fa-hands-helping me-2"></i> Rejoignez les Contributeurs
-      </NuxtLink>
-      <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
-        <i class="fas fa-envelope me-2"></i> Contactez-nous
-      </NuxtLink>
-    </section>
+    <LastExpressionsCount />
+    <ActionAppeal />
 
     <section class="text-center mb-5">
       <SearchButtons />

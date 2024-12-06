@@ -9,14 +9,23 @@ export default defineEventHandler(async (event) => {
     // Requête pour récupérer les détails de l'utilisateur
     const [rows] = await connection.execute(
       `SELECT 
-        user_id, 
-        username, 
-        email, 
-        role, 
-        created_at, 
-        email_verified
-      FROM users
-      WHERE user_id = ?`,
+  u.user_id, 
+  u.username, 
+  u.email, 
+  u.created_at, 
+  u.email_verified,
+  GROUP_CONCAT(r.role_name) AS roles
+FROM 
+  users u
+LEFT JOIN 
+  user_roles ur ON u.user_id = ur.user_id
+LEFT JOIN 
+  roles r ON ur.role_id = r.role_id
+WHERE 
+  u.user_id = ?
+GROUP BY 
+  u.user_id;
+`,
       [id]
     );
 

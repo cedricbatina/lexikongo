@@ -9,16 +9,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Menu Secondaire -->
-      <div class="col-md-3 col-sm-12">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="text-primary text-center">Menu</h5>
-            <MenuSecondaire />
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
