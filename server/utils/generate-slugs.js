@@ -1,4 +1,5 @@
 // scripts/generate-slugs.js
+import { getConnection } from "./db.config";
 
 import mysql from "mysql2/promise";
 import slugify from "slugify";

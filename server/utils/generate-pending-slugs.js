@@ -1,4 +1,4 @@
-/*import slugify from "slugify";
+import slugify from "slugify";
 
 async function generatePendingSubmissionSlug(connection, base) {
   let slug = slugify(base, { lower: true, strict: true });
@@ -28,8 +28,9 @@ async function generatePendingSubmissionSlug(connection, base) {
 }
 
 export { generatePendingSubmissionSlug };
-*/
+/*
 // scripts/generate-pending-slugs.jsimport slugify from "slugify";
+import slugify from "slugify"; // Import slugify at the top
 
 export async function generatePendingSubmissionSlug(connection, base) {
   let slug = slugify(base, { lower: true, strict: true });
@@ -67,3 +68,4 @@ export async function generatePendingSubmissionSlug(connection, base) {
 
   return uniqueSlug;
 }
+*/

@@ -28,7 +28,11 @@ export default defineNuxtConfig({
       ]
     }
   },
-
+  nitro: {
+    externals: {
+      inline: ["slugify"],
+    },
+  },
   alias: {
     'generate-unique-slugs': '~/server/utils/generate-unique-slugs',
     'generate-pending-slugs': '~/server/utils/generate-pending-slugs',

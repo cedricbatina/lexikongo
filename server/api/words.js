@@ -3,8 +3,6 @@ import { getConnection } from "./db.config";
 import { generateUniqueSlug } from "../utils/generate-unique-slugs";
 import { generatePendingSubmissionSlug } from "../utils/generate-pending-slugs";
 
-//import slugify from "slugify"; // Import slugify at the top
-
 // Gestion des différentes méthodes (GET, POST, PUT, DELETE)
 export default defineEventHandler(async (event) => {
   const method = event.node.req.method;
@@ -165,9 +163,27 @@ async function handlePostRequest(event) {
   if (isAdmin) {
     // Insertion directe pour les admins
     if (contentType === "word") {
-      return await insertWord(body);
+      return await insertWord({
+        singular,
+        plural,
+        phonetic,
+        class_id,
+        translations,
+        user_id,
+        derived_from_word,
+        derived_from_verb,
+        number_variability,
+      });
     } else if (contentType === "verb") {
-      return await insertVerb(body);
+      return await insertVerb({
+        name,
+        root,
+        suffix,
+        phonetic,
+        translations,
+        user_id,
+        derived_from_verb,
+      });
     }
   } else if (isContributor) {
     // Les contributeurs peuvent soumettre du contenu en attente
@@ -201,9 +217,16 @@ async function handlePostRequest(event) {
       );
     } else if (contentType === "verb") {
       const [result] = await connection.execute(
-        `INSERT INTO pending_verbs_submissions (user_id, status, name, root, suffix, phonetic)
-         VALUES (?, 'pending', ?, ?, ?, ?)`,
-        [user_id, name, root || null, suffix || null, phonetic || null]
+        `INSERT INTO pending_verbs_submissions (user_id, status, name, root, suffix, phonetic, derived_from_verb)
+         VALUES (?, 'pending', ?, ?, ?, ?, ?)`,
+        [
+          user_id,
+          name,
+          root || null,
+          suffix || null,
+          phonetic || null,
+          derived_from_verb,
+        ]
       );
       submissionId = result.insertId;
 
@@ -243,6 +266,474 @@ async function handlePostRequest(event) {
   return {
     message: "Soumission envoyée avec succès, en attente de validation.",
   };
+}
+
+/*
+async function handlePutRequest(event) {
+  const body = await readBody(event);
+
+  if (!body.word_id && !body.verb_id) {
+    return { error: "Les champs 'word_id' ou 'verb_id' sont requis." };
+  }
+
+  try {
+    const connection = await getConnection();
+
+    // Mise à jour d'un mot
+    if (body.word_id) {
+      const {
+        word_id,
+        singular,
+        plural,
+        phonetic,
+        root,
+        class_id,
+        derived_from_word,
+        derived_from_verb,
+        number_variability,
+        translations,
+      } = body;
+
+      // Vérifications des champs requis
+      if (
+        !word_id ||
+        !singular ||
+        !translations ||
+        !Array.isArray(translations)
+      ) {
+        return {
+          error:
+            "Les champs 'word_id', 'singular' et 'traductions' sont requis.",
+        };
+      }
+
+      const slug = await generateUniqueSlug(connection, singular, "words");
+
+      await connection.execute(
+        `UPDATE words SET singular = ?, plural = ?, phonetic = ?, root = ?, class_id = ?, 
+        derived_from_word = ?, derived_from_verb = ?, number_variability = ?, slug = ? WHERE word_id = ?`,
+        [
+          singular,
+          plural || null,
+          phonetic || null,
+          root || null,
+          class_id || null,
+          derived_from_word || null,
+          derived_from_verb || null,
+          number_variability || null,
+          slug,
+          word_id,
+        ]
+      );
+
+      // Mise à jour des traductions
+      for (const { language_code, meaning } of translations) {
+        if (!language_code || !meaning) continue; // Vérification des champs
+        await connection.execute(
+          `UPDATE word_meanings SET meaning = ? WHERE word_id = ? AND language_code = ?`,
+          [meaning, word_id, language_code]
+        );
+      }
+
+      await connection.end();
+      return { success: true, message: "Mot mis à jour avec succès." };
+    }
+
+    // Mise à jour d'un verbe
+    if (body.verb_id) {
+      const {
+        verb_id,
+        name,
+        root,
+        suffix,
+        phonetic,
+        derived_from,
+        derived_verb_type_id,
+        translations,
+      } = body;
+
+      // Vérifications des champs requis
+      if (!verb_id || !name || !translations || !Array.isArray(translations)) {
+        return {
+          error: "Les champs 'verb_id', 'name' et 'traductions' sont requis.",
+        };
+      }
+
+      const slug = await generateUniqueSlug(connection, name, "verbs");
+
+      await connection.execute(
+        `UPDATE verbs SET name = ?, root = ?, suffix = ?, phonetic = ?, derived_from = ?, 
+        derived_verb_type_id = ?, slug = ? WHERE verb_id = ?`,
+        [
+          name,
+          root || null,
+          suffix || null,
+          phonetic || null,
+          derived_from || null,
+          derived_verb_type_id || null,
+          slug,
+          verb_id,
+        ]
+      );
+
+      // Mise à jour des traductions
+      for (const { language_code, meaning } of translations) {
+        if (!language_code || !meaning) continue; // Vérification des champs
+        await connection.execute(
+          `UPDATE verb_meanings SET meaning = ? WHERE verb_id = ? AND language_code = ?`,
+          [meaning, verb_id, language_code]
+        );
+      }
+
+      await connection.end();
+      return { success: true, message: "Verbe mis à jour avec succès." };
+    }
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour :", error);
+    return { error: "Erreur lors de la mise à jour du contenu." };
+  }
+}
+*/
+async function handlePutRequest(event) {
+  const body = await readBody(event);
+
+  if (!body.word_id && !body.verb_id) {
+    return { error: "Les champs 'word_id' ou 'verb_id' sont requis." };
+  }
+
+  const connection = await getConnection();
+  await connection.beginTransaction();
+
+  try {
+    // Mise à jour des mots
+    if (body.word_id) {
+      const { word_id, singular, plural, phonetic, translations } = body;
+
+      // Normalisation
+      const normalizeText = (text) => {
+        if (!text) return null;
+        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+      };
+
+      const updatedSingular = normalizeText(singular);
+      const updatedPlural = normalizeText(plural);
+
+      await connection.execute(
+        `UPDATE words SET singular = ?, plural = ?, phonetic = ? WHERE word_id = ?`,
+        [updatedSingular, updatedPlural || null, phonetic || null, word_id]
+      );
+
+      // Gestion des traductions
+      for (const { language_code, meaning, action } of translations) {
+        if (action === "add") {
+          await connection.execute(
+            `INSERT INTO word_meanings (word_id, language_code, meaning) VALUES (?, ?, ?)`,
+            [word_id, language_code, normalizeText(meaning)]
+          );
+        } else if (action === "update") {
+          await connection.execute(
+            `UPDATE word_meanings SET meaning = ? WHERE word_id = ? AND language_code = ?`,
+            [normalizeText(meaning), word_id, language_code]
+          );
+        } else if (action === "delete") {
+          await connection.execute(
+            `DELETE FROM word_meanings WHERE word_id = ? AND language_code = ?`,
+            [word_id, language_code]
+          );
+        }
+      }
+    }
+
+    // Mise à jour des verbes
+    if (body.verb_id) {
+      const { verb_id, name, phonetic, translations } = body;
+
+      // Normalisation
+      const normalizeText = (text) => {
+        if (!text) return null;
+        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+      };
+
+      const updatedName = normalizeText(name);
+
+      await connection.execute(
+        `UPDATE verbs SET name = ?, phonetic = ? WHERE verb_id = ?`,
+        [updatedName, phonetic || null, verb_id]
+      );
+
+      // Gestion des traductions
+      for (const { language_code, meaning, action } of translations) {
+        if (action === "add") {
+          await connection.execute(
+            `INSERT INTO verb_meanings (verb_id, language_code, meaning) VALUES (?, ?, ?)`,
+            [verb_id, language_code, normalizeText(meaning)]
+          );
+        } else if (action === "update") {
+          await connection.execute(
+            `UPDATE verb_meanings SET meaning = ? WHERE verb_id = ? AND language_code = ?`,
+            [normalizeText(meaning), verb_id, language_code]
+          );
+        } else if (action === "delete") {
+          await connection.execute(
+            `DELETE FROM verb_meanings WHERE verb_id = ? AND language_code = ?`,
+            [verb_id, language_code]
+          );
+        }
+      }
+    }
+
+    await connection.commit();
+    return { success: true, message: "Mise à jour effectuée avec succès." };
+  } catch (error) {
+    await connection.rollback();
+    console.error("Erreur lors de la mise à jour :", error);
+    return { error: "Erreur lors de la mise à jour." };
+  } finally {
+    await connection.end();
+  }
+}
+
+async function handleDeleteRequest(event) {
+  const body = await readBody(event);
+  const { slug, type } = body;
+
+  if (!slug || !type) {
+    return { error: "Les champs 'slug' et 'type' sont requis." };
+  }
+
+  try {
+    const connection = await getConnection();
+
+    if (type === "word") {
+      // Deleting a word
+      await connection.execute(`DELETE FROM words WHERE slug = ?`, [slug]);
+      await connection.execute(
+        `DELETE FROM word_meanings WHERE word_id = (SELECT word_id FROM words WHERE slug = ?);`,
+        [slug]
+      );
+
+      console.log(`Mot avec le slug ${slug} supprimé`);
+    } else if (type === "verb") {
+      // Deleting a verb
+      await connection.execute(`DELETE FROM verbs WHERE slug = ?`, [slug]);
+      await connection.execute(
+        `DELETE FROM verb_meanings WHERE verb_id = (SELECT verb_id FROM verbs WHERE slug = ?);`,
+        [slug]
+      );
+
+      console.log(`Verbe avec le slug ${slug} supprimé`);
+    } else {
+      return { error: "Le type doit être 'word' ou 'verb'." };
+    }
+
+    await connection.end();
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la suppression :", error);
+    return { error: `Erreur lors de la suppression: ${error.message}` };
+  }
+}
+/*
+async function insertWord({
+  singular,
+  plural,
+  phonetic,
+  class_id,
+  translations,
+  user_id,
+}) {
+  try {
+    const connection = await getConnection();
+
+    const [user] = await connection.execute(
+      `SELECT role FROM users WHERE user_id = ?`,
+      [user_id]
+    );
+    const isAdmin = user[0]?.role === "admin";
+    const isApproved = isAdmin ? 1 : 0;
+
+    // Insertion du mot dans la table `words`
+    const [result] = await connection.execute(
+      `INSERT INTO words (singular, plural, phonetic, class_id, user_id, is_approved) 
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [singular, plural, phonetic, class_id, user_id, isApproved]
+    );
+
+    // Générer et insérer le slug dans la table `slugs`
+    const wordId = result.insertId; // ID du mot inséré
+    const slug = await generateUniqueSlug(connection, singular, "slugs");
+
+    await connection.execute(
+      `INSERT INTO slugs (word_id, slug) VALUES (?, ?)`,
+      [wordId, slug]
+    );
+
+    // Insertion des traductions dans `word_meanings`
+    for (const { language_code, meaning } of translations) {
+      await connection.execute(
+        `INSERT INTO word_meanings (word_id, language_code, meaning) VALUES (?, ?, ?)`,
+        [wordId, language_code, meaning]
+      );
+    }
+
+    await connection.end();
+    return { success: true, word_id: wordId };
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du mot :", error);
+    return { error: "Erreur lors de l'ajout du mot." };
+  }
+}*/
+async function insertWord({
+  singular,
+  plural,
+  phonetic,
+  class_id,
+  translations,
+  user_id,
+}) {
+  const connection = await getConnection();
+  await connection.beginTransaction();
+
+  try {
+    // Fonction de normalisation
+    const normalizeText = (text) => {
+      if (!text) return null;
+      return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    };
+
+    // Normalisation des données
+    singular = normalizeText(singular);
+    plural = normalizeText(plural);
+    phonetic = normalizeText(phonetic);
+
+    // Normalisation des traductions
+    translations = translations.map((t) => ({
+      ...t,
+      meaning: normalizeText(t.meaning),
+    }));
+
+    // Générer le slug
+    const slug = await generateUniqueSlug(connection, singular, "slugs");
+
+    // Insertion du mot
+    const [result] = await connection.execute(
+      `INSERT INTO words (singular, plural, phonetic, class_id, user_id) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [singular, plural, phonetic, class_id, user_id]
+    );
+
+    const wordId = result.insertId;
+
+    // Insertion du slug
+    await connection.execute(
+      `INSERT INTO slugs (word_id, slug) VALUES (?, ?)`,
+      [wordId, slug]
+    );
+
+    // Insertion des traductions
+    for (const { language_code, meaning } of translations) {
+      await connection.execute(
+        `INSERT INTO word_meanings (word_id, language_code, meaning)
+         VALUES (?, ?, ?)
+         ON DUPLICATE KEY UPDATE meaning = VALUES(meaning)`,
+        [wordId, language_code, meaning]
+      );
+    }
+
+    await connection.commit();
+    return { success: true, word_id: wordId };
+  } catch (error) {
+    await connection.rollback();
+    console.error("Erreur lors de l'ajout du mot :", error.message || error);
+    return { error: "Erreur lors de l'ajout du mot." };
+  } finally {
+    await connection.end();
+  }
+}
+async function insertVerb({
+  name,
+  phonetic,
+  root,
+  suffix,
+  translations,
+  user_id,
+  isAdmin, // On utilise isAdmin pour déterminer si le contenu est approuvé directement
+}) {
+  const connection = await getConnection();
+  await connection.beginTransaction();
+
+  try {
+    // Fonction de normalisation
+    const normalizeText = (text) => {
+      if (!text) return null; // Retourne null si text est undefined ou null
+      return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    };
+
+    // Normalisation des données
+    if (!name) {
+      throw new Error("Le champ 'name' est requis.");
+    }
+    if (!user_id) {
+      throw new Error("Le champ 'user_id' est requis.");
+    }
+
+    name = normalizeText(name);
+    phonetic = normalizeText(phonetic); // Peut être null
+    root = normalizeText(root); // Peut être null
+    suffix = normalizeText(suffix); // Peut être null
+
+    translations = translations.map((t) => ({
+      ...t,
+      meaning: normalizeText(t.meaning),
+    }));
+
+    // Déterminer si le verbe est approuvé ou en attente
+    const isApproved = isAdmin ? 1 : 0;
+
+    // Insertion du verbe
+    const [result] = await connection.execute(
+      `INSERT INTO verbs (name, phonetic, root, suffix, user_id, is_approved) 
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        name,
+        phonetic || null,
+        root || null,
+        suffix || null,
+        user_id,
+        isApproved, // Calculé automatiquement
+      ]
+    );
+
+    const verbId = result.insertId; // ID du verbe inséré
+
+    // Génération du slug
+    const slug = await generateUniqueSlug(connection, name, "slugs");
+
+    await connection.execute(
+      `INSERT INTO slugs (verb_id, slug) VALUES (?, ?)`,
+      [verbId, slug]
+    );
+
+    // Insertion des traductions
+    for (const { language_code, meaning } of translations) {
+      if (!language_code || !meaning) continue; // Validation des champs
+      await connection.execute(
+        `INSERT INTO verb_meanings (verb_id, language_code, meaning)
+         VALUES (?, ?, ?)
+         ON DUPLICATE KEY UPDATE meaning = VALUES(meaning)`,
+        [verbId, language_code, meaning]
+      );
+    }
+
+    await connection.commit();
+    return { success: true, verb_id: verbId };
+  } catch (error) {
+    await connection.rollback();
+    console.error("Erreur lors de l'ajout du verbe :", error.message || error);
+    return { error: "Erreur lors de l'ajout du verbe." };
+  } finally {
+    await connection.end();
+  }
 }
 
 /*
@@ -392,6 +883,8 @@ async function handlePostRequest(event) {
     return { error: "Les champs 'singular' ou 'name' sont requis." };
   }
 }*/
+/*
+THIS THE LAST ONE COMMENTED DUE TO ISSUES ON CMD LINE
 async function handlePutRequest(event) {
   const body = await readBody(event);
 
@@ -664,7 +1157,7 @@ async function insertVerb({
     console.error("Erreur lors de l'ajout du verbe :", error.message || error);
     return { error: "Erreur lors de l'ajout du verbe." };
   }
-}
+}*/
 /*
 async function handlePostRequest(event) {
   const body = await readBody(event);
