@@ -13,11 +13,7 @@
     </header>
     <section class="text-center mb-5">
       <LogoSlogan />
-      <SearchButtons />
-      <ContributorButtons />
-      <AdminButtons />
     </section>
-    <LastExpressionsCount />
     <section
       class="row justify-content-center mb-4"
       aria-labelledby="search-section"
@@ -52,28 +48,10 @@
     </section>
 
     <!-- Appel à l'action -->
-    <section class="text-center mt-4" aria-labelledby="contribute-section">
-      <p id="contribute-section" class="text-default">
-        Vous ne trouvez pas l'expression que vous cherchez ? <br />
-        Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou verbes.
-      </p>
-      <NuxtLink
-        to="/documentation/for-contributors"
-        class="btn btn-outline-success btn-lg me-3"
-        aria-label="Rejoignez les contributeurs pour enrichir le lexique"
-      >
-        <i class="fas fa-hands-helping me-2" aria-hidden="true"></i>
-        Rejoignez les Contributeurs
-      </NuxtLink>
-      <NuxtLink
-        to="/contact"
-        class="btn btn-outline-primary btn-lg"
-        aria-label="Contactez-nous pour toute assistance ou suggestion"
-      >
-        <i class="fas fa-envelope me-2" aria-hidden="true"></i>
-        Contactez-nous
-      </NuxtLink>
-    </section>
+
+    <LastExpressionsCount />
+    <ActionAppeal />
+    <!-- Appel à l'action -->
 
     <!-- Section des boutons -->
     <section class="text-center mt-5 mb-5">

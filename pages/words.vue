@@ -21,19 +21,29 @@
     </h1>
     <!-- Affichage de la liste des mots -->
     <WordList />
-    <section class="text-center mt-4">
-      <p class="text-default">
-        Vous cherchez un mot que vous ne trouvez pas ? <br />
+    <LastExpressionsCount />
+
+    <!-- Appel à l'action -->
+    <section class="text-center mt-4" aria-labelledby="contribute-section">
+      <p id="contribute-section" class="text-default">
+        Vous ne trouvez pas l'expression que vous cherchez ? <br />
         Contribuez à enrichir le lexique en ajoutant de nouveaux mots ou verbes.
       </p>
       <NuxtLink
         to="/documentation/for-contributors"
         class="btn btn-outline-success btn-lg me-3"
+        aria-label="Rejoignez les contributeurs pour enrichir le lexique"
       >
-        <i class="fas fa-users me-2"></i> Rejoignez les Contributeurs
+        <i class="fas fa-hands-helping me-2" aria-hidden="true"></i>
+        Rejoignez les Contributeurs
       </NuxtLink>
-      <NuxtLink to="/contact" class="btn btn-outline-primary btn-lg">
-        <i class="fas fa-envelope me-2"></i> Contactez-nous
+      <NuxtLink
+        to="/contact"
+        class="btn btn-outline-primary btn-lg"
+        aria-label="Contactez-nous pour toute assistance ou suggestion"
+      >
+        <i class="fas fa-envelope me-2" aria-hidden="true"></i>
+        Contactez-nous
       </NuxtLink>
     </section>
     <div class="text-center mt-4 mb-4">
