@@ -1,7 +1,7 @@
 <template>
   <p class="last-expressions-count">
-    Cette semaine, <strong>{{ data.wordCount }}</strong> mots et
-    <strong>{{ data.verbCount }}</strong> verbes ont été ajoutés !
+    <strong>{{ data.wordCount }}</strong> mots et
+    <strong>{{ data.verbCount }}</strong> verbes ont été ajoutés, récemment!
   </p>
 </template>
 
