@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     public: {
       baseUrl: process.env.BASE_URL,
       stripeKey: process.env.STRIPE_PUBLIC_KEY || "",
+      googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
     },
   },
   compatibilityDate: '2024-04-03',
@@ -43,7 +44,7 @@ export default defineNuxtConfig({
 
   plugins: [
     { src: '~/plugins/vue-carousel-client.js', mode: 'client' },
-    { src: '~/plugins/bootstrap.js', mode: 'client' }, { src: '~/plugins/vue-toastification.js', mode: 'client' }
+    { src: '~/plugins/bootstrap.js', mode: 'client' }, { src: '~/plugins/vue-toastification.js', mode: 'client' }, { src: '~/plugins/google-analytics-client.js', mode: 'client' },
   ],
   css: [
     // '~/assets/css/data-style.css',
@@ -65,6 +66,7 @@ export default defineNuxtConfig({
   sitemap: {
 
   },
+
 },
 
 )
