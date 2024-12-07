@@ -585,7 +585,8 @@ async function insertWord({
     return { error: "Erreur lors de l'ajout du mot." };
   }
 }*/
-async function insertWord({
+/*LAST COMMENTED*/
+/*async function insertWord({
   singular,
   plural,
   phonetic,
@@ -651,15 +652,15 @@ async function insertWord({
   } finally {
     await connection.end();
   }
-}
-async function insertVerb({
-  name,
+}*/
+
+async function insertWord({
+  singular,
+  plural,
   phonetic,
-  root,
-  suffix,
+  class_id,
   translations,
   user_id,
-  isAdmin, // On utilise isAdmin pour déterminer si le contenu est approuvé directement
 }) {
   const connection = await getConnection();
   await connection.beginTransaction();
@@ -667,26 +668,103 @@ async function insertVerb({
   try {
     // Fonction de normalisation
     const normalizeText = (text) => {
-      if (!text) return null; // Retourne null si text est undefined ou null
-      return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+      if (!text) return null;
+      return (
+        text.trim().charAt(0).toUpperCase() + text.trim().slice(1).toLowerCase()
+      ); // Nettoyage des espaces et mise en majuscule initiale
     };
 
     // Normalisation des données
-    if (!name) {
-      throw new Error("Le champ 'name' est requis.");
+    singular = normalizeText(singular);
+    plural = normalizeText(plural);
+    phonetic = phonetic ? phonetic.trim() : null; // Nettoyage simple pour les chaînes non normalisées
+
+    // Normalisation des traductions
+    translations = translations.map((t) => ({
+      ...t,
+      meaning: t.meaning ? normalizeText(t.meaning) : null,
+    }));
+
+    // Générer le slug
+    const slug = await generateUniqueSlug(connection, singular, "slugs");
+
+    // Insertion du mot
+    const [result] = await connection.execute(
+      `INSERT INTO words (singular, plural, phonetic, class_id, user_id) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [singular, plural, phonetic, class_id, user_id]
+    );
+
+    const wordId = result.insertId;
+
+    // Insertion du slug
+    await connection.execute(
+      `INSERT INTO slugs (word_id, slug) VALUES (?, ?)`,
+      [wordId, slug]
+    );
+
+    // Insertion des traductions
+    for (const { language_code, meaning } of translations) {
+      if (meaning) {
+        await connection.execute(
+          `INSERT INTO word_meanings (word_id, language_code, meaning)
+           VALUES (?, ?, ?)
+           ON DUPLICATE KEY UPDATE meaning = VALUES(meaning)`,
+          [wordId, language_code, meaning]
+        );
+      }
+    }
+
+    await connection.commit();
+    return { success: true, word_id: wordId };
+  } catch (error) {
+    await connection.rollback();
+    console.error("Erreur lors de l'ajout du mot :", error.message || error);
+    return { error: "Erreur lors de l'ajout du mot." };
+  } finally {
+    await connection.end();
+  }
+}
+
+async function insertVerb({
+  name,
+  phonetic,
+  root,
+  suffix,
+  translations,
+  user_id,
+  isAdmin, // Utilisation d'isAdmin pour définir l'approbation
+}) {
+  const connection = await getConnection();
+  await connection.beginTransaction();
+
+  try {
+    // Fonction de nettoyage et de normalisation
+    const normalizeText = (text) => {
+      if (!text) return null; // Retourne null si text est undefined ou null
+      return (
+        text.trim().charAt(0).toUpperCase() + text.trim().slice(1).toLowerCase()
+      );
+    };
+
+    // Validation des champs obligatoires
+    if (!name || !name.trim()) {
+      throw new Error("Le champ 'name' est requis et ne peut pas être vide.");
     }
     if (!user_id) {
       throw new Error("Le champ 'user_id' est requis.");
     }
 
+    // Normalisation des données
     name = normalizeText(name);
-    phonetic = normalizeText(phonetic); // Peut être null
-    root = normalizeText(root); // Peut être null
-    suffix = normalizeText(suffix); // Peut être null
+    phonetic = phonetic ? normalizeText(phonetic) : null; // Peut être null
+    root = root ? normalizeText(root) : null; // Peut être null
+    suffix = suffix ? normalizeText(suffix) : null; // Peut être null
 
+    // Nettoyage des traductions
     translations = translations.map((t) => ({
       ...t,
-      meaning: normalizeText(t.meaning),
+      meaning: t.meaning ? normalizeText(t.meaning) : null,
     }));
 
     // Déterminer si le verbe est approuvé ou en attente
@@ -702,7 +780,7 @@ async function insertVerb({
         root || null,
         suffix || null,
         user_id,
-        isApproved, // Calculé automatiquement
+        isApproved,
       ]
     );
 

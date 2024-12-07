@@ -1,7 +1,7 @@
 <template>
   <p class="last-expressions-count">
-    <strong>{{ totalExpressions }}</strong> expressions ont été ajoutées
-    récemment, dont <strong>{{ data.wordCount }}</strong> mots et
+    <strong>{{ totalExpressions }}</strong> nouvelles expressions, dont
+    <strong>{{ data.wordCount }}</strong> mots et
     <strong>{{ data.verbCount }}</strong> verbes !
   </p>
 </template>
