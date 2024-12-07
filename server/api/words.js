@@ -90,6 +90,8 @@ async function handlePostRequest(event) {
     derived_word = 0,
     derived_from_word = null,
     derived_from_verb = null,
+    derived_from = null,
+
     number_variability = "variable",
   } = body;
 
@@ -182,7 +184,7 @@ async function handlePostRequest(event) {
         phonetic,
         translations,
         user_id,
-        derived_from_verb,
+        derived_from,
       });
     }
   } else if (isContributor) {
@@ -217,7 +219,7 @@ async function handlePostRequest(event) {
       );
     } else if (contentType === "verb") {
       const [result] = await connection.execute(
-        `INSERT INTO pending_verbs_submissions (user_id, status, name, root, suffix, phonetic, derived_from_verb)
+        `INSERT INTO pending_verbs_submissions (user_id, status, name, root, suffix, phonetic, derived_from)
          VALUES (?, 'pending', ?, ?, ?, ?, ?)`,
         [
           user_id,
@@ -225,7 +227,7 @@ async function handlePostRequest(event) {
           root || null,
           suffix || null,
           phonetic || null,
-          derived_from_verb,
+          derived_from || null,
         ]
       );
       submissionId = result.insertId;

@@ -1,17 +1,23 @@
 <template>
   <p class="last-expressions-count">
-    <strong>{{ data.wordCount }}</strong> mots et
-    <strong>{{ data.verbCount }}</strong> verbes ont été ajoutés, récemment!
+    <strong>{{ totalExpressions }}</strong> expressions ont été ajoutées
+    récemment, dont <strong>{{ data.wordCount }}</strong> mots et
+    <strong>{{ data.verbCount }}</strong> verbes !
   </p>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const data = ref({
   wordCount: 0,
   verbCount: 0,
 });
+
+// Utilisation de `computed` pour calculer dynamiquement le total
+const totalExpressions = computed(
+  () => data.value.wordCount + data.value.verbCount
+);
 
 const fetchExpressionCounts = async () => {
   try {
