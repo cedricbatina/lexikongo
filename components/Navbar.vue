@@ -57,44 +57,42 @@
           </li>
 
           <!-- Liens conditionnels selon le rôle de l'utilisateur -->
-          <li v-if="authStore.userRole.includes('user')" class="nav-item">
-            <nuxt-link class="nav-link" to="/user/profile">
-              <i class="fas fa-user-check"></i> Tableau de Bord
-            </nuxt-link>
-          </li>
-          <li
-            v-if="authStore.userRole.includes('contributor')"
-            class="nav-item"
-          >
-            <nuxt-link class="nav-link" to="/contributor/">
-              <i class="fas fa-tasks me-1"></i> Espace Contributeur
-            </nuxt-link>
-          </li>
-          <li v-if="authStore.userRole.includes('admin')" class="nav-item">
-            <nuxt-link class="nav-link" to="/admin">
-              <i class="fas fa-tools me-1"></i> Espace Admin
-            </nuxt-link>
-          </li>
+          <template v-if="isLoggedIn">
+            <li v-if="userRoles.includes('user')" class="nav-item">
+              <nuxt-link class="nav-link" to="/user/profile">
+                <i class="fas fa-user-check"></i> Tableau de Bord
+              </nuxt-link>
+            </li>
+            <li v-if="userRoles.includes('contributor')" class="nav-item">
+              <nuxt-link class="nav-link" to="/contributor">
+                <i class="fas fa-tasks me-1"></i> Espace Contributeur
+              </nuxt-link>
+            </li>
+            <li v-if="userRoles.includes('admin')" class="nav-item">
+              <nuxt-link class="nav-link" to="/admin">
+                <i class="fas fa-tools me-1"></i> Espace Admin
+              </nuxt-link>
+            </li>
+          </template>
 
-          <!-- Lien vers le profil de l'utilisateur avec son nom d'utilisateur -->
+          <!-- Profil utilisateur -->
           <li v-if="isLoggedIn" class="nav-item">
             <nuxt-link
               class="nav-link"
-              :to="`/${userRole}`"
+              :to="`/user/profile/${username}`"
               title="Voir mon profil"
             >
-              <i class="fas fa-user-check"></i>
-              {{ username }}
+              <i class="fas fa-user-circle"></i> {{ username }}
             </nuxt-link>
           </li>
 
-          <!-- Liens de connexion/déconnexion -->
+          <!-- Connexion / Déconnexion -->
           <li v-if="!isLoggedIn" class="nav-item">
             <nuxt-link class="nav-link" to="/login">
               <i class="fas fa-sign-in-alt"></i> Connexion
             </nuxt-link>
           </li>
-          <li v-if="isLoggedIn" class="nav-item">
+          <li v-else class="nav-item">
             <button @click="logout" class="btn btn-outline">
               <i class="fas fa-sign-out-alt"></i> Déconnexion
             </button>
@@ -115,27 +113,25 @@ const authStore = useAuthStore();
 const isMenuOpen = ref(false);
 const router = useRouter();
 
-// Définir les variables réactives pour l'état de connexion, le rôle et le nom d'utilisateur
+// État de connexion, rôles et nom d'utilisateur
 const isLoggedIn = computed(() => authStore.isLoggedIn);
-const userRole = computed(() => authStore.userRole);
+const userRoles = computed(() => authStore.userRoles || []);
 const username = computed(() => authStore.user?.username || "Utilisateur");
 
-// Vérifier l'état d'authentification au montage
+// Vérification de l'authentification
 onMounted(() => {
   authStore.checkAuth();
 });
 
-// Fonction pour basculer le menu
+// Basculer le menu
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-// Fonction de déconnexion
-const logout = () => {
-  authStore.logout();
-
-  // Rediriger vers la page d'accueil après déconnexion
-  router.push("/");
+// Déconnexion
+const logout = async () => {
+  await authStore.logout();
+  router.push("/login");
 };
 </script>
 

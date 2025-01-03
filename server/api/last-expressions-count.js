@@ -6,7 +6,7 @@ export default defineEventHandler(async () => {
   try {
     // Date de 7 jours avant aujourd'hui
     const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 90);
 
     // Comptage des mots
     const [wordCount] = await connection.execute(

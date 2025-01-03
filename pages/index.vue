@@ -59,6 +59,7 @@
       <ContributorButtons />
       <AdminButtons />
     </section>
+    <Advertising />
   </div>
 </template>
 

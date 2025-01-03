@@ -1,13 +1,27 @@
 <template>
   <div class="advertising-container">
     <div v-if="ads.length > 0" class="ads-list">
-      <div v-for="ad in ads" :key="ad.id" class="ad-item">
-        <a :href="ad.link_url" target="_blank" rel="noopener noreferrer">
-          <img :src="ad.image_url" :alt="ad.title" class="ad-image" />
-          <h5 class="ad-title">{{ ad.title }}</h5>
-          <p class="ad-description">{{ ad.description }}</p>
-          <span class="ad-partner">Partenaire : {{ ad.partner_name }}</span>
-        </a>
+      <div
+        v-for="ad in ads"
+        :key="ad.id"
+        class="ad-item"
+        @click="openAdLink(ad.link_url)"
+        tabindex="0"
+        role="button"
+        aria-label="Voir la publicité {{ ad.title }}"
+      >
+        <!-- Image -->
+        <img
+          :src="ad.image_url || '/default-ad-image.jpg'"
+          :alt="ad.title"
+          class="ad-image"
+        />
+        <!-- Titre -->
+        <h5 class="ad-title">{{ ad.title }}</h5>
+        <!-- Description -->
+        <p class="ad-description" v-if="ad.description">{{ ad.description }}</p>
+        <!-- Partenaire -->
+        <span class="ad-partner">Partenaire : {{ ad.partner_name }}</span>
       </div>
     </div>
     <div v-else>
@@ -19,8 +33,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-const ads = ref([]);
+const ads = ref([]); // Liste des publicités
 
+// Fonction pour récupérer les publicités depuis l'API
 const fetchAds = async () => {
   try {
     const response = await fetch("/api/advertisements");
@@ -32,6 +47,12 @@ const fetchAds = async () => {
   } catch (error) {
     console.error("Erreur lors de l'appel à l'API des publicités :", error);
   }
+};
+
+// Fonction pour ouvrir un lien dans une nouvelle fenêtre
+const openAdLink = (url) => {
+  if (!url) return;
+  window.open(url, "_blank", "noopener,noreferrer");
 };
 
 onMounted(() => {
@@ -64,11 +85,16 @@ onMounted(() => {
   padding: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .ad-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ad-item:focus {
+  outline: 2px solid #007bff;
 }
 
 .ad-image {
@@ -83,6 +109,7 @@ onMounted(() => {
   font-weight: bold;
   color: #007bff;
   margin-bottom: 8px;
+  text-decoration: none;
 }
 
 .ad-description {

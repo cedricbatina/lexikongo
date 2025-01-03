@@ -55,7 +55,6 @@ const isLoading = ref(false);
 const error = ref("");
 const router = useRouter();
 const authStore = useAuthStore();
-
 const login = async () => {
   error.value = ""; // Réinitialiser les erreurs
   isLoading.value = true;
@@ -69,19 +68,21 @@ const login = async () => {
       body: JSON.stringify({ email: email.value, password: password.value }),
     });
 
-    // Vérifiez si la réponse est OK
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
-    // Extraire le résultat JSON
     const result = await response.json();
 
     if (result.token) {
       authStore.login(result.token);
 
-      // Redirection basée sur les rôles
-      if (authStore.userRole.includes("admin")) {
+      // Gérer une redirection dynamique si elle existe dans l'URL
+      const redirectPath = router.currentRoute.value.query.redirect || null;
+
+      if (redirectPath) {
+        router.push(redirectPath);
+      } else if (authStore.userRole.includes("admin")) {
         router.push("/admin");
       } else if (authStore.userRole.includes("contributor")) {
         router.push("/contributor");
