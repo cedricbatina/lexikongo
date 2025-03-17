@@ -1,0 +1,44 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.action-btn {
+  border: 2px solid #007bff;
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: normal; /* Plus léger */
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  border-radius: 20px; /* Bordures arrondies */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Légère ombre pour effet d'élévation */
+}
+
+.action-btn:hover {
+  background-color: #007bff;
+  color: #fff;
+  transform: translateY(-3px); /* Légère animation de survol */
+}
+
+.action-btn i {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 992px) {
+  .action-btn {
+    flex-basis: calc(50% - 1rem); /* Deux boutons par ligne sur les écrans moyens */
+  }
+}
+
+@media (max-width: 768px) {
+  .action-btn {
+    flex-basis: 100%; /* Un bouton par ligne sur les petits écrans */
+    text-align: center;
+  }
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.04 32.9">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: brown;
+        stroke: brown;
+      }
+
+      .cls-2 {
+        fill: #007bff;
+        stroke: #007bff;
+      }
+
+      .cls-3 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-4 {
+        font-family: SegoeUIEmoji, 'Segoe UI Emoji';
+        font-size: 6px;
+      }
+
+      .cls-5 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-6 {
+        font-family: Chiller-Regular, Chiller;
+        font-size: 26px;
+        letter-spacing: .02em;
+        stroke-miterlimit: 10;
+        stroke-width: .25px;
+      }
+    </style>
+  </defs>
+  <g id="Calque_1-2" data-name="Calque_1">
+    <g>
+      <text class="cls-6" transform="translate(13.64 20.81)"><tspan class="cls-2" x="0" y="0">Lexi</tspan><tspan class="cls-1" x="33.69" y="0">kongo</tspan></text>
+      <text class="cls-6" transform="translate(14.64 20.81)"><tspan class="cls-2" x="0" y="0">Lexi</tspan><tspan class="cls-1" x="33.69" y="0">kongo</tspan></text>
+      <text class="cls-4" transform="translate(0 31.43)"><tspan x="0" y="0">Dictionnai</tspan><tspan class="cls-3" x="26.73" y="0">r</tspan><tspan x="28.74" y="0">e Ki</tspan><tspan class="cls-5" x="38.45" y="0">k</tspan><tspan x="41.31" y="0">ongo - Français en ligne</tspan></text>
+    </g>
+  </g>
+</svg>

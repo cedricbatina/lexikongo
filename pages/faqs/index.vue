@@ -1,0 +1,1 @@
+<template><div>Kia Mbote</div></template>

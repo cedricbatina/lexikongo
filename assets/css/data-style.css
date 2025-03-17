@@ -1,0 +1,97 @@
+/* Variables CSS pour les couleurs */
+
+
+.notice {
+  font-size: xx-small;
+}
+
+/* Styles pour les groupes d'entrée personnalisés */
+.lexikongo-input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.lexikongo-input-group .form-control {
+  flex: 3;
+}
+
+.lexikongo-input-group .form-select,
+.lexikongo-input-group .btn-clear {
+  flex: 1;
+}
+
+/* Styles pour les tables personnalisées */
+.lexikongo-table th {
+  color: #130b04;
+  font-weight: 200;
+  font-size: small;
+}
+
+/* Styles pour les éléments de liste */
+.lexikongo-list-group-item {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lexikongo-list-group-item:hover {
+  background-color: #f0f0f0;
+}
+
+.link-row {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Styles pour les icônes spécifiques */
+.lexikongo-icon {
+  color: var(--primary-color);
+}
+
+/* Styles pour la documentation */
+.documentation {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.documentation h1,
+.documentation h2,
+.documentation h3 {
+  color: var(--primary-color);
+}
+
+.documentation ul {
+  padding: 0;
+  list-style: none;
+}
+
+.documentation ul li {
+  margin-bottom: 0.5rem;
+}
+
+.documentation a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.documentation a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .documentation {
+    padding: 15px;
+  }
+
+  .documentation h1 {
+    font-size: 1.8rem;
+  }
+
+  .documentation h2 {
+    font-size: 1.6rem;
+  }
+
+  .documentation h3 {
+    font-size: 1.4rem;
+  }
+}
